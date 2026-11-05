@@ -85,7 +85,7 @@ export const KB = [
   },
   {
     id: 'awards', title: 'Achievements', target: '#achievements',
-    text: `2nd place, Anthropic's Claude for Public Benefit track, Cal Hacks 13.0 (2026), for Drigil. Finalist, Top 15 teams, USC Origin Hackathon (2026), for Mend. 1st place, Hackerspace Hackathon (2021). Seven merit scholarships. Junior Lead, PredictThis AI Club. Publication: NFTGenesis, IEEE InC4 2024.`,
+    text: `2nd place, Anthropic's Claude for Public Benefit track, Cal Hacks 13.0 (2026), for Drigil. Finalist, Top 15 teams, USC Origin Hackathon (2026), for Mend. 1st place at SpaceJam (2021), the hackathon run by the Hackerspace club. Seven merit scholarships. Junior Lead, PredictThis AI Club. Publication: NFTGenesis, IEEE InC4 2024.`,
   },
   {
     id: 'workflow', title: 'How Sarath builds with AI agents', target: '#notes',

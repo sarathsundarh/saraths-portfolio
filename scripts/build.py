@@ -49,7 +49,7 @@ PERSON = {
          "knowsAbout": ["Backend engineering", "Go", "Python", "SQL", "Java", "TypeScript", "Microservices", "Kafka", "PostgreSQL",
                         "Model Context Protocol (MCP)", "AI agents", "LangGraph", "Retrieval-augmented generation", "LLM evaluation", "PyTorch"],
          "award": ["2nd place, Anthropic's Claude for Public Benefit track, Cal Hacks 13.0 (2026)",
-                   "Finalist, Top 15 teams, USC Origin Hackathon (2026)", "1st place, Hackerspace Hackathon (2021)"],
+                   "Finalist, Top 15 teams, USC Origin Hackathon (2026)", "1st place, SpaceJam, the Hackerspace club hackathon (2021)"],
          "sameAs": ["https://github.com/sarathsundarh", "https://linkedin.com/in/sarathsundarh"]},
         {"@type": "CreativeWork", "name": "Drigil", "url": "https://devpost.com/software/drigil", "creator": {"@id": SITE + "/#person"},
          "dateCreated": "2026-10", "description": "Smart-glasses job coaching in the supervisor's own voice; 2nd place in Anthropic's Claude for Public Benefit track at Cal Hacks 13.0 (three-person team)."},
