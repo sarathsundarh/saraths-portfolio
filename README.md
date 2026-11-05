@@ -2,24 +2,48 @@
 
 Personal portfolio of **Sarath Sundar Harisaravanan**: USC MS CS student building backend systems and AI agents.
 
-Live site: https://sarathsundarh.github.io/saraths-portfolio/
+Live: https://saraths-portfolio.vercel.app
 
-## What's here
+## Layout
 
-| Path | Page |
+| Path | What it is |
 |---|---|
-| `index.html` | Homepage: animated hero, Ask AI Sarath (scripted preview), projects with live demos, experience, skills, achievements, contact |
-| `pages/drigil.html` | Drigil case study (2nd place, Anthropic's Claude for Public Benefit track, Cal Hacks 13.0) |
-| `pages/ai-sarath.html` | Notes: how the AI Sarath chat is designed (draft) |
+| `index.html` | Built homepage (generated, don't edit by hand) |
+| `src/` | Homepage sources: `hero.html` (animated hero), `body.html`, `base.css`, `base.js`, and feature modules in `src/modules/x-*.css/js` |
+| `pages/` | Drigil case study and the "How I built AI Sarath" note |
+| `api/chat.js` | Vercel serverless function behind **Ask AI Sarath** (Gemini) |
+| `api/_kb.js` | The knowledge base: the only facts AI Sarath may use |
+| `scripts/build.py` | Builds `index.html` from `src/` |
+| `scripts/eval.mjs` | Grounding checks against the deployed chat |
 
-The site is plain static HTML, CSS and JavaScript with no build step. Fonts load from Google Fonts.
+## Edit and rebuild
 
-## Hosting
+```bash
+python3 scripts/build.py
+```
 
-The site is served by GitHub Pages from the `main` branch root (`.nojekyll` disables Jekyll processing).
+Commit `index.html` along with your `src/` changes; Vercel serves the files as they are.
+
+## AI Sarath (live chat)
+
+`POST /api/chat` retrieves the most relevant facts from `api/_kb.js` with BM25, asks Gemini for a JSON answer (`answer`, `citations`, `action`), keeps only citations that were actually retrieved, and returns them to the page, which renders citation chips and scrolls to the cited item. `GET /api/chat` reports whether a key is configured.
+
+Set these in Vercel → Project → Settings → Environment Variables, then redeploy:
+
+| Variable | Required | Value |
+|---|---|---|
+| `GEMINI_API_KEY` | yes | Key from Google AI Studio |
+| `GEMINI_MODEL` | no | Defaults to `gemini-2.5-flash-lite` |
+
+Without a key the chat falls back to scripted answers for the suggested questions. Guardrails: 1,000-character inputs, 12-turn history, best-effort per-IP rate limit (8/min, 60/hour), 15 s upstream timeout, answers only from the knowledge base.
+
+Run the grounding checks after deploying:
+
+```bash
+node scripts/eval.mjs
+```
 
 ## Notes
 
-- The chat on the homepage currently plays scripted answers for the suggested questions. The live version (Claude with retrieval, citations and page-control tools) needs a serverless backend, planned for Vercel.
 - The contact form is a front-end preview and doesn't send messages yet. Email: harisara@usc.edu.
 - The project demos are labeled simulations that show how each system works, not benchmarks.

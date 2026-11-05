@@ -1,0 +1,72 @@
+
+/* ===== fill the bento gaps: equal-height rows + live fillers ===== */
+.bento { align-items: stretch; }
+.t-col { grid-template-rows: auto auto 1fr; }
+.t-ask, .t-about, .t-achievements, .t-contact { display: flex; flex-direction: column; }
+@media (min-width: 900px) { .t-contact { display: grid; } }
+.t-ask .chat { flex: 1 1 auto; max-height: none; min-height: 140px; }
+
+/* project cards share a row height; the preview strip takes the slack */
+.projects { align-items: stretch; }
+.proj { display: flex; flex-direction: column; }
+.peek { position: relative; margin-top: 14px; flex: 1 1 auto; min-height: 84px; max-height: 220px; }
+.peek canvas { position: absolute; left: 0; top: 0; width: 100%; height: calc(100% - 18px); display: block; border-radius: 10px; border: 1.5px solid var(--ink); background: var(--panel); box-sizing: border-box; }
+.peek span { position: absolute; left: 0; bottom: 0; font-size: 10px; letter-spacing: .06em; color: var(--muted); }
+.proj:has(.demo:not([hidden])) .peek { display: none; }
+.case .peek, .case-panel .peek { display: none; }
+
+/* how an answer is made */
+.flow { margin-top: auto; padding-top: 16px; }
+.flow-track { position: relative; height: 2px; margin: 0 12.5% 10px; background: repeating-linear-gradient(90deg, var(--rule) 0 6px, transparent 6px 11px); }
+.flow-dot { position: absolute; top: -4px; left: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 20%, transparent); animation: flowGo 4.8s cubic-bezier(.5,0,.5,1) infinite; }
+.flow-dot.d2 { animation-delay: 1.6s; background: var(--mint); }
+.flow-dot.d3 { animation-delay: 3.2s; background: var(--yellow); }
+@keyframes flowGo { 0% { left: 0; opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { left: calc(100% - 10px); opacity: 0; } }
+.flow-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.flow-steps li { text-align: center; font-size: 11px; padding: 8px 6px; border: 1.5px solid var(--ink); border-radius: 10px; background: var(--paper); animation: stepLit 4.8s ease-in-out infinite; animation-delay: calc(var(--k) * 1.2s); }
+.flow-steps b { display: block; font-weight: 500; font-size: 12px; }
+.flow-steps span { color: var(--muted); font-size: 10px; line-height: 1.35; display: block; }
+@keyframes stepLit { 0%, 30%, 100% { box-shadow: 0 0 0 var(--blue); transform: none; } 12% { box-shadow: 3px 3px 0 var(--blue); transform: translate(-1px, -2px); } }
+@media (max-width: 520px) { .flow-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } .flow-track { display: none; } }
+
+/* next achievement */
+.awards { grid-auto-rows: 1fr; }
+.next-award { cursor: pointer; }
+.next-award .face { border-style: dashed; background: color-mix(in srgb, var(--mint) 10%, var(--paper)); }
+.next-award:hover .face { box-shadow: 3px 3px 0 var(--mint); transform: translateY(-2px); }
+.next-award .medal { background: var(--paper); border-style: dashed; }
+.load { display: block; height: 6px; border: 1.5px solid var(--ink); border-radius: 4px; overflow: hidden; margin-top: 6px; }
+.load i { display: block; height: 100%; width: 40%; background: var(--mint); animation: loadSlide 2.6s ease-in-out infinite; }
+@keyframes loadSlide { 0% { transform: translateX(-100%); } 100% { transform: translateX(260%); } }
+
+/* contact: LA clock + paper plane loop */
+.la-card { margin-top: 16px; border: 1.5px solid var(--ink); border-radius: 16px; background: var(--paper); padding: 12px 16px 14px; box-shadow: 4px 4px 0 var(--yellow); }
+.loop { width: 100%; height: auto; display: block; overflow: visible; }
+.loop-path { fill: none; stroke: var(--muted); stroke-width: 1.8; stroke-dasharray: 2 8; stroke-linecap: round; }
+.loop-plane path { fill: var(--paper); stroke: var(--ink); stroke-width: 1.8; stroke-linejoin: round; }
+.loop-plane { offset-path: path('M20 120 C 60 20, 150 10, 170 70 S 280 140, 300 40'); offset-rotate: auto; animation: planeLoop 6s cubic-bezier(.45,0,.55,1) infinite; }
+@keyframes planeLoop { 0% { offset-distance: 0%; opacity: 0; } 6% { opacity: 1; } 88% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+.loop-end { fill: var(--mint); stroke: var(--ink); stroke-width: 1.5; animation: endPing 6s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes endPing { 0%, 86% { transform: scale(1); } 93% { transform: scale(1.6); } 100% { transform: scale(1); } }
+.la-time { margin: 6px 0 0; font-family: 'Instrument Serif', serif; font-size: 26px; line-height: 1.1; }
+.la-time span { font-variant-numeric: tabular-nums; color: var(--accent); }
+.la-sub { margin: 4px 0 0; font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.la-sub .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mint); flex: none; animation: ping 2s ease-out infinite; }
+@media (min-width: 900px) { .t-contact .la-card { grid-column: 1; } }
+@media (prefers-reduced-motion: reduce) { .loop-plane { offset-distance: 70%; opacity: 1; } }
+
+#p-mend .peek { min-height: 96px; max-height: 120px; }
+
+.t-experience { display: flex; flex-direction: column; }
+.impact { margin-top: auto; padding-top: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.imp { position: relative; overflow: hidden; border: 1.5px solid var(--ink); border-radius: 12px; background: var(--paper); padding: 10px 12px; box-shadow: 3px 3px 0 var(--c); }
+.imp b { display: block; font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 30px; line-height: 1; }
+.imp b .count { background: none; font-weight: 400; color: inherit; }
+.imp > span { font-size: 11px; color: var(--muted); line-height: 1.4; display: block; margin-top: 4px; }
+.imp::after { content: ''; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--c); transform-origin: left; animation: impBar 3.6s ease-in-out infinite; }
+.imp:nth-child(2)::after { animation-delay: .5s; } .imp:nth-child(3)::after { animation-delay: 1s; } .imp:nth-child(4)::after { animation-delay: 1.5s; }
+@keyframes impBar { 0% { transform: scaleX(0); } 50% { transform: scaleX(1); } 100% { transform: scaleX(1); opacity: 0; } }
+@media (max-width: 520px) { .impact { grid-template-columns: minmax(0, 1fr); } }
+
+.demo-tag.is-live { color: var(--mint-ink); border-color: var(--mint); border-style: solid; }
+.demo-tag.is-live::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); margin-right: 6px; vertical-align: 0; animation: ping 2s ease-out infinite; }

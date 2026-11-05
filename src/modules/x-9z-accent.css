@@ -1,0 +1,48 @@
+
+/* ===== accent swap: cobalt blue leads, yellow + mint support, pink is a rare spark ===== */
+:root { --accent: #2443D6; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme=light]) { --accent: #93A4FF; } }
+:root[data-theme=dark] { --accent: #93A4FF; }
+
+.t-hero { --tile-ink: var(--blue); }
+.t-about { --tile-ink: var(--yellow); }
+.t-ask { --tile-ink: var(--blue); }
+.t-projects { --tile-ink: var(--mint); }
+.t-experience { --tile-ink: var(--yellow); }
+.t-education { --tile-ink: var(--blue); }
+.t-notes { --tile-ink: var(--mint); }
+.t-achievements { --tile-ink: var(--yellow); }
+.t-stack { --tile-ink: var(--blue); }
+.t-contact { --tile-ink: var(--mint); }
+#p-drigil { --c: var(--blue); } #p-reglens { --c: var(--mint); } #p-nft { --c: var(--yellow); } #p-kafka { --c: var(--blue); } #p-mend { --c: var(--mint); }
+
+.try, .send, .ask-input button, .dbtn.primary { box-shadow: 3px 3px 0 var(--yellow); }
+.try:hover, .send:hover, .ask-input button:hover, .dbtn.primary:hover { box-shadow: 4px 4px 0 var(--yellow); }
+.try[aria-expanded="true"] { background: var(--blue); color: #fff; box-shadow: 3px 3px 0 var(--ink); }
+.suggest button:hover { box-shadow: 3px 3px 0 var(--blue); }
+.cite { background: color-mix(in srgb, var(--blue) 14%, transparent); }
+.avatar { box-shadow: 3px 3px 0 var(--blue); }
+.award.flip .front { box-shadow: 3px 3px 0 var(--blue); }
+.c-bubble { box-shadow: 3px 3px 0 var(--blue); }
+.wordmark { text-shadow: 7px 7px 0 color-mix(in srgb, var(--yellow) 85%, transparent); }
+.foot { box-shadow: 6px 0 0 var(--yellow); }
+.j-arc-done { stroke: var(--blue); }
+.dock a.active::after { background: var(--blue); }
+
+/* hero: blue + yellow rays, a pink spark every fourth */
+.rays path:nth-child(odd) { stroke: var(--blue); }
+.rays path:nth-child(even) { stroke: var(--yellow); }
+.rays path:nth-child(4n) { stroke: var(--pink); }
+.code .s { fill: var(--mint-ink) !important; }
+.pulse { fill: var(--blue); }
+
+/* background: mint replaces the big pink blob; pink stays small and faint */
+.b1 { background: radial-gradient(circle at 50% 50%, var(--mint) 0, transparent 62%); }
+.b4 { background: radial-gradient(circle at 50% 50%, var(--pink) 0, transparent 62%); opacity: calc(var(--blob-a) * .6); }
+
+/* ===== chat + back-to-top live in the dock on wide screens, so nothing overlaps ===== */
+.dock .dock-chat { color: #fff; background: var(--blue); border: 1.5px solid var(--ink); }
+.dock .dock-chat:hover { color: #fff; background: var(--blue-ink); }
+.chat-fab { background: var(--blue); color: #fff; }
+@media (min-width: 1101px) { .chat-fab, .up-fab { display: none !important; } }
+@media (max-height: 720px) and (min-width: 1101px) { .dock a, .dock button { height: 30px; } .dock { gap: 0; padding: 6px; } .dock hr { margin: 2px auto; } }

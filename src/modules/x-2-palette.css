@@ -1,0 +1,21 @@
+
+/* ===== command palette ===== */
+.pal-wrap { position: fixed; inset: 0; z-index: 120; display: grid; justify-items: center; align-items: start; padding: 12vh 16px 16px; background: color-mix(in srgb, var(--ink) 28%, transparent); backdrop-filter: blur(3px); }
+.pal-wrap[hidden] { display: none; }
+.pal { width: min(560px, 100%); background: var(--paper); border: 1px solid var(--rule); border-radius: 16px; box-shadow: 0 30px 80px rgba(0,0,0,.28); overflow: hidden; animation: palIn .22s cubic-bezier(.2,.9,.3,1.2); }
+@keyframes palIn { from { opacity: 0; transform: translateY(-10px) scale(.98); } }
+.pal-in { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px dashed var(--rule); }
+.pal-in svg { width: 16px; height: 16px; fill: none; stroke: var(--muted); stroke-width: 1.8; stroke-linecap: round; flex: none; }
+.pal-in input { flex: 1; min-width: 0; font: inherit; font-size: 14px; color: var(--ink); background: transparent; border: 0; outline: none; }
+.pal-in kbd, .pal-foot kbd { font: inherit; font-size: 10.5px; color: var(--muted); border: 1px solid var(--rule); border-radius: 5px; padding: 0 5px; }
+.pal-list { list-style: none; margin: 0; padding: 6px; max-height: min(52vh, 420px); overflow-y: auto; }
+.pal-list li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; cursor: pointer; font-size: 13px; }
+.pal-list li .k { margin-left: auto; font-size: 10.5px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.pal-list li .ic { width: 22px; height: 22px; flex: none; display: grid; place-items: center; border-radius: 6px; border: 1px solid var(--rule); font-size: 11px; color: var(--muted); }
+.pal-list li[aria-selected="true"] { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); }
+.pal-list li[aria-selected="true"] .ic { border-color: var(--accent); color: var(--accent); }
+.pal-list li mark { background: none; color: var(--accent); font-weight: 500; }
+.pal-empty { padding: 18px; color: var(--muted); font-size: 12.5px; text-align: center; }
+.pal-foot { display: flex; gap: 14px; flex-wrap: wrap; padding: 8px 16px; border-top: 1px dashed var(--rule); font-size: 11px; color: var(--muted); }
+.toast { position: fixed; left: 50%; bottom: 84px; translate: -50% 0; z-index: 130; background: var(--ink); color: var(--paper); font-size: 12px; padding: 6px 14px; border-radius: 999px; opacity: 0; transition: opacity .25s; pointer-events: none; }
+.toast.on { opacity: 1; }

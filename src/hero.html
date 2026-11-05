@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hero scenes · Sarath</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+:root{--paper:#F4F0E8;--ink:#16130F;--muted:#6F6A60;--rule:#D9D2C4;--accent:#9D2235;--gold:#E0A800;--ok:#2F7D4F;--lid:#E7E1D5;--panel:#FBF8F2;--figure:#F4F0E8;--skin:#F4F0E8;--hair:#16130F;--night:#1B2247;--night-a:.13}
+:root[data-theme=dark]{--paper:#121010;--ink:#EFE9DE;--muted:#9C958A;--rule:#2E2A26;--accent:#E0566B;--gold:#FFCC00;--ok:#6FCF97;--lid:#24201D;--panel:#1A1715;--night:#000;--night-a:.35}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--paper:#121010;--ink:#EFE9DE;--muted:#9C958A;--rule:#2E2A26;--accent:#E0566B;--gold:#FFCC00;--ok:#6FCF97;--lid:#24201D;--panel:#1A1715;--night:#000;--night-a:.35}}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:'Geist Mono',ui-monospace,monospace}
+.wrap{max-width:800px;margin:0 auto;border-left:1px dashed var(--rule);border-right:1px dashed var(--rule);min-height:100vh}
+.banner{border-bottom:1px dashed var(--rule);padding:18px 16px 0;overflow:hidden;position:relative}
+.scene{display:block;width:100%;height:auto;color:var(--ink);overflow:visible}
+.bar{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px 16px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.now b{color:var(--ink);font-weight:500}
+.dots{display:flex;gap:8px;align-items:center}
+.dots button{width:28px;height:8px;padding:0;border-radius:999px;border:1px solid var(--rule);background:transparent;cursor:pointer;position:relative;overflow:hidden}
+.dots button i{position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left}
+.dots button.on{border-color:var(--accent)}
+.dots button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tbtn{font:inherit;font-size:12px;color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:999px;padding:5px 11px;cursor:pointer}
+.tbtn:hover{border-color:var(--accent);color:var(--accent)}
+h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:40px;margin:0;padding:8px 16px 0}
+/* figure: always ink-on-paper */
+.me{color:#16130F} .rays{color:var(--muted)} .hood-in{fill:#16130F}
+.sil{fill:var(--figure)} .ink{fill:currentColor} .skin{fill:var(--skin)} .line{stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+.hair{fill:var(--hair)} .curls{stroke:var(--skin);opacity:.55} .blush{fill:#9D2235;opacity:.16}
+:root[data-theme=dark] .me{--figure:#EFE9DE;--skin:#EFE9DE}
+:root[data-theme=dark] .hair{stroke:#EFE9DE;stroke-width:7;stroke-linejoin:round}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .me{--figure:#EFE9DE;--skin:#EFE9DE}:root:not([data-theme=light]) .hair{stroke:#EFE9DE;stroke-width:7;stroke-linejoin:round}}
+.yawn{fill:#16130F;opacity:0;transition:opacity .2s}
+.bubble{font-family:'Instrument Serif',serif;font-size:170px;fill:var(--accent);opacity:0}
+.bg{color:var(--muted);opacity:.55}
+.panel{fill:var(--panel);stroke:currentColor;stroke-width:6}
+.tl{stroke:currentColor;stroke-width:3}.tl.r{fill:var(--accent)}.tl.y{fill:var(--gold)}.tl.g{fill:var(--paper)}
+.fname{font-family:'Geist Mono',monospace;font-size:36px;fill:var(--muted)}
+.code{font-family:'Geist Mono',monospace;font-size:54px;fill:currentColor}
+.code .k{fill:var(--accent)} .code .s{fill:#8a6a00} :root[data-theme=dark] .code .s{fill:var(--gold)} .code .c{fill:var(--muted)} .code .ok{fill:var(--ok)} .code .err{fill:var(--accent)}
+.lid-face,.base{fill:var(--lid);stroke:currentColor;stroke-width:8;stroke-linejoin:round}
+.sticker{color:var(--accent)} .glint{fill:#fff;opacity:0}
+/* props */
+.bubble-box{fill:var(--panel);stroke:currentColor;stroke-width:6;stroke-linejoin:round}
+.say{font-family:'Geist Mono',monospace;font-size:56px;fill:currentColor}
+.bot-body{fill:var(--panel);stroke:currentColor;stroke-width:8}
+.bot-eyes circle{fill:currentColor} .bot-mouth,.bot-ant,.bot-arm{fill:none;stroke:currentColor;stroke-width:8;stroke-linecap:round}
+.bot-spark{fill:var(--accent)}
+.chip-dot{fill:var(--accent)}
+.cloud{fill:var(--panel);stroke:currentColor;stroke-width:6} .tdot{fill:var(--panel);stroke:currentColor;stroke-width:6}
+.edge{stroke:var(--muted);stroke-width:3} .node{fill:var(--panel);stroke:currentColor;stroke-width:6}
+.pulse{fill:var(--accent)}
+.bulb-glass{fill:var(--panel);stroke:currentColor;stroke-width:7;transition:fill .3s} .bulb-base{fill:var(--muted)} .bulb-fil{fill:none;stroke:currentColor;stroke-width:5}
+.bulb-rays{stroke:var(--gold);stroke-width:8;opacity:0;transition:opacity .3s}
+.doc-sheet{fill:var(--panel);stroke:currentColor;stroke-width:6;stroke-linejoin:round} .doc-lines{stroke:var(--muted);stroke-width:5}
+.banner{transition:background-color 1.2s ease}.banner.night{background-color:color-mix(in srgb,var(--paper),var(--night) calc(var(--night-a)*100%))}
+.moon{fill:var(--gold);opacity:.85} .star{fill:var(--gold)}
+.mug-body{fill:var(--accent);stroke:currentColor;stroke-width:7} .mug-handle,.steam{fill:none;stroke:currentColor;stroke-width:6;stroke-linecap:round}
+.steam{stroke:var(--muted)}
+.bug-body{fill:var(--accent);stroke:currentColor;stroke-width:6} .bug-head{fill:currentColor} .bug-legs,.bug-ant,.bug-line{fill:none;stroke:currentColor;stroke-width:6;stroke-linecap:round}
+.splat path{fill:none;stroke:var(--gold);stroke-width:8;stroke-linecap:round}
+/* ---------- scene visibility (morph = cross-fade in place) ---------- */
+.p-code,.p-agent,.p-brain,.p-night{opacity:0;transition:opacity .7s ease}
+.s-code .p-code,.s-agent .p-code,.s-night .p-code{opacity:1}
+.s-night .p-night{opacity:1}
+.s-agent .bot-wrap{opacity:1}
+.s-brain .p-brain{opacity:1}
+.say-me-g,.say-bot-g{opacity:0!important;transition:opacity .35s}
+.say-me .say-me-g,.say-bot .say-bot-g{opacity:1!important}
+/* ---------- motion ---------- */
+[data-pivot]{transform-box:fill-box}
+.lid{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(.035)}
+.rays,.sticker{opacity:0}
+.arm{transform:rotate(var(--rest,0deg));transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
+.arm-l{--rest:-2deg}.arm-r{--rest:2deg}
+.opened .arm{--rest:0deg}
+.go .lid{animation:lid .7s cubic-bezier(.2,.9,.25,1.15) .05s forwards}
+.go .arm-l{animation:liftL .7s cubic-bezier(.2,.9,.25,1.15) .05s forwards}
+.go .arm-r{animation:liftR .7s cubic-bezier(.2,.9,.25,1.15) .05s forwards}
+.opened .lid{animation:none;transform:none}
+.opened .arm-l,.opened .arm-r{animation:none}
+.go .sticker,.opened .sticker{animation:fade .35s ease .5s forwards}
+.go .rays,.opened .rays{animation:rays 2.6s ease-in-out .6s infinite}
+.go .glint{animation:glint 5s ease-in-out 1s infinite}
+.typing .arm-l{animation:tapL .16s ease-in-out infinite alternate!important}
+.typing .arm-r{animation:tapR .16s ease-in-out .08s infinite alternate!important}
+.typing .head{animation:nod 1.1s ease-in-out infinite alternate}
+.typing .torso{animation:bob .32s ease-in-out infinite alternate}
+.tired.typing .arm-l,.tired.typing .arm-r{animation-duration:.34s!important}
+.head{transition:transform .6s cubic-bezier(.3,1.3,.5,1)}
+.pupils,.brow,.smile{transition:transform .35s ease,opacity .2s}
+.look-up .head{animation:none;transform:rotate(-5deg) translate(6px,-10px)}
+.look-up .pupils{transform:translate(3px,-14px)}
+.look-up .smile{transform:scale(1.12);transform-box:fill-box;transform-origin:50% 0}
+.look-up .brow{transform:translateY(-8px)}
+.look-right .head{animation:none;transform:rotate(4deg) translate(6px,-4px)}
+.look-right .pupils{transform:translate(16px,-4px)}
+.think .head{animation:none;transform:rotate(7deg) translate(0,-4px)}
+.think .pupils{transform:translate(12px,-16px)}
+.think .arm-l{animation:none!important;transform:rotate(-1.5deg)} .think .arm-r{animation:none!important;transform:rotate(1.5deg)}
+.lean .head{animation:none;transform:translate(14px,16px) rotate(2deg)}
+.lean .pupils{transform:translate(14px,6px)}
+.tired .eyes{transform-box:fill-box;transform-origin:50% 30%;transform:scaleY(.5)}
+.yawning .smile{opacity:0} .yawning .yawn{opacity:1} .yawning .eyes{transform:scaleY(.15)}
+.yawning .head{animation:none;transform:rotate(-6deg) translateY(-8px)}
+.stretch .arm-l{animation:none!important;transform:rotate(6deg)} .stretch .arm-r{animation:none!important;transform:rotate(-6deg)}
+.slam .arm-l{animation:slamL .22s ease-in 2!important} .slam .arm-r{animation:slamR .22s ease-in 2!important}
+.q-on .q{animation:pop-b 1.6s ease forwards}
+.ex-on .ex{animation:pop-b 1.1s ease forwards}
+.blink .eyes{transform-box:fill-box;transform-origin:50% 50%;transform:scaleY(.1)}
+.eyes{transition:transform .08s}
+/* bot */
+.bot{transform:translateY(210px);transition:transform .6s cubic-bezier(.3,1.5,.5,1)}
+.bot-up .bot{transform:translateY(0)} .bot-up .sticker{visibility:hidden}
+.bot-hop .bot{animation:hop .45s ease 2}
+.bot-think .bot-spark{animation:spin 1s linear infinite;transform-box:fill-box;transform-origin:50% 50%}
+.bot-think .bot-eyes{transform:translateY(-8px);transition:transform .3s}
+/* brain */
+.tdot,.cloud,.node,.edge,.bulb,.doc{opacity:0}
+.cloud{transform-box:fill-box;transform-origin:0% 50%;transform:scale(.3);transition:transform .7s cubic-bezier(.3,1.3,.5,1),opacity .4s}
+.b-cloud .tdot{animation:fade .3s ease forwards;animation-delay:calc(var(--i)*.18s)}
+.b-cloud .cloud{opacity:1;transform:none;transition-delay:.45s}
+.b-net .node{animation:pop-n .45s cubic-bezier(.3,1.6,.5,1) forwards;animation-delay:calc(var(--i)*.06s);transform-box:fill-box;transform-origin:50% 50%}
+.b-net .edge{opacity:1;transition:opacity .8s .3s}
+.b-net .bulb{opacity:1;transition:opacity .4s .7s}
+.b-lit .bulb-glass{fill:var(--gold)} .b-lit .bulb-rays{opacity:1}
+.b-drop .doc{animation:drop 1.1s cubic-bezier(.5,0,.8,.4) forwards}
+.b-fade .cloud,.b-fade .tdot,.b-fade .net,.b-fade .bulb{opacity:0!important;transition:opacity .5s}
+/* night */
+.star{transform-box:fill-box;transform-origin:50% 50%;animation:twinkle 2.4s ease-in-out infinite;animation-delay:calc(var(--i)*-.37s)}
+.steam{stroke-dasharray:14 14;animation:steam 1.6s linear infinite} .steam.s2{animation-delay:-.8s}
+.bug-wrap{transform:translate(2260px,368px)}
+.bug-crawl .bug-wrap{animation:crawl 3s linear forwards}
+.bug{transform-box:fill-box;transform-origin:50% 100%;opacity:0;transition:opacity .3s}.bug-crawl .bug{opacity:1}
+.bug-crawl .bug-legs{animation:legs .16s steps(2) infinite}
+.bug-squash .bug-wrap{animation:none;transform:translate(1700px,368px)}
+.bug-squash .bug{transform:scaleY(.15) scaleX(1.25);opacity:0;transition:transform .12s, opacity .5s .5s}
+.splat{opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.bug-squash .splat{animation:splat .6s ease forwards}
+.bird{transform-box:fill-box;transform-origin:50% 50%;animation:flap .5s ease-in-out infinite alternate, fly 22s linear infinite}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.2s ease forwards}
+.draw-g path{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.3s ease .1s forwards}
+.hangers{opacity:0;animation:fade .6s ease .9s forwards}
+.paused *{animation-play-state:paused!important}
+@keyframes lid{to{transform:scaleY(1)}}
+@keyframes liftL{0%{transform:rotate(-2deg)}55%{transform:rotate(-4deg)}100%{transform:rotate(0)}}
+@keyframes liftR{0%{transform:rotate(2deg)}55%{transform:rotate(4deg)}100%{transform:rotate(0)}}
+@keyframes tapL{from{transform:rotate(.3deg)}to{transform:rotate(-1.3deg)}}
+@keyframes tapR{from{transform:rotate(-.3deg)}to{transform:rotate(1.3deg)}}
+@keyframes slamL{50%{transform:rotate(-3.5deg)}} @keyframes slamR{50%{transform:rotate(3.5deg)}}
+@keyframes nod{from{transform:rotate(-1.5deg) translateY(0)}to{transform:rotate(1.8deg) translateY(5px)}}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(3px)}}
+@keyframes pop-b{0%{opacity:0;transform:translateY(30px) scale(.6)}25%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
+@keyframes pop-n{0%{opacity:0;transform:scale(0)}100%{opacity:1;transform:scale(1)}}
+@keyframes hop{50%{transform:translateY(-40px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drop{0%{opacity:1;transform:none}100%{opacity:0;transform:translate(-1580px,560px) scale(.3)}}
+@keyframes twinkle{0%,100%{transform:scale(.6);opacity:.5}50%{transform:scale(1);opacity:1}}
+@keyframes steam{to{stroke-dashoffset:-56}}
+@keyframes crawl{from{transform:translate(2260px,368px)}to{transform:translate(1700px,368px)}}
+@keyframes legs{to{transform:scaleX(-1)}}
+@keyframes splat{0%{opacity:0;transform:scale(.4)}40%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1.3)}}
+@keyframes fade{to{opacity:1}}
+@keyframes rays{0%,100%{opacity:.15}50%{opacity:.6}}
+@keyframes glint{0%,70%{opacity:0;transform:translateX(-90px) skewX(-25deg)}75%{opacity:.9}90%{opacity:0;transform:translateX(250px) skewX(-25deg)}100%{opacity:0}}
+@keyframes flap{from{transform:scaleY(1)}to{transform:scaleY(.35)}}
+@keyframes fly{0%{translate:0 0}50%{translate:-260px 40px}100%{translate:0 0}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.lid{transform:none}.arm{transform:none}.rays,.sticker,.hangers{opacity:1}.draw,.draw-g path{stroke-dashoffset:0}
+  .s-brain .tdot,.s-brain .cloud,.s-brain .node,.s-brain .edge,.s-brain .bulb{opacity:1;transform:none}.s-brain .bulb-glass{fill:var(--gold)}.s-agent .bot{transform:none}.bug-wrap{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="banner" id="banner"></div>
+  <template id="scene-tpl"><svg class="scene" viewBox="-1150 -60 3500 1560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of Sarath opening a laptop and coding, with the Golden Gate Bridge behind him">
+  <defs><clipPath id="lenses"><circle cx="445" cy="318" r="51"/><circle cx="585" cy="318" r="51"/></clipPath></defs>
+  
+  <g class="p-night night-back">
+    <path class="moon" d="M-960 70 a74 74 0 1 0 64 128 a60 60 0 1 1 -64 -128 Z"/>
+    <path class="star" style="--i:0" d="M-1050 34 Q-1050 60 -1024 60 Q-1050 60 -1050 86 Q-1050 60 -1076 60 Q-1050 60 -1050 34 Z"/><path class="star" style="--i:1" d="M-860 212 Q-860 230 -842 230 Q-860 230 -860 248 Q-860 230 -878 230 Q-860 230 -860 212 Z"/><path class="star" style="--i:2" d="M-560 102 Q-560 120 -542 120 Q-560 120 -560 138 Q-560 120 -578 120 Q-560 120 -560 102 Z"/><path class="star" style="--i:3" d="M-380 14 Q-380 40 -354 40 Q-380 40 -380 66 Q-380 40 -406 40 Q-380 40 -380 14 Z"/><path class="star" style="--i:4" d="M-120 182 Q-120 200 -102 200 Q-120 200 -120 218 Q-120 200 -138 200 Q-120 200 -120 182 Z"/><path class="star" style="--i:5" d="M60 42 Q60 60 78 60 Q60 60 60 78 Q60 60 42 60 Q60 60 60 42 Z"/><path class="star" style="--i:6" d="M1260 34 Q1260 60 1286 60 Q1260 60 1260 86 Q1260 60 1234 60 Q1260 60 1260 34 Z"/><path class="star" style="--i:7" d="M2280 62 Q2280 80 2298 80 Q2280 80 2280 98 Q2280 80 2262 80 Q2280 80 2280 62 Z"/><path class="star" style="--i:8" d="M900 12 Q900 30 918 30 Q900 30 900 48 Q900 30 882 30 Q900 30 900 12 Z"/>
+  </g>
+  <g class="bg" fill="none" stroke="currentColor" stroke-linecap="round">
+    <path class="draw" d="M-1150 1180 H-40 M1230 1180 H2350" stroke-width="4"/>
+    <path class="draw" d="M1230 1120 q140 -90 300 -60 q160 30 280 -40 q200 -110 540 20" stroke-width="4"/>
+    <g class="draw-g" stroke-width="5">
+      <path d="M-765 1180 V270 M-635 1180 V270 M-780 270 H-620 M-765 380 H-635 M-765 560 H-635 M-765 760 H-635 M-765 950 H-635"/>
+      <path d="M-282 1180 V720 M-238 1180 V720 M-290 720 H-230 M-282 820 H-238 M-282 930 H-238"/>
+      <path d="M-1150 1000 H-60 M-1150 1030 H-60"/>
+      <path d="M-700 290 C-560 990 -400 990 -260 720 M-700 290 C-820 700 -1000 850 -1150 880"/>
+    </g>
+    <g class="hangers" stroke-width="2.5" opacity="0.7"><line x1="-1130" y1="875" x2="-1130" y2="1000"/><line x1="-1090" y1="862" x2="-1090" y2="1000"/><line x1="-1050" y1="843" x2="-1050" y2="1000"/><line x1="-1010" y1="818" x2="-1010" y2="1000"/><line x1="-970" y1="785" x2="-970" y2="1000"/><line x1="-930" y1="746" x2="-930" y2="1000"/><line x1="-890" y1="698" x2="-890" y2="1000"/><line x1="-850" y1="640" x2="-850" y2="1000"/><line x1="-810" y1="570" x2="-810" y2="1000"/><line x1="-610" y1="642" x2="-610" y2="1000"/><line x1="-570" y1="743" x2="-570" y2="1000"/><line x1="-530" y1="815" x2="-530" y2="1000"/><line x1="-490" y1="861" x2="-490" y2="1000"/><line x1="-450" y1="884" x2="-450" y2="1000"/><line x1="-410" y1="885" x2="-410" y2="1000"/><line x1="-370" y1="867" x2="-370" y2="1000"/><line x1="-330" y1="828" x2="-330" y2="1000"/><line x1="-290" y1="773" x2="-290" y2="1000"/></g>
+    <path class="bird" d="M1520 260 q22 -22 44 0 q22 -22 44 0" stroke-width="5"/>
+  </g>
+
+
+  <g class="p-brain brain">
+    <circle class="tdot" cx="800" cy="150" r="14" style="--i:0"/>
+    <circle class="tdot" cx="930" cy="118" r="22" style="--i:1"/>
+    <circle class="tdot" cx="1100" cy="100" r="32" style="--i:2"/>
+    <path class="cloud" d="M2310.0 420.0 Q2246.9 469.9 2271.9 546.3 Q2185.4 567.1 2163.6 653.3 Q2063.9 647.0 2001.3 724.9 Q1899.7 691.8 1810.0 750.0 Q1720.3 691.8 1618.7 724.9 Q1556.1 647.0 1456.4 653.3 Q1434.6 567.1 1348.1 546.3 Q1373.1 469.9 1310.0 420.0 Q1373.1 370.1 1348.1 293.7 Q1434.6 272.9 1456.4 186.7 Q1556.1 193.0 1618.7 115.1 Q1720.3 148.2 1810.0 90.0 Q1899.7 148.2 2001.3 115.1 Q2063.9 193.0 2163.6 186.7 Q2185.4 272.9 2271.9 293.7 Q2246.9 370.1 2310.0 420.0 Z"/>
+    <g class="net"><line class="edge" x1="1480" y1="290" x2="1720" y2="230"/><line class="edge" x1="1480" y1="290" x2="1720" y2="350"/><line class="edge" x1="1480" y1="290" x2="1720" y2="490"/><line class="edge" x1="1480" y1="290" x2="1720" y2="610"/><line class="edge" x1="1480" y1="420" x2="1720" y2="230"/><line class="edge" x1="1480" y1="420" x2="1720" y2="350"/><line class="edge" x1="1480" y1="420" x2="1720" y2="490"/><line class="edge" x1="1480" y1="420" x2="1720" y2="610"/><line class="edge" x1="1480" y1="550" x2="1720" y2="230"/><line class="edge" x1="1480" y1="550" x2="1720" y2="350"/><line class="edge" x1="1480" y1="550" x2="1720" y2="490"/><line class="edge" x1="1480" y1="550" x2="1720" y2="610"/><line class="edge" x1="1720" y1="230" x2="1960" y2="330"/><line class="edge" x1="1720" y1="230" x2="1960" y2="510"/><line class="edge" x1="1720" y1="350" x2="1960" y2="330"/><line class="edge" x1="1720" y1="350" x2="1960" y2="510"/><line class="edge" x1="1720" y1="490" x2="1960" y2="330"/><line class="edge" x1="1720" y1="490" x2="1960" y2="510"/><line class="edge" x1="1720" y1="610" x2="1960" y2="330"/><line class="edge" x1="1720" y1="610" x2="1960" y2="510"/><line class="edge" x1="1960" y1="330" x2="2180" y2="410"/><line class="edge" x1="1960" y1="510" x2="2180" y2="410"/><circle class="node" cx="1480" cy="290" r="26" style="--i:0"/><circle class="node" cx="1480" cy="420" r="26" style="--i:1"/><circle class="node" cx="1480" cy="550" r="26" style="--i:2"/><circle class="node" cx="1720" cy="230" r="26" style="--i:3"/><circle class="node" cx="1720" cy="350" r="26" style="--i:4"/><circle class="node" cx="1720" cy="490" r="26" style="--i:5"/><circle class="node" cx="1720" cy="610" r="26" style="--i:6"/><circle class="node" cx="1960" cy="330" r="26" style="--i:7"/><circle class="node" cx="1960" cy="510" r="26" style="--i:8"/></g>
+    <g class="pulses"></g>
+    <g class="bulb">
+      <g class="bulb-rays" stroke-linecap="round"><path d="M2180 290 v-40 M2280 330 l30 -28 M2080 330 l-30 -28 M2310 420 h40 M2050 420 h-40"/></g>
+      <circle class="bulb-glass" cx="2180" cy="410" r="58"/>
+      <path class="bulb-fil" d="M2160 420 q10 -24 20 0 q10 -24 20 0" />
+      <rect class="bulb-base" x="2152" y="466" width="56" height="44" rx="8"/>
+    </g>
+    <g class="doc"><path d="M2140 360 h70 l26 26 v104 h-96 Z M2210 360 v26 h26" class="doc-sheet"/><path d="M2158 420 h56 M2158 446 h56 M2158 472 h36" class="doc-lines"/></g>
+  </g>
+
+  <g class="p-agent say-me-g">
+    <path class="bubble-box" d="M-130 0 h480 a44 44 0 0 1 44 44 v110 a44 44 0 0 1 -44 44 h-30 l36 50 l-86 -50 h-400 a44 44 0 0 1 -44 -44 v-110 a44 44 0 0 1 44 -44 Z"/>
+    <text class="say" x="-96" y="86">fix the flaky</text><text class="say" x="-96" y="158">test for me?</text>
+  </g>
+  <g class="code-win p-code">
+    <path class="dots" d="M1010 900 Q1160 850 1250 800" fill="none" stroke="currentColor" stroke-width="6" stroke-dasharray="2 22" stroke-linecap="round"/>
+    <rect x="1260" y="120" width="1090" height="700" rx="30" class="panel"/>
+    <path d="M1260 210 H2350" stroke="currentColor" stroke-width="4"/>
+    <circle cx="1314" cy="165" r="14" class="tl r"/><circle cx="1362" cy="165" r="14" class="tl y"/><circle cx="1410" cy="165" r="14" class="tl g"/>
+    <text x="1805" y="178" text-anchor="middle" class="fname" id="fname">sarath.ts</text>
+    <text x="1300" y="300" class="code" id="code"></text>
+  </g>
+
+  <g class="rays" stroke="currentColor" stroke-linecap="round" stroke-width="5" fill="none"><path d="M1234 841 L1412 816"/><path d="M1212 743 L1327 708"/><path d="M1175 649 L1337 571"/><path d="M1124 563 L1223 494"/><path d="M1060 485 L1190 360"/><path d="M985 419 L1057 323"/><path d="M900 365 L985 206"/><path d="M808 325 L847 211"/><path d="M711 300 L742 122"/><path d="M611 290 L613 170"/><path d="M511 296 L486 118"/><path d="M413 318 L378 203"/><path d="M319 355 L241 193"/><path d="M233 406 L164 307"/><path d="M155 470 L30 340"/><path d="M89 545 L-7 473"/><path d="M35 630 L-124 545"/><path d="M-5 722 L-119 683"/><path d="M-30 819 L-208 788"/></g>
+
+  <g class="me">
+    <g class="torso" data-pivot="600 1430">
+      <path d="M380 590 C300 640 262 700 250 800 L232 1424 L968 1424 L950 800 C938 700 900 640 820 590 Z" class="skin line" stroke-width="8"/>
+    </g>
+    <g class="arm arm-l" data-pivot="360 640">
+      <path d="M405 572 C260 596 112 700 70 860 C40 980 36 1150 44 1424 L332 1424 L322 1100 C330 990 342 920 336 860 C330 760 300 690 300 660 C318 620 362 588 405 572 Z" class="skin"/>
+      <path d="M405 572 C260 596 112 700 70 860 C40 980 36 1150 44 1424" class="line" stroke-width="8" fill="none"/>
+      <path d="M300 662 C322 724 342 800 336 872" class="line" stroke-width="7" fill="none"/>
+      <path d="M58 1084 q62 -18 130 -2 M68 1126 q56 -12 118 2" class="line" stroke-width="7" fill="none"/>
+    </g>
+    <g class="arm arm-r" data-pivot="840 640">
+      <path d="M 795 572 C 940 596 1088 700 1130 860 C 1160 980 1164 1150 1156 1424 L 868 1424 L 878 1100 C 870 990 858 920 864 860 C 870 760 900 690 900 660 C 882 620 838 588 795 572 Z" class="skin"/>
+      <path d="M 795 572 C 940 596 1088 700 1130 860 C 1160 980 1164 1150 1156 1424" class="line" stroke-width="8" fill="none"/>
+      <path d="M 900 662 C 878 724 858 800 864 872" class="line" stroke-width="7" fill="none"/>
+      <path d="M 1142 1084 q -62 -18 -130 -2 M 1132 1126 q -56 -12 -118 2" class="line" stroke-width="7" fill="none"/>
+    </g>
+    <g class="torso" data-pivot="600 1430">
+      <path d="M372 604 C366 520 420 448 500 432 L700 432 C780 448 834 520 828 604 C800 652 700 692 600 700 C500 692 400 652 372 604 Z" class="skin line" stroke-width="8"/>
+      <path d="M454 506 C452 474 486 458 528 456 L672 456 C714 458 748 474 746 506 C742 572 676 626 600 634 C524 626 458 572 454 506 Z" class="hood-in"/>
+      <path d="M524 400 C524 470 520 530 516 566 C540 602 660 602 684 566 C680 530 676 470 676 400 Z" class="skin"/>
+      <path d="M524 410 C524 470 520 530 516 566 M676 410 C676 470 680 530 684 566" class="line" stroke-width="8" fill="none"/>
+      <path d="M566 500 q34 12 68 0" class="line" stroke-width="5" fill="none" opacity=".45"/>
+      <path d="M452 486 C462 566 524 624 600 632 C676 624 738 566 748 486" class="line" stroke-width="7" fill="none"/>
+      <circle cx="556" cy="672" r="9" class="ink"/><circle cx="644" cy="672" r="9" class="ink"/>
+      <path d="M556 676 q-12 62 0 112 q8 40 -6 74 M644 676 q12 62 0 112 q-8 40 6 74" class="line" stroke-width="6" fill="none"/>
+    </g>
+    <g transform="translate(85 -12) translate(515 480) scale(1.14) translate(-515 -480)">
+    <g class="head" data-pivot="515 500">
+      <path d="M378 292 C338 280 332 354 382 364" class="skin line" stroke-width="8"/>
+      <path d="M652 292 C692 280 698 354 648 364" class="skin line" stroke-width="8"/>
+      <path d="M370 300 C362 176 668 176 660 300 C664 402 598 478 515 478 C432 478 366 402 370 300 Z" class="skin line" stroke-width="8"/>
+      <path d="M362 286 L339.7 202.5 Q319.6 178.8 349.3 169.9 Q334.5 142.5 365.5 139.8 Q356.6 109.9 387.6 113.3 Q384.9 82.1 414.7 91.5 Q418.3 60.4 445.9 75.3 Q455.4 45.4 479.7 65.4 Q494.9 37.8 515.0 62.0 Q535.1 37.8 550.3 65.4 Q574.6 45.4 584.1 75.3 Q611.7 60.4 615.3 91.5 Q645.1 82.1 642.4 113.3 Q673.4 109.9 664.5 139.8 Q695.5 142.5 680.7 169.9 Q710.4 178.8 690.3 202.5 Q713.1 252.9 684.0 300.0 Q657.9 266.4 664.0 236.0 Q636.4 226.9 634.0 198.0 Q626.2 223.1 600.0 222.0 Q572.0 217.7 566.0 190.0 Q556.0 216.2 528.0 216.0 Q499.5 214.9 490.0 188.0 Q480.0 214.2 452.0 214.0 Q425.0 216.8 414.0 192.0 Q408.9 221.7 380.0 230.0 Q386.2 262.9 362.0 286.0 Z" class="hair"/>
+      <g class="curls" fill="none" stroke-width="6" stroke-linecap="round">
+        <path d="M430 110 q20 -18 34 4"/><path d="M520 86 q22 -14 32 8"/><path d="M600 122 q18 -14 30 8"/><path d="M470 166 q16 -12 28 6"/><path d="M560 162 q18 -12 28 6"/><path d="M398 180 q14 -14 26 4"/>
+      </g>
+      <ellipse cx="424" cy="396" rx="26" ry="14" class="blush"/><ellipse cx="606" cy="396" rx="26" ry="14" class="blush"/>
+      <g class="face" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path class="brow" d="M404 252 q36 -14 74 -4" stroke-width="9"/>
+        <path class="brow" d="M552 248 q38 -10 74 4" stroke-width="9"/>
+        <g class="eyes"><g class="pupils" fill="currentColor" stroke="none"><circle cx="447" cy="326" r="10"/><circle cx="583" cy="326" r="10"/></g></g>
+        <path d="M517 334 q-7 28 -3 38 q9 5 19 0" stroke-width="6"/>
+        <path class="smile" d="M478 414 q37 24 74 0" stroke-width="7"/><ellipse class="yawn" cx="517" cy="440" rx="20" ry="26"/>
+        <g class="glasses" stroke-width="8">
+          <circle cx="445" cy="318" r="55"/><circle cx="585" cy="318" r="55"/>
+          <path d="M500 312 q15 -11 30 0"/><path d="M390 310 L372 304 M640 310 L658 304"/>
+        </g>
+        <g clip-path="url(#lenses)"><rect class="glint" x="390" y="240" width="26" height="170"/></g>
+      </g>
+      <text class="bubble q" x="700" y="150">?</text>
+      <text class="bubble ex" x="700" y="150">!</text>
+    </g>
+    </g>
+  </g>
+
+
+
+  <g class="p-agent bot-wrap" transform="translate(915 800) scale(1.45)">
+    <g class="bot">
+      <path class="bot-ant" d="M0 -70 V-106"/>
+      <path class="bot-spark" d="M0 -150 Q0 -124 26 -124 Q0 -124 0 -98 Q0 -124 -26 -124 Q0 -124 0 -150 Z"/>
+      <rect class="bot-body" x="-82" y="-70" width="164" height="128" rx="40"/>
+      <g class="bot-eyes"><circle cx="-30" cy="-12" r="12"/><circle cx="30" cy="-12" r="12"/></g>
+      <path class="bot-mouth" d="M-22 22 q22 16 44 0"/>
+      <path class="bot-arm" d="M-82 0 q-30 10 -34 40 M82 0 q30 10 34 40"/>
+    </g>
+  </g>
+  <g class="p-agent say-bot-g">
+    <path class="bubble-box" d="M740 430 h380 a40 40 0 0 1 40 40 v64 a40 40 0 0 1 -40 40 h-160 l-24 44 l-34 -44 h-162 a40 40 0 0 1 -40 -40 v-64 a40 40 0 0 1 40 -40 Z"/>
+    <text class="say say-bot" x="930" y="522" text-anchor="middle">on it ✦</text>
+  </g>
+  <g class="chips"></g>
+  <g class="laptop">
+    <g class="lid">
+      <rect x="190" y="880" width="820" height="520" rx="30" class="lid-face"/>
+      <g class="sticker" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M600 1062 V1036"/><path d="M600 998 Q600 1016 618 1016 Q600 1016 600 1034 Q600 1016 582 1016 Q600 1016 600 998 Z" fill="currentColor" stroke-width="4"/>
+        <rect x="532" y="1062" width="136" height="108" rx="34"/>
+        <circle cx="574" cy="1108" r="10" fill="currentColor" stroke="none"/><circle cx="626" cy="1108" r="10" fill="currentColor" stroke="none"/>
+        <path d="M582 1138 q18 12 36 0"/>
+      </g>
+    </g>
+    <path d="M120 1400 H1080 L1040 1432 H160 Z" class="base"/>
+    <path d="M540 1400 q60 14 120 0" fill="none" stroke="currentColor" stroke-width="5"/>
+  </g>
+  <path d="M-1150 1434 H2350" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+
+  <g class="p-night mug">
+    <path class="steam" d="M1150 1290 q-18 -30 0 -60 q18 -30 0 -60"/>
+    <path class="steam s2" d="M1188 1296 q-16 -28 0 -56 q16 -28 0 -56"/>
+    <path class="mug-body" d="M1110 1310 h112 v96 a24 24 0 0 1 -24 24 h-64 a24 24 0 0 1 -24 -24 Z"/>
+    <path class="mug-handle" d="M1222 1336 h18 a26 26 0 0 1 0 52 h-18"/>
+  </g>
+  <g class="p-night bug-wrap">
+    <g class="bug">
+      <path class="bug-legs" d="M-20 -22 l-14 -26 M0 -26 l0 -28 M20 -22 l14 -26 M-20 22 l-14 26 M0 26 l0 28 M20 22 l14 26"/>
+      <ellipse class="bug-body" cx="0" cy="0" rx="40" ry="28"/>
+      <path class="bug-line" d="M-4 -28 V28"/>
+      <circle class="bug-head" cx="-48" cy="0" r="16"/>
+      <path class="bug-ant" d="M-58 -10 q-14 -18 -28 -16 M-58 10 q-14 18 -28 16"/>
+    </g>
+    <g class="splat"><path d="M0 -60 v-26 M42 -42 l18 -18 M60 0 h26 M42 42 l18 18 M0 60 v26 M-42 42 l-18 18 M-60 0 h-26 M-42 -42 l-18 -18"/></g>
+  </g>
+</svg></template>
+  <div class="bar">
+    <span class="now" aria-live="polite">now: <b id="now">coding</b></span>
+    <span class="dots" id="dots" role="tablist" aria-label="Hero scenes"></span>
+    <span><button class="tbtn" id="theme">◐ theme</button></span>
+  </div>
+  <h1>Sarath Sundar Harisaravanan</h1>
+</div>
+<script>
+const NS='http://www.w3.org/2000/svg';
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const banner=document.getElementById('banner');
+banner.innerHTML=document.getElementById('scene-tpl').innerHTML;
+const svg=banner.querySelector('svg');
+svg.querySelectorAll('.draw, .draw-g path').forEach(p=>p.setAttribute('pathLength','1'));
+svg.querySelectorAll('[data-pivot]').forEach(el=>{const [px,py]=el.dataset.pivot.split(' ').map(Number);const b=el.getBBox();el.style.transformOrigin=`${px-b.x}px ${py-b.y}px`});
+const code=svg.querySelector('#code'), fname=svg.querySelector('#fname');
+const cls=(...c)=>svg.classList.add(...c), uncls=(...c)=>svg.classList.remove(...c);
+
+/* ---- pausable clock: every scene step is scheduled on it ---- */
+let T=0, queue=[], paused=false, last=performance.now();
+function at(t,fn){queue.push({t,fn});queue.sort((a,b)=>a.t-b.t)}
+function tick(now){const dt=now-last;last=now;if(!paused){T+=dt;while(queue.length&&queue[0].t<=T)queue.shift().fn()}requestAnimationFrame(tick)}
+requestAnimationFrame(tick);
+
+/* ---- code window helpers ---- */
+const caret=document.createElementNS(NS,'tspan');caret.textContent='▍';caret.setAttribute('fill','var(--accent)');
+let rows=[];
+function clearCode(){code.textContent='';rows=[]}
+function row(i){while(rows.length<=i){const t=document.createElementNS(NS,'tspan');t.setAttribute('x','1300');t.setAttribute('dy',rows.length?'84':'0');code.appendChild(t);rows.push(t)}return rows[i]}
+function setRow(i,segs){const t=row(i);t.textContent='';segs.forEach(([c,s])=>{const sp=document.createElementNS(NS,'tspan');if(c)sp.setAttribute('class',c);sp.textContent=s;t.appendChild(sp)})}
+/* schedule typing of rows starting at t0; returns end time */
+function typeRows(t0,lines,startRow=0,speed=28){
+  let t=t0;
+  lines.forEach((segs,li)=>{
+    const r=startRow+li; let built=[];
+    segs.forEach(([c,s])=>{for(let k=1;k<=s.length;k++){const snap=[...built,[c,s.slice(0,k)]];at(t,()=>{setRow(r,snap);row(r).appendChild(caret)});t+=speed*(0.7+Math.random()*0.6)}built.push([c,s])});
+    t+=220;
+  });
+  return t;
+}
+
+/* ---- scenes ---- */
+const SCENES=[
+ {id:'code',label:'coding',dur:9000,run(t0){
+   at(t0,()=>{fname.textContent='sarath.ts';clearCode();cls('typing')});
+   let t=typeRows(t0+300,[
+     [['k','const '],['','sarath = '],['k','new '],['','Engineer({']],
+     [['','  based: '],['s','"Los Angeles"'],['',',']],
+     [['','  studying: '],['s','"MS CS @ USC"'],['',',']]]);
+   at(t,()=>{uncls('typing');cls('think','q-on')});
+   at(t+1700,()=>{uncls('think','q-on');cls('typing')});
+   t=typeRows(t+1800,[
+     [['','  builds: ['],['s','"agents"'],['',', '],['s','"APIs"'],['',']']],
+     [['','})']],
+     [['k','await '],['','sarath.ship(idea) '],['c','// ✓']]],3);
+   at(t,()=>{uncls('typing');cls('look-up','ex-on')});
+   at(t+2000,()=>uncls('look-up','ex-on'));
+ }},
+ {id:'agent',label:'pairing with an AI agent',dur:12500,run(t0){
+   at(t0,()=>{fname.textContent='agent.log';clearCode();cls('bot-up','look-right')});
+   at(t0+900,()=>cls('say-me'));
+   at(t0+2700,()=>{uncls('say-me');cls('say-bot','bot-think');svg.querySelector('.say-bot').textContent='on it ✦'});
+   const calls=[[['c','▸ '],['','search('],['s','"flaky test"'],['',')']],[['c','▸ '],['','read('],['s','"auth.test.ts"'],['',')']],[['c','▸ '],['','run_tests()']]];
+   let t=t0+3300;
+   calls.forEach((segs,i)=>{at(t,()=>chip(i));t=typeRows(t+450,[segs],i*2,30);at(t+200,()=>setRow(i*2+1,[['ok','  ✓ '],['c',i<2?'done':'42 passing']]));t+=500});
+   at(t,()=>{uncls('bot-think');svg.querySelector('.say-bot').textContent='fixed ✓';cls('bot-hop','look-up','ex-on')});
+   at(t+1600,()=>uncls('say-bot','bot-hop','look-up','ex-on'));
+   at(t+1900,()=>{uncls('bot-up','look-right');cls('typing')});
+ }},
+ {id:'brain',label:'brainstorming',dur:12000,run(t0){
+   at(t0,()=>{uncls('typing');cls('think','q-on')});
+   at(t0+500,()=>cls('b-cloud'));
+   at(t0+1500,()=>cls('b-net'));
+   for(let w=0;w<5;w++) at(t0+2600+w*900,()=>pulseWave());
+   at(t0+7400,()=>{cls('b-lit');uncls('think','q-on');cls('look-up','ex-on')});
+   at(t0+8700,()=>{cls('b-drop','b-fade')});
+   at(t0+9800,()=>{uncls('look-up','ex-on');cls('typing')});
+ }},
+ {id:'night',label:'2 AM debugging',dur:13000,run(t0){
+   at(t0,()=>{fname.textContent='auth.test.ts · 2:14 AM';clearCode();cls('tired','typing')});
+   let t=typeRows(t0+400,[[['c','$ '],['','npm test']]],0,70);
+   at(t+300,()=>{setRow(1,[['err','✗ login › refreshes token']]);setRow(2,[['c','  expected 200, got 401']])});
+   at(t+900,()=>{uncls('typing');cls('yawning','stretch')});
+   at(t+2300,()=>{uncls('yawning','stretch');cls('typing')});
+   at(t+3000,()=>cls('bug-crawl'));
+   at(t+3600,()=>{uncls('typing');cls('lean')});
+   at(t+6100,()=>{cls('slam')});
+   at(t+6300,()=>{cls('bug-squash');setRow(1,[['ok','✓ 42 passing']]);setRow(2,[['c','  0 failing · go to sleep']])});
+   at(t+7000,()=>{uncls('lean','slam','tired');cls('look-up','ex-on')});
+   at(t+8800,()=>uncls('look-up','ex-on'));
+ }},
+];
+const STATE=['typing','think','q-on','look-up','ex-on','look-right','lean','tired','yawning','stretch','slam','bot-up','bot-think','bot-hop','say-me','say-bot','b-cloud','b-net','b-lit','b-drop','b-fade','bug-crawl','bug-squash'];
+function chip(i){
+  const g=svg.querySelector('.chips'); const c=document.createElementNS(NS,'circle');
+  c.setAttribute('r','16');c.setAttribute('class','chip-dot');c.style.transform='translate(960px,690px)';g.appendChild(c);
+  c.animate([{transform:'translate(960px,690px)',opacity:1},{transform:`translate(1290px,${282+i*168}px)`,opacity:1},{transform:`translate(1290px,${282+i*168}px)`,opacity:0}],{duration:700,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'}).onfinish=()=>c.remove();
+}
+const L1=[[1480,290],[1480,420],[1480,550]],L2=[[1720,230],[1720,350],[1720,490],[1720,610]],L3=[[1960,330],[1960,510]],BULB=[2180,410];
+const pick=a=>a[Math.random()*a.length|0];
+function pulseWave(){
+  const g=svg.querySelector('.pulses');
+  for(let k=0;k<4;k++){const p=[pick(L1),pick(L2),pick(L3),BULB];const c=document.createElementNS(NS,'circle');c.setAttribute('r','13');c.setAttribute('class','pulse');g.appendChild(c);
+    c.animate(p.map(([x,y])=>({transform:`translate(${x}px,${y}px)`})),{duration:900,delay:k*120,easing:'linear',fill:'both'}).onfinish=()=>c.remove();
+  }
+}
+
+/* ---- controller ---- */
+let idx=0, sceneStart=0, sceneStarted=false;
+const dots=document.getElementById('dots'), now=document.getElementById('now');
+SCENES.forEach((s,i)=>{const b=document.createElement('button');b.setAttribute('role','tab');b.setAttribute('aria-label',s.label);b.title=s.label;b.innerHTML='<i></i>';b.onclick=()=>play(i);dots.appendChild(b)});
+function play(i){
+  queue=[]; idx=i; sceneStart=T;
+  uncls(...STATE,...SCENES.map(s=>'s-'+s.id));
+  cls('s-'+SCENES[i].id);
+  banner.classList.toggle('night',SCENES[i].id==='night');
+  now.textContent=SCENES[i].label;
+  [...dots.children].forEach((b,k)=>{b.classList.toggle('on',k===i);b.setAttribute('aria-selected',k===i)});
+  if(reduce){staticScene(i);return}
+  SCENES[i].run(T+(i===0&&!sceneStarted?100:450));sceneStarted=true;
+  at(T+SCENES[i].dur,()=>play((i+1)%SCENES.length));
+}
+function staticScene(i){
+  clearCode();
+  if(i===0){fname.textContent='sarath.ts';[[['k','const '],['','sarath = '],['k','new '],['','Engineer({']],[['','  based: '],['s','"Los Angeles"'],['',',']],[['','  builds: ['],['s','"agents"'],['',', '],['s','"APIs"'],['',']']],[['','})']]].forEach((r,k)=>setRow(k,r))}
+  if(i===1){fname.textContent='agent.log';cls('bot-up');[[['c','▸ '],['','search('],['s','"flaky test"'],['',')']],[['ok','  ✓ '],['c','done']],[['c','▸ '],['','run_tests()']],[['ok','  ✓ '],['c','42 passing']]].forEach((r,k)=>setRow(k,r))}
+  if(i===2){cls('b-cloud','b-net','b-lit')}
+  if(i===3){fname.textContent='auth.test.ts · 2:14 AM';[[['c','$ '],['','npm test']],[['ok','✓ 42 passing']],[['c','  0 failing · go to sleep']]].forEach((r,k)=>setRow(k,r))}
+}
+// progress bar on the active dot
+(function prog(){const s=SCENES[idx];const b=dots.children[idx];if(b&&!reduce){const p=Math.min(1,(T-sceneStart)/s.dur);b.firstChild.style.transform=`scaleX(${p})`;[...dots.children].forEach((d,k)=>{if(k!==idx)d.firstChild.style.transform='scaleX(0)'})}requestAnimationFrame(prog)})();
+// pause while hovered
+banner.addEventListener('mouseenter',()=>{paused=true;cls('paused')});
+banner.addEventListener('mouseleave',()=>{paused=false;uncls('paused')});
+// blink forever
+(function blink(){setTimeout(()=>{if(!paused){cls('blink');setTimeout(()=>uncls('blink'),130)}blink()},2400+Math.random()*2600)})();
+document.getElementById('theme').onclick=()=>{const r=document.documentElement;const c=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=c==='dark'?'light':'dark'};
+// intro: open the laptop once, then start cycling
+if(reduce){cls('opened');play(0)}
+else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');svg.querySelector('.glint').style.animation='glint 5s ease-in-out infinite';play(0)})}
+</script>
+</body>
+</html>

@@ -911,6 +911,9 @@ footer { margin-top: 26px; }
 .imp:nth-child(2)::after { animation-delay: .5s; } .imp:nth-child(3)::after { animation-delay: 1s; } .imp:nth-child(4)::after { animation-delay: 1.5s; }
 @keyframes impBar { 0% { transform: scaleX(0); } 50% { transform: scaleX(1); } 100% { transform: scaleX(1); opacity: 0; } }
 @media (max-width: 520px) { .impact { grid-template-columns: minmax(0, 1fr); } }
+
+.demo-tag.is-live { color: var(--mint-ink); border-color: var(--mint); border-style: solid; }
+.demo-tag.is-live::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); margin-right: 6px; vertical-align: 0; animation: ping 2s ease-out infinite; }
 </style>
 </head>
 <body>
@@ -1142,7 +1145,7 @@ footer { margin-top: 26px; }
         <h2>Ask <em>AI Sarath</em></h2>
         <p class="sub">Grounded in my resume · cites its sources · can move this page</p>
       </div>
-      <span class="demo-tag">preview · scripted answers</span>
+      <span class="demo-tag" id="chatMode">preview · scripted answers</span>
     </div>
     <div class="chat" id="chat" aria-live="polite">
       <div class="msg ai"><span class="av" aria-hidden="true"></span><div class="bubble-t">Hi! I'm an AI version of Sarath, trained only on his resume and projects. Ask me anything. If I don't know, I'll say so.</div></div>
@@ -1786,7 +1789,27 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
       tool: ['scroll_to_section', '"contact"', '#contactForm'],
     },
   ];
-  const FALLBACK = "This mockup only plays the suggested questions. On the live site, your question goes to Claude, grounded in my resume, and I'll answer with citations.";
+  const FALLBACK = "The live chat isn't available right now, so I can only answer the suggested questions here. For anything else, email harisara@usc.edu and the real Sarath will reply.";
+  // live mode: the Vercel function answers with Gemini, grounded in my resume
+  const history = [];
+  let live = false;
+  const modeTag = document.getElementById('chatMode');
+  fetch('/api/chat', { method: 'GET' }).then((r) => (r.ok ? r.json() : null)).then((j) => {
+    live = Boolean(j && j.live);
+    if (modeTag) modeTag.textContent = live ? 'live · grounded in my resume' : 'preview · scripted answers';
+    if (modeTag) modeTag.classList.toggle('is-live', live);
+  }).catch(() => {});
+  async function askLive(text) {
+    const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 20000);
+    try {
+      const r = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
+        body: JSON.stringify({ messages: [...history, { role: 'user', content: text }].slice(-12) }) });
+      const j = await r.json().catch(() => ({}));
+      if (r.status === 429) return { answer: j.message || "That's a lot of questions at once. Give it a minute.", citations: [], action: null };
+      if (!r.ok || !j.answer) return null;
+      return j;
+    } catch { return null; } finally { clearTimeout(t); }
+  }
   const chat = $('#chat'), suggest = $('#suggest');
   let busy = false;
   const heroCls = (add, ...c) => heroSvg && c.forEach((x) => heroSvg.classList.toggle(x, add));
@@ -1814,11 +1837,22 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
     addMsg('me', text.replace(/</g, '&lt;'));
     const bubble = addMsg('ai', '<span class="typing-dots"><i></i><i></i><i></i></span>');
     swarm.burst(); heroCls(true, 'chat-think');
-    await wait(1200);
+    const t0 = performance.now();
+    let res = live ? await askLive(text) : null;
+    let item = SCRIPT[i];
+    if (res) {
+      // turn the live answer into the same shape the UI already renders
+      item = {
+        a: res.answer,
+        cites: (res.citations || []).map((c) => [c.label, c.target]).concat([...new Map((res.citations || []).filter((c) => c.href).map((c) => [c.href, [c.label.split(' · ')[0] + ' ↗', c.href]])).values()]),
+        tool: res.action ? ['scroll_to_section', `"${res.action.target.replace('#', '')}"`, res.action.target] : null,
+      };
+    }
+    await wait(Math.max(0, 900 - (performance.now() - t0)));
     heroCls(false, 'chat-think'); heroCls(true, 'chat-answer');
     setTimeout(() => heroCls(false, 'chat-answer'), 1800);
-    const item = SCRIPT[i];
     await stream(bubble, item ? item.a : FALLBACK);
+    history.push({ role: 'user', content: text }, { role: 'assistant', content: item ? item.a : FALLBACK });
     if (item) {
       const cites = document.createElement('div'); cites.className = 'cites';
       item.cites.forEach(([label, target], k) => {
@@ -1827,7 +1861,8 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
         if (ext) { b.href = target; b.target = '_blank'; b.rel = 'noreferrer'; } else b.onclick = () => goTo(target);
         cites.appendChild(b);
       });
-      bubble.appendChild(cites);
+      if (item.cites.length) bubble.appendChild(cites);
+      if (!item.tool) { busy = false; $$('button', suggest).forEach((b) => (b.disabled = false)); return; }
       await wait(700);
       const ev = document.createElement('div'); ev.className = 'toolev';
       ev.innerHTML = `↳ <code>${item.tool[0]}(${item.tool[1]})</code> moving the page…`;

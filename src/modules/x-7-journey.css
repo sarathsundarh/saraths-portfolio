@@ -1,0 +1,20 @@
+
+/* ===== journey timeline ===== */
+.journey { border: 1px dashed var(--rule); border-radius: 12px; padding: 10px 14px 14px; margin-bottom: 18px; background: color-mix(in srgb, var(--panel) 55%, transparent); }
+.j-map { width: 100%; height: auto; display: block; overflow: visible; }
+.j-arc { fill: none; stroke: var(--rule); stroke-width: 2; stroke-dasharray: 3 7; stroke-linecap: round; }
+.j-arc-done { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; }
+.j-city circle { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.j-city text { font-family: 'Geist Mono', monospace; font-size: 12px; fill: var(--ink); }
+.j-city .j-coord { font-size: 9.5px; fill: var(--muted); }
+.j-me-bg { fill: var(--ink); }
+.j-glasses { fill: none; stroke: var(--paper); stroke-width: 1.6; }
+#jRange { width: 100%; accent-color: var(--accent); margin: 6px 0 0; }
+.j-ticks { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 2px; }
+.j-card { margin-top: 10px; display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; font-size: 13px; min-height: 2.6em; }
+.j-card .j-when { font-size: 11px; color: var(--muted); min-width: 120px; }
+.j-card b { font-weight: 500; }
+.j-card .j-place { color: var(--accent); font-size: 12px; }
+.j-card button { margin-left: auto; font: inherit; font-size: 11.5px; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 999px; padding: 2px 10px; cursor: pointer; }
+.j-card button:hover { border-color: var(--accent); color: var(--accent); }
+.tl-item.j-active { background: color-mix(in srgb, var(--gold) 12%, transparent); border-radius: 10px; box-shadow: -8px 0 0 color-mix(in srgb, var(--gold) 12%, transparent); transition: background .4s; }
