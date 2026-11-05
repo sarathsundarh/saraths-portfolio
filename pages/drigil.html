@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Drigil Case Study</title>
+<meta name="description" content="Drigil: smart-glasses job coaching built in 36 hours at Cal Hacks 13.0. 2nd place in Anthropic's Claude for Public Benefit track." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>/* Shared article styles (inlined into each page at build time). Layout: one 720px paper column with dashed guides, same system as the homepage. */
+:root{--paper:#F4F0E8;--ink:#16130F;--muted:#6B665C;--rule:#D9D2C4;--accent:#9D2235;--gold:#E0A800;--gold-ink:#7A5600;--panel:#FBF8F2;--ok:#2F7D4F;--note:#FFF4D6;--note-ink:#6B4E00;
+  --display:'Instrument Serif',Georgia,serif;--mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--paper:#121010;--ink:#EFE9DE;--muted:#A39C90;--rule:#2E2A26;--accent:#E0566B;--gold:#FFCC00;--gold-ink:#FFE07A;--panel:#1A1715;--ok:#6FCF97;--note:#2A2414;--note-ink:#FFE7A3;color-scheme:dark}}
+:root[data-theme=dark]{--paper:#121010;--ink:#EFE9DE;--muted:#A39C90;--rule:#2E2A26;--accent:#E0566B;--gold:#FFCC00;--gold-ink:#FFE07A;--panel:#1A1715;--ok:#6FCF97;--note:#2A2414;--note-ink:#FFE7A3;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:14.5px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+.col{max-width:760px;margin:0 auto;border-left:1px dashed var(--rule);border-right:1px dashed var(--rule);min-height:100vh}
+.pad{padding-block:22px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));border-bottom:1px dashed var(--rule)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);padding-block:12px;font-size:12.5px}
+.top a{color:var(--ink);text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+.top a:hover{color:var(--accent)}
+.top button{font:inherit;font-size:12px;color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:999px;padding:4px 11px;cursor:pointer}
+.top button:hover{border-color:var(--accent);color:var(--accent)}
+.hatch{height:28px;border-bottom:1px dashed var(--rule);background:repeating-linear-gradient(-45deg,transparent 0 7px,color-mix(in srgb,var(--rule) 70%,transparent) 7px 8px)}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(44px,8vw,68px);line-height:1;margin:8px 0 10px;letter-spacing:-.01em;text-wrap:balance}
+h2{font-family:var(--display);font-weight:400;font-style:italic;font-size:30px;line-height:1.15;margin:0 0 10px;text-wrap:balance}
+h3{font-size:14.5px;font-weight:500;margin:18px 0 4px}
+p{margin:0 0 12px;max-width:66ch}
+.lede{font-size:16px;color:var(--ink);max-width:60ch}
+.muted{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{font-size:11.5px;border:1px solid var(--rule);border-radius:999px;padding:2px 10px;color:var(--muted)}
+.chip.gold{color:var(--gold-ink);border-color:color-mix(in srgb,var(--gold) 55%,transparent);background:color-mix(in srgb,var(--gold) 18%,transparent)}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px dashed var(--rule);border-radius:12px;margin-top:18px}
+.facts div{padding:12px 16px;min-width:0}
+.facts div:nth-child(odd){border-right:1px dashed var(--rule)}
+.facts div:nth-child(-n+2){border-bottom:1px dashed var(--rule)}
+.facts dt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:2px 0 0;font-size:13px}
+.media{margin:0;border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:var(--panel)}
+.media .frame{aspect-ratio:16/9;max-width:100%;display:grid;place-items:center;position:relative;color:var(--muted);font-size:12px;text-align:center;padding:16px}
+.media .frame::before,.media .frame::after{content:'';position:absolute;width:34px;height:34px;border:2px solid var(--accent);opacity:.7}
+.media .frame::before{top:14px;left:14px;border-right:0;border-bottom:0}
+.media .frame::after{bottom:14px;right:14px;border-left:0;border-top:0}
+.media figcaption{font-size:11.5px;color:var(--muted);padding:8px 14px;border-top:1px solid var(--rule)}
+.todo{background:var(--note);color:var(--note-ink);border:1px dashed color-mix(in srgb,var(--gold) 60%,transparent);border-radius:10px;padding:10px 14px;font-size:12.5px;margin:10px 0}
+.todo b{font-weight:500}
+ul.clean{margin:4px 0 12px;padding-left:18px}
+ul.clean li{margin:4px 0;max-width:64ch}
+.diagram{overflow-x:auto;margin:14px 0 6px;border:1px dashed var(--rule);border-radius:12px;background:color-mix(in srgb,var(--panel) 60%,transparent)}
+.diagram svg{display:block;min-width:640px;width:100%;height:auto}
+.diagram text{font-family:var(--mono);fill:var(--ink)}
+.diagram .lane{font-size:11px;letter-spacing:.12em;fill:var(--muted)}
+.diagram .box{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
+.diagram .box.hl{stroke:var(--accent);stroke-width:2}
+.diagram .box.human{fill:color-mix(in srgb,var(--gold) 20%,var(--paper));stroke:var(--gold-ink)}
+.diagram .t1{font-size:12px;font-weight:500}
+.diagram .t2{font-size:10px;fill:var(--muted)}
+.diagram .arrow{stroke:var(--muted);stroke-width:1.6;fill:none}
+.diagram .arrow.accent{stroke:var(--accent)}
+.diagram .head{fill:var(--muted)} .diagram .head.accent{fill:var(--accent)}
+.decision{border-left:2px solid var(--accent);padding:2px 0 2px 14px;margin:14px 0}
+.decision h3{margin-top:0}
+.next{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.next a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);border:1px dashed var(--rule);border-radius:12px;padding:12px 16px;min-width:0;flex:1}
+.next a:hover{border-color:var(--accent)}
+.next small{color:var(--muted);font-size:11px}
+.next b{font-family:var(--display);font-weight:400;font-size:22px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px dashed var(--rule);vertical-align:top}
+th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+code{font-family:var(--mono);font-size:12.5px;background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:0 5px}
+pre{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:12.5px;line-height:1.6;margin:10px 0 14px}
+pre code{background:none;border:0;padding:0}
+footer.pad{border-bottom:0;font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (max-width:560px){.facts{grid-template-columns:minmax(0,1fr)}.facts div:nth-child(odd){border-right:0}.facts div:not(:last-child){border-bottom:1px dashed var(--rule)}.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+.todo:not(.keep){display:none}</style>
+</head>
+<body>
+<div class="col">
+  <nav class="top pad" aria-label="Page">
+    <a href="../index.html#projects">← Sarath's portfolio</a>
+    <button id="theme" type="button">◐ theme</button>
+  </nav>
+
+  <header class="pad">
+    <p class="eyebrow">Case study · October 2026 · team project</p>
+    <h1>Drigil</h1>
+    <p class="lede">Smart glasses that coach people with intellectual and developmental disabilities through a new job, in their supervisor's own voice.</p>
+    <div class="chips">
+      <span class="chip gold">2nd place · Anthropic's Claude for Public Benefit track · Cal Hacks 13.0</span>
+      <span class="chip">36 hours</span>
+      <span class="chip">3-person team</span>
+    </div>
+    <dl class="facts">
+      <div><dt>Team</dt><dd>Sarath Sundar Harisaravanan, Shraddha Khanapur, Michael Kim</dd></div>
+      <div><dt>Where</dt><dd>Cal Hacks 13.0, Palace of Fine Arts, San Francisco</dd></div>
+      <div><dt>Stack</dt><dd>Claude, Cartesia, SpacetimeDB, Moss, Factory Droid, Notability</dd></div>
+      <div><dt>Links</dt><dd><a href="https://devpost.com/software/drigil" target="_blank" rel="noreferrer">Devpost ↗</a></dd></div>
+    </dl>
+  </header>
+
+  <section class="pad">
+    <h2>The problem</h2>
+    <p>Starting a new job means learning a sequence of physical steps, often by watching someone once and then trying alone. For people with intellectual and developmental disabilities, that first stretch can mean a supervisor nearby, repeating the same guidance until the steps stick.</p>
+    <p>We wanted the supervisor to teach a task once and have that coaching stay with the worker: in the supervisor's voice, checking each step as it happens, and stepping back as the worker gets it.</p>
+  </section>
+
+  <section class="pad">
+    <h2>What we built</h2>
+    <p>Drigil has three loops: teaching a task once, coaching it live, and fixing steps that keep going wrong, with a person approving every change.</p>
+    <div class="diagram" role="img" aria-label="Drigil pipeline. Teach once: a narrated demonstration becomes keyframes at hand pauses and a word-level transcript, which Claude turns into a structured task spec. Coach live: the camera feed goes through confidence-gated vision checks, coaching plays in the supervisor's cloned voice, and support fades with mastery. Fix what breaks: a step that keeps failing goes to a sandboxed agent that rewrites it, a supervisor reviews before and after, and only an approved change goes live.">
+      <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="head"/></marker>
+          <marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="head accent"/></marker>
+        </defs>
+        <!-- lane 1 -->
+        <text x="16" y="62" class="lane">TEACH ONCE</text>
+        <rect x="112" y="30" width="140" height="58" rx="10" class="box"/><text x="124" y="54" class="t1">Narrated demo</text><text x="124" y="72" class="t2">done once, out loud</text>
+        <rect x="272" y="30" width="140" height="58" rx="10" class="box"/><text x="284" y="54" class="t1">Keyframes</text><text x="284" y="72" class="t2">where hands pause</text>
+        <rect x="432" y="30" width="140" height="58" rx="10" class="box"/><text x="444" y="54" class="t1">Transcript</text><text x="444" y="72" class="t2">word-level, aligned</text>
+        <rect x="592" y="30" width="152" height="58" rx="10" class="box hl"/><text x="604" y="54" class="t1">Task spec</text><text x="604" y="72" class="t2">written by Claude</text>
+        <path d="M252 59 H268" class="arrow" marker-end="url(#ah)"/><path d="M412 59 H428" class="arrow" marker-end="url(#ah)"/><path d="M572 59 H588" class="arrow" marker-end="url(#ah)"/>
+        <!-- lane 2 -->
+        <text x="16" y="172" class="lane">COACH LIVE</text>
+        <rect x="112" y="140" width="140" height="58" rx="10" class="box"/><text x="124" y="164" class="t1">Camera feed</text><text x="124" y="182" class="t2">worker tries a step</text>
+        <rect x="272" y="140" width="140" height="58" rx="10" class="box hl"/><text x="284" y="164" class="t1">Vision check</text><text x="284" y="182" class="t2">confidence-gated</text>
+        <rect x="432" y="140" width="140" height="58" rx="10" class="box"/><text x="444" y="164" class="t1">Coaching line</text><text x="444" y="182" class="t2">cloned voice</text>
+        <rect x="592" y="140" width="152" height="58" rx="10" class="box"/><text x="604" y="164" class="t1">Mastery model</text><text x="604" y="182" class="t2">less help over time</text>
+        <path d="M252 169 H268" class="arrow" marker-end="url(#ah)"/><path d="M412 169 H428" class="arrow" marker-end="url(#ah)"/><path d="M572 169 H588" class="arrow" marker-end="url(#ah)"/>
+        <path d="M668 88 V136" class="arrow" marker-end="url(#ah)"/>
+        <!-- lane 3 -->
+        <text x="16" y="282" class="lane">FIX WHAT</text><text x="16" y="298" class="lane">BREAKS</text>
+        <rect x="112" y="250" width="140" height="58" rx="10" class="box"/><text x="124" y="274" class="t1">Repeat failure</text><text x="124" y="292" class="t2">same step, again</text>
+        <rect x="272" y="250" width="140" height="58" rx="10" class="box hl"/><text x="284" y="274" class="t1">Sandboxed agent</text><text x="284" y="292" class="t2">rewrites the step</text>
+        <rect x="432" y="250" width="140" height="58" rx="10" class="box human"/><text x="444" y="274" class="t1">Supervisor review</text><text x="444" y="292" class="t2">before vs. after</text>
+        <rect x="592" y="250" width="152" height="58" rx="10" class="box"/><text x="604" y="274" class="t1">Approved → live</text><text x="604" y="292" class="t2">replaces old step</text>
+        <path d="M252 279 H268" class="arrow" marker-end="url(#ah)"/><path d="M412 279 H428" class="arrow" marker-end="url(#ah)"/><path d="M572 279 H588" class="arrow accent" marker-end="url(#aha)"/>
+        <path d="M182 198 V246" class="arrow" stroke-dasharray="4 4" marker-end="url(#ah)"/>
+        <text x="190" y="228" class="t2">if a step keeps failing</text>
+        <text x="112" y="340" class="t2">Red outline: model-driven step. Gold: a person decides.</text>
+      </svg>
+    </div>
+    <h3>Teach once</h3>
+    <p>A supervisor narrates a single demonstration. Drigil picks keyframes at the moments the hands pause, aligns them with a word-level transcript from Cartesia ink-whisper, and hands both to Claude, which writes a structured task specification.</p>
+    <h3>Coach live</h3>
+    <p>During the shift, Claude runs confidence-gated vision checks against the camera feed. Coaching plays in a cloned version of the supervisor's voice through Cartesia, with audio cached per line. A mastery model reduces prompting as the worker gets up to speed.</p>
+    <h3>Fix what breaks</h3>
+    <p>If a step keeps causing difficulty, Factory Droid starts a sandboxed agent that rewrites that step's instructions and corrections. The supervisor sees a before-and-after comparison and has to approve it before it replaces the step in the live workflow.</p>
+  </section>
+
+  <section class="pad">
+    <h2>Key decisions</h2>
+    <div class="decision">
+      <h3>A person approves every rewrite</h3>
+      <p>The remediation agent can propose a better version of a step, but it can't ship one. The supervisor reviews a before-and-after comparison first.</p>
+      <div class="todo"><b>Sarath:</b> in one or two sentences, why did the team insist on this, and what did it cost you (speed, complexity)?</div>
+    </div>
+    <div class="decision">
+      <h3>Confidence-gated vision checks</h3>
+      <p>Vision checks are confidence-gated: the system acts on a check only when it clears a confidence bar.</p>
+      <div class="todo"><b>Sarath:</b> what did the system do when confidence was low? Was there a trade-off you tuned during the hackathon?</div>
+    </div>
+    <div class="decision">
+      <h3>Cached coaching audio</h3>
+      <p>Each coaching line in the supervisor's voice is generated once and cached.</p>
+      <div class="todo"><b>Sarath:</b> what made caching necessary: latency on the glasses, cost, or both?</div>
+    </div>
+  </section>
+
+  <section class="pad">
+    <h2>Outcome</h2>
+    <ul class="clean">
+      <li>Built end to end by a three-person team in 36 hours.</li>
+      <li>2nd place in Anthropic's Claude for Public Benefit track at Cal Hacks 13.0.</li>
+      <li>Status: hackathon prototype.</li>
+    </ul>
+  </section>
+
+  <section class="pad">
+    <nav class="next" aria-label="More work">
+      <a href="../index.html#projects"><small>← back</small><b>All projects</b></a>
+      <a href="ai-sarath.html"><small>next read →</small><b>How I built AI Sarath</b></a>
+    </nav>
+  </section>
+  <footer class="pad"><span>Sarath Sundar Harisaravanan · Los Angeles</span><span>© 2026</span></footer>
+</div>
+<script>
+document.getElementById('theme').onclick=()=>{const r=document.documentElement;const c=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=c==='dark'?'light':'dark'};
+</script>
+</body>
+</html>

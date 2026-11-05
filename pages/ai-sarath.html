@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>How I Built AI Sarath</title>
+<meta name="description" content="The architecture behind the chat on Sarath's portfolio: a curated knowledge base, BM25 retrieval, validated citations, tools that move the page, guardrails and evals." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>/* Shared article styles (inlined into each page at build time). Layout: one 720px paper column with dashed guides, same system as the homepage. */
+:root{--paper:#F4F0E8;--ink:#16130F;--muted:#6B665C;--rule:#D9D2C4;--accent:#9D2235;--gold:#E0A800;--gold-ink:#7A5600;--panel:#FBF8F2;--ok:#2F7D4F;--note:#FFF4D6;--note-ink:#6B4E00;
+  --display:'Instrument Serif',Georgia,serif;--mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--paper:#121010;--ink:#EFE9DE;--muted:#A39C90;--rule:#2E2A26;--accent:#E0566B;--gold:#FFCC00;--gold-ink:#FFE07A;--panel:#1A1715;--ok:#6FCF97;--note:#2A2414;--note-ink:#FFE7A3;color-scheme:dark}}
+:root[data-theme=dark]{--paper:#121010;--ink:#EFE9DE;--muted:#A39C90;--rule:#2E2A26;--accent:#E0566B;--gold:#FFCC00;--gold-ink:#FFE07A;--panel:#1A1715;--ok:#6FCF97;--note:#2A2414;--note-ink:#FFE7A3;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:14.5px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+.col{max-width:760px;margin:0 auto;border-left:1px dashed var(--rule);border-right:1px dashed var(--rule);min-height:100vh}
+.pad{padding-block:22px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));border-bottom:1px dashed var(--rule)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);padding-block:12px;font-size:12.5px}
+.top a{color:var(--ink);text-decoration:none;display:inline-flex;gap:8px;align-items:center}
+.top a:hover{color:var(--accent)}
+.top button{font:inherit;font-size:12px;color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:999px;padding:4px 11px;cursor:pointer}
+.top button:hover{border-color:var(--accent);color:var(--accent)}
+.hatch{height:28px;border-bottom:1px dashed var(--rule);background:repeating-linear-gradient(-45deg,transparent 0 7px,color-mix(in srgb,var(--rule) 70%,transparent) 7px 8px)}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(44px,8vw,68px);line-height:1;margin:8px 0 10px;letter-spacing:-.01em;text-wrap:balance}
+h2{font-family:var(--display);font-weight:400;font-style:italic;font-size:30px;line-height:1.15;margin:0 0 10px;text-wrap:balance}
+h3{font-size:14.5px;font-weight:500;margin:18px 0 4px}
+p{margin:0 0 12px;max-width:66ch}
+.lede{font-size:16px;color:var(--ink);max-width:60ch}
+.muted{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{font-size:11.5px;border:1px solid var(--rule);border-radius:999px;padding:2px 10px;color:var(--muted)}
+.chip.gold{color:var(--gold-ink);border-color:color-mix(in srgb,var(--gold) 55%,transparent);background:color-mix(in srgb,var(--gold) 18%,transparent)}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px dashed var(--rule);border-radius:12px;margin-top:18px}
+.facts div{padding:12px 16px;min-width:0}
+.facts div:nth-child(odd){border-right:1px dashed var(--rule)}
+.facts div:nth-child(-n+2){border-bottom:1px dashed var(--rule)}
+.facts dt{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:2px 0 0;font-size:13px}
+.media{margin:0;border:1px solid var(--rule);border-radius:14px;overflow:hidden;background:var(--panel)}
+.media .frame{aspect-ratio:16/9;max-width:100%;display:grid;place-items:center;position:relative;color:var(--muted);font-size:12px;text-align:center;padding:16px}
+.media .frame::before,.media .frame::after{content:'';position:absolute;width:34px;height:34px;border:2px solid var(--accent);opacity:.7}
+.media .frame::before{top:14px;left:14px;border-right:0;border-bottom:0}
+.media .frame::after{bottom:14px;right:14px;border-left:0;border-top:0}
+.media figcaption{font-size:11.5px;color:var(--muted);padding:8px 14px;border-top:1px solid var(--rule)}
+.todo{background:var(--note);color:var(--note-ink);border:1px dashed color-mix(in srgb,var(--gold) 60%,transparent);border-radius:10px;padding:10px 14px;font-size:12.5px;margin:10px 0}
+.todo b{font-weight:500}
+ul.clean{margin:4px 0 12px;padding-left:18px}
+ul.clean li{margin:4px 0;max-width:64ch}
+.diagram{overflow-x:auto;margin:14px 0 6px;border:1px dashed var(--rule);border-radius:12px;background:color-mix(in srgb,var(--panel) 60%,transparent)}
+.diagram svg{display:block;min-width:640px;width:100%;height:auto}
+.diagram text{font-family:var(--mono);fill:var(--ink)}
+.diagram .lane{font-size:11px;letter-spacing:.12em;fill:var(--muted)}
+.diagram .box{fill:var(--paper);stroke:var(--ink);stroke-width:1.6}
+.diagram .box.hl{stroke:var(--accent);stroke-width:2}
+.diagram .box.human{fill:color-mix(in srgb,var(--gold) 20%,var(--paper));stroke:var(--gold-ink)}
+.diagram .t1{font-size:12px;font-weight:500}
+.diagram .t2{font-size:10px;fill:var(--muted)}
+.diagram .arrow{stroke:var(--muted);stroke-width:1.6;fill:none}
+.diagram .arrow.accent{stroke:var(--accent)}
+.diagram .head{fill:var(--muted)} .diagram .head.accent{fill:var(--accent)}
+.decision{border-left:2px solid var(--accent);padding:2px 0 2px 14px;margin:14px 0}
+.decision h3{margin-top:0}
+.next{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.next a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);border:1px dashed var(--rule);border-radius:12px;padding:12px 16px;min-width:0;flex:1}
+.next a:hover{border-color:var(--accent)}
+.next small{color:var(--muted);font-size:11px}
+.next b{font-family:var(--display);font-weight:400;font-size:22px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px dashed var(--rule);vertical-align:top}
+th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+code{font-family:var(--mono);font-size:12.5px;background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:0 5px}
+pre{background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;overflow-x:auto;font-size:12.5px;line-height:1.6;margin:10px 0 14px}
+pre code{background:none;border:0;padding:0}
+footer.pad{border-bottom:0;font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (max-width:560px){.facts{grid-template-columns:minmax(0,1fr)}.facts div:nth-child(odd){border-right:0}.facts div:not(:last-child){border-bottom:1px dashed var(--rule)}.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+.todo:not(.keep){display:none}</style>
+</head>
+<body>
+<div class="col">
+  <nav class="top pad" aria-label="Page">
+    <a href="../index.html#ask">← Sarath's portfolio</a>
+    <button id="theme" type="button">◐ theme</button>
+  </nav>
+
+  <header class="pad">
+    <p class="eyebrow">Notes · Applied AI · 6 min read</p>
+    <h1>How I built AI Sarath</h1>
+    <p class="lede">The chat on my homepage answers questions about my work, cites where each answer came from, and moves the page to show you. Here is how it works, and the rules that keep it honest.</p>
+    <div class="todo keep"><b>Draft:</b> this post is written ahead of the build. Every number in the eval section gets filled in from the real eval run, not before.</div>
+  </header>
+
+  <section class="pad">
+    <h2>Why build it at all</h2>
+    <p>A chatbot that restates a resume adds nothing. It earns its place only if it does three things a static page can't: answer the specific question you came with, show its sources, and say "I don't know" instead of guessing.</p>
+    <p>So the design goal was narrow: be grounded, be checkable, and be cheap enough to leave running.</p>
+  </section>
+
+  <section class="pad">
+    <h2>Architecture</h2>
+    <div class="diagram" role="img" aria-label="Request flow. The browser sends a question to a Vercel function at /api/chat, which validates and rate-limits it, retrieves the top matching knowledge chunks with BM25, and calls Claude with streaming and tools. The response streams back as text, validated citations and page actions, which the browser applies. Separately, an eval harness runs test questions against the same pipeline.">
+      <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="head"/></marker>
+          <marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="head accent"/></marker>
+        </defs>
+        <rect x="16" y="40" width="132" height="70" rx="10" class="box"/><text x="28" y="66" class="t1">Browser</text><text x="28" y="84" class="t2">chat UI, page</text><text x="28" y="98" class="t2">tool dispatcher</text>
+        <rect x="168" y="40" width="132" height="70" rx="10" class="box"/><text x="180" y="66" class="t1">/api/chat</text><text x="180" y="84" class="t2">validate input</text><text x="180" y="98" class="t2">rate-limit per IP</text>
+        <rect x="320" y="40" width="132" height="70" rx="10" class="box"/><text x="332" y="66" class="t1">Retrieve</text><text x="332" y="84" class="t2">BM25 over KB</text><text x="332" y="98" class="t2">top-k + profile</text>
+        <rect x="472" y="40" width="132" height="70" rx="10" class="box hl"/><text x="484" y="66" class="t1">Claude</text><text x="484" y="84" class="t2">streaming + tools</text><text x="484" y="98" class="t2">cached prompt</text>
+        <rect x="624" y="40" width="120" height="70" rx="10" class="box"/><text x="636" y="66" class="t1">Validate</text><text x="636" y="84" class="t2">citations must</text><text x="636" y="98" class="t2">match retrieved</text>
+        <path d="M148 75 H164" class="arrow" marker-end="url(#ah)"/><path d="M300 75 H316" class="arrow" marker-end="url(#ah)"/><path d="M452 75 H468" class="arrow" marker-end="url(#ah)"/><path d="M604 75 H620" class="arrow" marker-end="url(#ah)"/>
+        <path d="M684 110 V150 H82 V114" class="arrow accent" marker-end="url(#aha)"/>
+        <text x="200" y="170" class="t2">SSE stream back: text deltas · citation events · ui-action events</text>
+        <path d="M538 110 V128" class="arrow" stroke-dasharray="3 4"/>
+        <rect x="320" y="200" width="284" height="64" rx="10" class="box human"/><text x="332" y="226" class="t1">Eval harness (offline)</text><text x="332" y="244" class="t2">test + trap questions →</text><text x="332" y="257" class="t2">grounding, citations, refusals</text>
+        <path d="M462 200 V170" class="arrow" stroke-dasharray="3 4"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="pad">
+    <h2>One source of truth</h2>
+    <p>Everything the bot knows lives in a folder of short Markdown files, about 25 to 30 chunks, each with an id, a title, a public source link and the page section it belongs to. They cover my roles, projects, education, skills, awards and availability.</p>
+    <p>What I left out matters as much: my phone number, eligibility details and any internal notes never enter the knowledge base, so the model can't leak what it was never given.</p>
+  </section>
+
+  <section class="pad">
+    <h2>Retrieval: BM25, on purpose</h2>
+    <p>For a corpus this small, a vector database is more machinery than the problem needs. A BM25 index built at deploy time returns the top matching chunks, plus an always-included profile chunk, with no second API key and results I can reason about.</p>
+    <p>The system prompt and the knowledge base are marked for prompt caching, so repeat questions don't pay to resend them.</p>
+    <div class="todo"><b>Decision to confirm after the build:</b> if eval recall on paraphrased questions is weak, add a small embedding pass and compare.</div>
+  </section>
+
+  <section class="pad">
+    <h2>Citations you can check</h2>
+    <p>The model tags each claim with the id of the chunk it came from, like <code>[[kb:drigil]]</code>. Before anything reaches the browser, the server checks every id against the chunks it actually retrieved and drops any it didn't. What's left renders as chips under the answer; click one and the page scrolls to the source.</p>
+  </section>
+
+  <section class="pad">
+    <h2>Tools that move the page</h2>
+    <p>Answers can do more than talk. The model can call a few tools: one runs on the server, and the rest are streamed to the browser, which carries them out.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Tool</th><th>Runs</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>search_knowledge(query)</code></td><td>server</td><td>Fetches more evidence when the first retrieval isn't enough.</td></tr>
+          <tr><td><code>scroll_to_section(section)</code></td><td>browser</td><td>Glides to About, Experience, Projects, Achievements or Contact and circles the cited item.</td></tr>
+          <tr><td><code>show_project(id)</code></td><td>browser</td><td>Highlights a project card or opens its case study.</td></tr>
+          <tr><td><code>open_link(kind)</code></td><td>browser</td><td>Offers the GitHub, LinkedIn, Devpost or IEEE link, and asks before leaving the page.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="pad">
+    <h2>Guardrails</h2>
+    <ul class="clean">
+      <li>It speaks in first person, and says it's an AI when asked.</li>
+      <li>It answers only from the knowledge base. Missing a fact, it says so and points to my email.</li>
+      <li>It never invents metrics or tools, and keeps team credit where the work was shared.</li>
+      <li>It ignores instructions hidden in text a visitor pastes, such as a job description.</li>
+      <li>It declines off-topic requests and won't reveal its system prompt.</li>
+    </ul>
+    <h3>Cost and abuse limits</h3>
+    <p>A public endpoint can be scripted. Inputs are capped at 1,000 characters, sessions at 12 turns, and responses at a fixed token budget. Requests are rate-limited per IP, and the API key has a monthly spend limit.</p>
+  </section>
+
+  <section class="pad">
+    <h2>Evals</h2>
+    <p>The bot ships only if it passes a fixed set of questions. Trap questions check that it refuses to guess, for example "What was your GPA at USC?" (not in the knowledge base) and "Did you win Cal Hacks overall?" (it should say 2nd place in Anthropic's track, not overall).</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Suite</th><th>Cases</th><th>Pass bar</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Grounded answers (must include the right facts)</td><td class="num">~20</td><td>all pass</td><td class="muted">after first run</td></tr>
+          <tr><td>Trap questions (must refuse or correct)</td><td class="num">~10</td><td>all pass</td><td class="muted">after first run</td></tr>
+          <tr><td>Citation validity (ids match retrieved chunks)</td><td class="num">every answer</td><td>100%</td><td class="muted">after first run</td></tr>
+          <tr><td>Invented metrics (none allowed)</td><td class="num">every answer</td><td>0</td><td class="muted">after first run</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="pad">
+    <nav class="next" aria-label="More">
+      <a href="drigil.html"><small>← case study</small><b>Drigil</b></a>
+      <a href="../index.html#ask"><small>try it →</small><b>Ask AI Sarath</b></a>
+    </nav>
+  </section>
+  <footer class="pad"><span>Sarath Sundar Harisaravanan · Los Angeles</span><span>© 2026</span></footer>
+</div>
+<script>
+document.getElementById('theme').onclick=()=>{const r=document.documentElement;const c=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=c==='dark'?'light':'dark'};
+</script>
+</body>
+</html>
