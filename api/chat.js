@@ -3,7 +3,7 @@
 // Env: GEMINI_API_KEY (required for live answers), GEMINI_MODEL (optional)
 import { KB, PROFILE_ID, TARGETS } from './_kb.js';
 
-const WANT = (process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite').replace(/^models\//, '');
+const WANT = (process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite').replace(/^models\//, '');
 const API = 'https://generativelanguage.googleapis.com/v1beta';
 let MODEL = WANT, resolved = false;
 
@@ -15,12 +15,14 @@ async function listModels() {
   const j = await r.json();
   return (j.models || []).filter((m) => (m.supportedGenerationMethods || []).includes('generateContent')).map((m) => m.name.replace(/^models\//, ''));
 }
-function cheapest(names) {
-  const ok = names.filter((n) => /^gemini-/.test(n) && !/pro|image|tts|audio|live|embedding|thinking|exp/i.test(n));
+// cheapest first: Flash-Lite before Flash, stable before preview, older (cheaper) generations first
+function candidates(names) {
+  const ok = names.filter((n) => /^gemini-\d/.test(n) && !/pro|image|tts|audio|live|embedding|thinking|exp|omni/i.test(n));
   const ver = (n) => parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [0, 0])[1]);
   const rank = (n) => (/flash-lite/.test(n) ? 0 : /flash/.test(n) ? 1 : 2) * 10 + (/preview/.test(n) ? 1 : 0);
-  return ok.sort((a, b) => rank(a) - rank(b) || ver(b) - ver(a) || a.length - b.length)[0] || null;
+  return ok.sort((a, b) => rank(a) - rank(b) || ver(a) - ver(b) || a.length - b.length);
 }
+const cheapest = (names) => candidates(names)[0] || null;
 const MAX_INPUT = 1000, MAX_TURNS = 12, TOP_K = 7;
 
 /* ---------- tiny BM25 over the knowledge base ---------- */
@@ -125,9 +127,11 @@ export default async function handler(req, res) {
     let r = await call(MODEL);
     if (r.status === 404 && !resolved) {
       resolved = true;
-      const pick = cheapest(await listModels());
-      console.warn('model', MODEL, 'not found; switching to', pick);
-      if (pick) { MODEL = pick; r = await call(MODEL); }
+      for (const pick of candidates(await listModels()).filter((n) => n !== MODEL).slice(0, 4)) {
+        r = await call(pick);
+        console.warn('model', MODEL, 'unavailable; tried', pick, '->', r.status);
+        if (r.status !== 404) { MODEL = pick; break; }
+      }
     }
     if (!r.ok) { console.error('gemini', MODEL, r.status, (await r.text()).slice(0, 300)); return json(res, 502, { error: 'upstream', status: r.status }); }
     const data = await r.json();

@@ -33,7 +33,7 @@ Set these in Vercel → Project → Settings → Environment Variables, then red
 | Variable | Required | Value |
 |---|---|---|
 | `GEMINI_API_KEY` | yes | Key from Google AI Studio |
-| `GEMINI_MODEL` | no | Defaults to `gemini-2.5-flash-lite` |
+| `GEMINI_MODEL` | no | Defaults to `gemini-3.1-flash-lite`; if a model is unavailable the function falls back to the cheapest Flash-Lite your key can use (`GET /api/chat?models` lists them) |
 
 Without a key the chat falls back to scripted answers for the suggested questions. Guardrails: 1,000-character inputs, 12-turn history, best-effort per-IP rate limit (8/min, 60/hour), 15 s upstream timeout, answers only from the knowledge base.
 
