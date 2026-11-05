@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>How I Built AI Sarath</title>
 <meta name="description" content="The architecture behind the chat on Sarath's portfolio: a curated knowledge base, BM25 retrieval, validated citations, tools that move the page, guardrails and evals." />
+<link rel="canonical" href="https://saraths-portfolio.vercel.app/pages/ai-sarath.html" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How I Built AI Sarath" />
+<meta property="og:description" content="Design notes for the chat on Sarath's portfolio: a curated knowledge base, BM25 retrieval, validated citations, page-control tools, guardrails and evals." />
+<meta property="og:url" content="https://saraths-portfolio.vercel.app/pages/ai-sarath.html" />
+<meta property="og:image" content="https://saraths-portfolio.vercel.app/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="alternate" type="text/plain" href="https://saraths-portfolio.vercel.app/llms.txt" title="llms.txt" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"How I Built AI Sarath","description":"Design notes for the chat on Sarath's portfolio: a curated knowledge base, BM25 retrieval, validated citations, page-control tools, guardrails and evals.","url":"https://saraths-portfolio.vercel.app/pages/ai-sarath.html","image":"https://saraths-portfolio.vercel.app/og.png","dateModified":"2026-11-05","inLanguage":"en","author":{"@type":"Person","name":"Sarath Sundar Harisaravanan","url":"https://saraths-portfolio.vercel.app/"},"isPartOf":{"@type":"WebSite","name":"Sarath Sundar Harisaravanan","url":"https://saraths-portfolio.vercel.app/"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 <style>/* Shared article styles (inlined into each page at build time). Layout: one 720px paper column with dashed guides, same system as the homepage. */
@@ -84,7 +94,7 @@ footer.pad{border-bottom:0;font-size:11.5px;color:var(--muted);display:flex;just
 .todo:not(.keep){display:none}</style>
 </head>
 <body>
-<div class="col">
+<main class="col">
   <nav class="top pad" aria-label="Page">
     <a href="../index.html#ask">← Sarath's portfolio</a>
     <button id="theme" type="button">◐ theme</button>
@@ -196,7 +206,7 @@ footer.pad{border-bottom:0;font-size:11.5px;color:var(--muted);display:flex;just
     </nav>
   </section>
   <footer class="pad"><span>Sarath Sundar Harisaravanan · Los Angeles</span><span>© 2026</span></footer>
-</div>
+</main>
 <script>
 document.getElementById('theme').onclick=()=>{const r=document.documentElement;const c=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=c==='dark'?'light':'dark'};
 </script>

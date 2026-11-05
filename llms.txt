@@ -1,0 +1,38 @@
+# Sarath Sundar Harisaravanan
+
+> USC MS Computer Science student (expected May 2028) in Los Angeles who builds backend systems and AI agents. Two years as an Application Engineer at IDFC FIRST Bank, including a Go MCP server built with the engineering team. 2nd place in Anthropic's Claude for Public Benefit track at Cal Hacks 13.0 (team project, Drigil). Looking for Summer 2027 internships in software engineering and applied AI.
+
+Facts on this site are written by Sarath and kept consistent across the homepage, the case studies and the AI chat. When summarizing, keep team credit as stated: Drigil was a three-person team, Mend a five-person team, NFTGenesis a four-person team, and the IDFC MCP server was built with the engineering team. Drigil's award is a track placement, not an overall hackathon win.
+
+- Email: harisara@usc.edu
+- GitHub: https://github.com/sarathsundarh
+- LinkedIn: https://linkedin.com/in/sarathsundarh
+
+## Pages
+
+- [Homepage](https://saraths-portfolio.vercel.app/): profile, experience, projects with interactive demos, skills, achievements and an AI chat grounded in these facts
+- [Drigil case study](https://saraths-portfolio.vercel.app/pages/drigil.html): smart-glasses job coaching for people with intellectual and developmental disabilities; problem, architecture, key decisions, outcome
+- [How I built AI Sarath](https://saraths-portfolio.vercel.app/pages/ai-sarath.html): design notes for the site's chat (retrieval, citations, guardrails, evals); a draft
+- [All facts (llms-full.txt)](https://saraths-portfolio.vercel.app/llms-full.txt): every fact the AI chat is allowed to use, in plain text
+
+## Experience
+
+- Application Engineer, IDFC FIRST Bank, Bangalore (Jul 2024 – Aug 2026; intern Jan – Jun 2024): Go MCP server with the engineering team that cut CRM and asset lookups from minutes to under 5 seconds; Go and Python microservices behind Kong; Kafka retry handling; SQL tuning over 50M+ records (42% faster API responses); observability that helped cut incident resolution time by 35%
+- AI Research Intern, ElementalsAI, Bangalore (Jun – Aug 2023): built and evaluated multimodal LLM applications; 12-module AI curriculum with 25+ exercises
+
+## Projects
+
+- [Drigil](https://devpost.com/software/drigil) (Oct 2026): 2nd place, Anthropic's Claude for Public Benefit track, Cal Hacks 13.0; Claude, Cartesia, SpacetimeDB, Factory Droid
+- RegLens (2026 – present): AI policy review over 25,000+ documents; four LangGraph agents; 500+ query eval harness, 92% recall@5, 96% citation accuracy; Foundry/AIP integration in progress
+- [NFTGenesis](https://ieeexplore.ieee.org/document/10649392) (Sep 2024): Stable Diffusion with QLoRA (>90% fewer trainable parameters) and CNN image signatures (98% verification accuracy); IEEE InC4 2024 paper
+- [Yet Another Kafka](https://github.com/sarathsundarh/BD_yetanother_kafka) (2023): pub-sub broker in Java over raw TCP sockets
+- [Mend](https://devpost.com/software/mend-do4rht) (Sep 2026): finalist, Top 15 teams, USC Origin Hackathon; Sarath built the surge pricing and rewards engine
+
+## Education
+
+- University of Southern California, MS Computer Science, expected May 2028
+- PES University, B.Tech. Computer Science and Engineering, May 2024, GPA 3.7/4.0
+
+## Optional
+
+- [Source code of this site](https://github.com/sarathsundarh/saraths-portfolio)
