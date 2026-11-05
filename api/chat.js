@@ -3,7 +3,24 @@
 // Env: GEMINI_API_KEY (required for live answers), GEMINI_MODEL (optional)
 import { KB, PROFILE_ID, TARGETS } from './_kb.js';
 
-const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+const WANT = (process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite').replace(/^models\//, '');
+const API = 'https://generativelanguage.googleapis.com/v1beta';
+let MODEL = WANT, resolved = false;
+
+// If the configured model isn't available to this key, pick the cheapest one that is:
+// a stable Flash-Lite first, then Flash, never Pro. The choice is cached per warm instance.
+async function listModels() {
+  const r = await fetch(`${API}/models?pageSize=200`, { headers: { 'x-goog-api-key': process.env.GEMINI_API_KEY } });
+  if (!r.ok) return [];
+  const j = await r.json();
+  return (j.models || []).filter((m) => (m.supportedGenerationMethods || []).includes('generateContent')).map((m) => m.name.replace(/^models\//, ''));
+}
+function cheapest(names) {
+  const ok = names.filter((n) => /^gemini-/.test(n) && !/pro|image|tts|audio|live|embedding|thinking|exp/i.test(n));
+  const ver = (n) => parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [0, 0])[1]);
+  const rank = (n) => (/flash-lite/.test(n) ? 0 : /flash/.test(n) ? 1 : 2) * 10 + (/preview/.test(n) ? 1 : 0);
+  return ok.sort((a, b) => rank(a) - rank(b) || ver(b) - ver(a) || a.length - b.length)[0] || null;
+}
 const MAX_INPUT = 1000, MAX_TURNS = 12, TOP_K = 7;
 
 /* ---------- tiny BM25 over the knowledge base ---------- */
@@ -67,7 +84,12 @@ async function readBody(req) {
 }
 
 export default async function handler(req, res) {
-  if (req.method === 'GET') return json(res, 200, { live: Boolean(process.env.GEMINI_API_KEY) });
+  if (req.method === 'GET') {
+    const live = Boolean(process.env.GEMINI_API_KEY);
+    const q = new URL(req.url || '/', 'http://x').searchParams;
+    if (live && q.has('models')) { const names = await listModels(); return json(res, 200, { live, configured: WANT, using: MODEL, cheapest: cheapest(names), available: names.filter((n) => /flash/.test(n)) }); }
+    return json(res, 200, { live, model: MODEL });
+  }
   if (req.method !== 'POST') return json(res, 405, { error: 'method_not_allowed' });
   if (!process.env.GEMINI_API_KEY) return json(res, 503, { error: 'not_configured' });
 
@@ -91,7 +113,7 @@ export default async function handler(req, res) {
 
   const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 15000);
   try {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:generateContent`, {
+    const call = (model) => fetch(`${API}/models/${encodeURIComponent(model)}:generateContent`, {
       method: 'POST', signal: ctrl.signal,
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
       body: JSON.stringify({
@@ -100,7 +122,14 @@ export default async function handler(req, res) {
         generationConfig: { temperature: 0.3, maxOutputTokens: 450, responseMimeType: 'application/json', responseSchema: SCHEMA },
       }),
     });
-    if (!r.ok) { console.error('gemini', r.status, (await r.text()).slice(0, 300)); return json(res, 502, { error: 'upstream', status: r.status }); }
+    let r = await call(MODEL);
+    if (r.status === 404 && !resolved) {
+      resolved = true;
+      const pick = cheapest(await listModels());
+      console.warn('model', MODEL, 'not found; switching to', pick);
+      if (pick) { MODEL = pick; r = await call(MODEL); }
+    }
+    if (!r.ok) { console.error('gemini', MODEL, r.status, (await r.text()).slice(0, 300)); return json(res, 502, { error: 'upstream', status: r.status }); }
     const data = await r.json();
     const text = data?.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
     let out; try { out = JSON.parse(text); } catch { out = { answer: text, citations: [], action: 'none' }; }
