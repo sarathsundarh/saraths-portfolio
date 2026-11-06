@@ -9,7 +9,7 @@ export const KB = [
   },
   {
     id: 'availability', title: 'Availability and contact', target: '#contact',
-    text: `Sarath is looking for Summer 2027 internships in software engineering and applied AI, and is available roughly from mid-May through the end of August 2027. Contact: email harisara@usc.edu, LinkedIn linkedin.com/in/sarathsundarh, GitHub github.com/sarathsundarh. He is based in Los Angeles, California. Questions about work authorization or sponsorship should go to Sarath directly by email.`,
+    text: `Roles Sarath is seeking: Summer 2027 internships (intern positions) in software engineering and applied AI. He is looking for these internships and is available roughly from mid-May through the end of August 2027. Contact: email harisara@usc.edu, LinkedIn linkedin.com/in/sarathsundarh, GitHub github.com/sarathsundarh. He is based in Los Angeles, California. Questions about work authorization or sponsorship should go to Sarath directly by email.`,
   },
   {
     id: 'education', title: 'Education', target: '#education',
