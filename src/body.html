@@ -21,205 +21,241 @@
     <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14"/></symbol>
+    <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
   </defs>
 </svg>
 
+<a class="skip" href="#main">Skip to content</a>
 <div class="bg-blobs" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><i class="blob b4"></i></div>
 <div class="grain" aria-hidden="true"></div>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="#top" aria-label="Sarath Sundar Harisaravanan, back to top">Sarath<span> Sundar H.</span></a>
+  <nav class="topnav" aria-label="Primary">
+    <a href="#projects">Work</a>
+    <a href="#experience">Experience</a>
+    <a class="wide-only" href="#ask">Ask AI</a>
+    <a href="resume.pdf" target="_blank" rel="noopener">Résumé</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="top-tools">
+    <button id="kbtn" class="wide-only" type="button" aria-label="Search the site (Ctrl or Command + K)"><svg><use href="#i-search"/></svg><kbd>⌘K</kbd></button>
+    <button id="theme" type="button" aria-label="Switch between light and dark theme"><svg class="i-light"><use href="#i-moon"/></svg><svg class="i-dark"><use href="#i-sun"/></svg></button>
+  </div>
+</header>
+
 <div class="wrap" id="top">
-  <!-- ============ HERO ============ -->
   <main id="main">
   <div class="bento">
-  <div class="tile t-hero">
-  <div class="banner" id="banner"></div>
-  <div class="bar">
-    <span class="now" aria-live="polite">now: <b id="now">coding</b></span>
-    <span class="dots" id="dots" role="tablist" aria-label="Hero scenes"></span>
-  </div>
-  <form class="runline" id="runline" autocomplete="off">
-    <label for="runInput">&gt;</label>
-    <input id="runInput" maxlength="48" placeholder="type a line of code and press Enter. I'll run it" aria-label="Type a line of code for the character to run" spellcheck="false" />
-  </form>
-  </div>
 
-  <!-- ============ PROFILE ============ -->
-  <div class="tile t-about">
-  <section class="row profile" id="about" data-section="About">
-    <div class="avatar" aria-hidden="true"><canvas id="swarm"></canvas></div>
-    <div class="who">
-      <h1>Sarath Sundar Harisaravanan</h1>
-      <p class="role">AI + backend engineer · MS CS @ USC</p>
-    </div>
-    <span class="open"><i></i> Open to Summer 2027 internships</span>
-  </section>
-  <div class="row meta">
-    <span><svg><use href="#i-pin"/></svg>Los Angeles, CA</span>
-    <a href="https://github.com/sarathsundarh" target="_blank" rel="noreferrer"><svg><use href="#i-gh"/></svg>GitHub</a>
-    <a href="https://linkedin.com/in/sarathsundarh" target="_blank" rel="noreferrer"><svg><use href="#i-in"/></svg>LinkedIn</a>
-    <a href="mailto:harisara@usc.edu"><svg><use href="#i-mail"/></svg>harisara@usc.edu</a>
-    <a href="#" onclick="return false"><svg><use href="#i-paper"/></svg>Resume</a>
-  </div>
-  <div class="row bio reveal">
-    <p>USC MS Computer Science student with over two years building backend and AI software at IDFC FIRST Bank. I built agent tools with the engineering team there, and I enjoy turning unfamiliar problems into working software. Most recently, I built <a href="https://devpost.com/software/drigil" target="_blank" rel="noreferrer">Drigil</a> with a three-person team, earning 2nd place in Anthropic's Claude for Public Benefit track at Cal Hacks 13.0.</p>
-  </div>
-  </div>
-
-  <!-- ============ ASK AI SARATH ============ -->
-  <section class="tile t-ask row ask" id="ask" data-section="Ask AI Sarath">
-    <div class="ask-head">
-      <div>
-        <h2>Ask <em>AI Sarath</em></h2>
-        <p class="sub">Grounded in my resume · cites its sources · can move this page</p>
+  <!-- ============ INTRO ============ -->
+  <section class="tile t-hero" id="about" aria-labelledby="hero-name">
+    <div class="intro">
+      <p class="open"><i aria-hidden="true"></i> Seeking Summer 2027 internships · software engineering &amp; applied AI</p>
+      <h1 id="hero-name">Sarath Sundar Harisaravanan</h1>
+      <p class="role">Backend &amp; Applied AI Engineer</p>
+      <p class="pitch">USC MS Computer Science student with 2+ years of experience building backend services and AI tools at IDFC FIRST Bank. My work includes Go and Python services, SQL performance improvements, and agent tools for banking workflows.</p>
+      <ul class="proof">
+        <li><b>Go MCP server at IDFC FIRST Bank</b>, built with the engineering team: CRM and asset-management lookups went from minutes to under 5 seconds.</li>
+        <li><b>2nd place, Anthropic's Claude for Public Benefit track</b> at Cal Hacks 13.0 for <a href="pages/drigil.html">Drigil</a> (three-person team).</li>
+      </ul>
+      <div class="cta">
+        <a class="btn primary" href="#projects">View selected work</a>
+        <a class="btn" href="resume.pdf" target="_blank" rel="noopener"><svg><use href="#i-dl"/></svg>Download résumé</a>
+        <a class="btn" href="mailto:harisara@usc.edu"><svg><use href="#i-mail"/></svg>Email me</a>
       </div>
-      <span class="demo-tag" id="chatMode">preview · scripted answers</span>
+      <p class="meta">
+        <span><svg><use href="#i-pin"/></svg>Los Angeles, CA</span>
+        <a href="https://github.com/sarathsundarh" target="_blank" rel="noreferrer"><svg><use href="#i-gh"/></svg>GitHub</a>
+        <a href="https://linkedin.com/in/sarathsundarh" target="_blank" rel="noreferrer"><svg><use href="#i-in"/></svg>LinkedIn</a>
+      </p>
     </div>
-    <div class="chat" id="chat" aria-live="polite">
-      <div class="msg ai"><span class="av" aria-hidden="true"></span><div class="bubble-t">Hi! I'm an AI version of Sarath, trained only on his resume and projects. Ask me anything. If I don't know, I'll say so.</div></div>
-    </div>
-    <div class="suggest" id="suggest">
-      <button data-q="0">What did you build at IDFC?</button>
-      <button data-q="1">Tell me about Drigil</button>
-      <button data-q="2">Did you win Cal Hacks?</button>
-      <button data-q="3">Are you open to internships?</button>
-    </div>
-    <form class="ask-input" id="askForm">
-      <input id="askBox" placeholder="Ask me anything about Sarath…" autocomplete="off" aria-label="Ask AI Sarath" />
-      <button type="submit" aria-label="Send"><svg><use href="#i-send"/></svg></button>
-    </form>
-    <div class="flow" aria-label="How an answer is made: your question, retrieve facts from my resume, cite the sources, stream the answer">
-      <div class="flow-track" aria-hidden="true"><i class="flow-dot"></i><i class="flow-dot d2"></i><i class="flow-dot d3"></i></div>
-      <ol class="flow-steps">
-        <li style="--k:0"><b>Question</b><span>you ask</span></li>
-        <li style="--k:1"><b>Retrieve</b><span>BM25 over my resume</span></li>
-        <li style="--k:2"><b>Cite</b><span>every claim gets a source</span></li>
-        <li style="--k:3"><b>Answer</b><span>streams + moves the page</span></li>
-      </ol>
-    </div>
+    <figure class="art">
+      <div class="banner" id="banner"></div>
+      <figcaption class="bar">
+        <span class="now" aria-live="polite">now: <b id="now">coding</b></span>
+        <span class="dots" id="dots" role="tablist" aria-label="Illustration scenes"></span>
+        <button class="pause" id="heroPause" type="button" aria-pressed="false"><svg><use href="#i-pause"/></svg><span>Pause animation</span></button>
+      </figcaption>
+    </figure>
   </section>
 
-  <!-- ============ PROJECTS ============ -->
-  <section class="tile t-projects row" id="projects" data-section="Projects">
-    <h2 class="sec">Projects</h2>
-    <div class="projects">
-      <article class="proj" id="p-drigil" data-skills="Claude LLM APIs Agents" tabindex="0">
+  <!-- ============ SELECTED WORK ============ -->
+  <section class="tile t-projects" id="projects" data-section="Projects" aria-labelledby="work-h">
+    <h2 class="sec" id="work-h">Selected work</h2>
+    <p class="sec-sub">Three projects with public evidence first. Each one opens a details panel with my contribution, the evidence, how results were measured, and what's still missing.</p>
+    <div class="projects featured">
+
+      <article class="proj" id="p-drigil" data-skills="Claude LLM APIs Agents" aria-labelledby="t-drigil">
         <div class="proj-top">
-          <h3>Drigil <span class="gold">2nd · Anthropic's Claude for Public Benefit track · Cal Hacks 13.0</span></h3>
+          <h3 id="t-drigil">Drigil</h3>
           <svg class="doodle" viewBox="0 0 120 70" aria-hidden="true"><path d="M10 40 a16 16 0 1 0 32 0 a16 16 0 1 0 -32 0 M50 40 a16 16 0 1 0 32 0 a16 16 0 1 0 -32 0 M42 38 q4 -4 8 0 M88 10 h22 v14 M88 64 h22 v-14 M66 40 l6 0 M100 37 a6 6 0 1 0 0.1 0"/></svg>
         </div>
-        <p class="tagline">Smart-glasses job coaching in the supervisor's own voice · Oct 2026</p>
-        <ul>
-          <li>Built smart-glasses job coaching for people with intellectual and developmental disabilities in a three-person team over 36 hours.</li>
-          <li>Combined demonstration keyframes and word-level transcripts into a structured task spec with Claude; confidence-gated vision checks and cached coaching audio.</li>
-        </ul>
+        <p class="badges"><span class="gold">2nd place · Anthropic's Claude for Public Benefit track · Cal Hacks 13.0</span></p>
+        <p class="tagline">Smart-glasses job coaching for people with intellectual and developmental disabilities · three-person team · 36 hours · Oct 2026</p>
+        <p class="outcome">Turns one narrated demonstration into a step-by-step task spec with Claude, then checks each step through the camera and coaches in the supervisor's own voice.</p>
         <div class="tags"><span>Claude</span><span>Cartesia</span><span>SpacetimeDB</span><span>Factory Droid</span></div>
-        <a class="link case-link" href="pages/drigil.html">Read the case study <svg><use href="#i-arrow"/></svg></a>
-        <div class="demo-row"><button class="try" type="button" aria-expanded="false" aria-controls="demo-drigil"><svg><use href="#i-play"/></svg>Play the pipeline</button><span class="sim">interactive · simulation</span></div>
+        <div class="actions">
+          <button class="details" type="button" aria-haspopup="dialog">View project details</button>
+          <button class="try" type="button" aria-expanded="false" aria-controls="demo-drigil"><svg><use href="#i-play"/></svg>Play the simulation</button>
+        </div>
         <div class="demo" id="demo-drigil" data-demo="drigil" hidden></div>
         <div class="case" hidden>
-          <ul>
-            <li>Turns one narrated demonstration into a step-by-step task specification: keyframes where hands pause, aligned with a word-level transcript.</li>
-            <li>Live coaching: confidence-gated vision checks against the camera, coaching audio cached per line in a cloned supervisor voice, with prompts that fade as the worker gains mastery.</li>
-            <li>When a step keeps failing, a sandboxed remediation agent rewrites it; a supervisor reviews before-and-after and approves before it goes live.</li>
-          </ul>
-          <a class="link" href="https://devpost.com/software/drigil" target="_blank" rel="noreferrer">Devpost <svg><use href="#i-arrow"/></svg></a>
+          <dl class="ev">
+            <dt>Team and credit</dt><dd>Built by a three-person team in 36 hours at Cal Hacks 13.0. Everything below is the team's work.</dd>
+            <dt>What we built</dt><dd><ul>
+              <li>Combines demonstration keyframes (where the hands pause) with a word-level transcript into a structured task specification, using Claude.</li>
+              <li>Live coaching: confidence-gated vision checks against the camera, and coaching audio cached per line in a cloned supervisor voice. Prompts fade as the worker gains mastery.</li>
+              <li>When a step keeps failing, a sandboxed remediation agent rewrites it.</li>
+            </ul></dd>
+            <dt>Decision and trade-off</dt><dd>A rewritten step never goes live on its own: the supervisor reviews the before-and-after and approves it. Updates are slower, but a worker never receives an unreviewed instruction.</dd>
+            <dt>Evidence</dt><dd>Devpost write-up and the case study on this site. The simulation on the card is a scripted re-creation, not the real system.</dd>
+            <dt>Not done yet</dt><dd>It's a 36-hour hackathon prototype. It hasn't been tested with workers on a real job.</dd>
+          </dl>
+          <p class="links"><a class="link" href="pages/drigil.html">Case study <svg><use href="#i-arrow"/></svg></a><a class="link" href="https://devpost.com/software/drigil" target="_blank" rel="noreferrer">Devpost <svg><use href="#i-arrow"/></svg></a></p>
         </div>
-        <div class="peek" aria-hidden="true"><canvas data-peek="drigil"></canvas><span>live · glasses HUD · checking each step</span></div>
       </article>
 
-      <article class="proj" id="p-reglens" data-skills="Python LangGraph LangChain RAG pgvector PostgreSQL Agents Evaluation" tabindex="0">
+      <article class="proj" id="p-mend" data-skills="TypeScript Deno Supabase PostgreSQL PostGIS H3 Pricing Swift SwiftUI Hackathon" aria-labelledby="t-mend">
         <div class="proj-top">
-          <h3>RegLens <span class="chip">in progress</span></h3>
-          <svg class="doodle" viewBox="0 0 120 70" aria-hidden="true"><path d="M14 6 h40 l12 12 v46 h-52 z M54 6 v12 h12 M22 28 h30 M22 38 h34 M22 48 h22 M86 44 a16 16 0 1 0 0.1 0 M98 56 l14 12 M80 44 l5 5 l9 -10"/></svg>
-        </div>
-        <p class="tagline">AI policy review with cited evidence and human approval · 2026 – present</p>
-        <ul>
-          <li>Checks internal policies against regulatory requirements, retrieves evidence from 25,000+ documents and flags gaps with citations.</li>
-          <li>Four LangGraph agents with a 500+ query eval harness: 92% recall@5, 96% citation accuracy.</li>
-        </ul>
-        <div class="tags"><span>Python</span><span>LangGraph</span><span>LangChain</span><span>pgvector</span><span>PostgreSQL</span></div>
-        <div class="case" hidden>
-          <ul>
-            <li>Remediation is routed through human approval before anything changes.</li>
-            <li>Working toward Palantir Foundry / AIP ontology integration (in progress).</li>
-          </ul>
-        </div>
-        <div class="peek" aria-hidden="true"><canvas data-peek="reglens"></canvas><span>live · retrieve → compare → cite</span></div>
-      </article>
-
-      <article class="proj" id="p-nft" data-skills="Python PyTorch Stable-Diffusion QLoRA CNNs Research" tabindex="0">
-        <div class="proj-top">
-          <h3>NFTGenesis <span class="chip">IEEE InC4 2024</span></h3>
-          <svg class="doodle" viewBox="0 0 120 70" aria-hidden="true"><path d="M8 6 h70 v58 h-70 z M8 50 l20 -20 l16 14 l12 -10 l22 20 M60 20 a5 5 0 1 0 0.1 0 M90 14 h8 v8 h-8 z M102 14 h8 v8 h-8 z M90 26 h8 v8 h-8 z M102 38 h8 v8 h-8 z M90 50 h8 v8 h-8 z"/></svg>
-        </div>
-        <p class="tagline">Generative images with tamper-evident hidden signatures · Sep 2024</p>
-        <ul>
-          <li>Fine-tuned Stable Diffusion with QLoRA in a four-person team, cutting trainable parameters by over 90%.</li>
-          <li>Paired encoder/decoder CNNs embed tamper-evident signatures with 98% verification accuracy.</li>
-        </ul>
-        <div class="tags"><span>PyTorch</span><span>Stable Diffusion</span><span>QLoRA</span><span>CNNs</span></div>
-        <div class="demo-row"><button class="try" type="button" aria-expanded="false" aria-controls="demo-nft"><svg><use href="#i-play"/></svg>Decode the signature</button><span class="sim">interactive · simulation</span></div>
-        <div class="demo" id="demo-nft" data-demo="nft" hidden></div>
-        <div class="case" hidden>
-          <ul><li>Authored the IEEE InC4 2024 paper with the team: “NFTGenesis: An NFT Generation and Authentication System with Market Intelligence Using Deep Learning Based Steganography.”</li></ul>
-          <a class="link" href="https://ieeexplore.ieee.org/document/10649392" target="_blank" rel="noreferrer">IEEE paper <svg><use href="#i-arrow"/></svg></a>
-        </div>
-        <div class="peek" aria-hidden="true"><canvas data-peek="nft"></canvas><span>live · decoder revealing the signature</span></div>
-      </article>
-
-      <article class="proj" id="p-kafka" data-skills="Java Kafka Systems Concurrency" tabindex="0">
-        <div class="proj-top">
-          <h3>Yet Another Kafka</h3>
-          <svg class="doodle" viewBox="0 0 120 70" aria-hidden="true"><path d="M6 14 h22 v42 h-22 z M92 14 h22 v42 h-22 z M34 20 h52 M34 35 h52 M34 50 h52 M46 16 h6 v8 h-6 z M62 31 h6 v8 h-6 z M40 46 h6 v8 h-6 z M72 46 h6 v8 h-6 z M80 17 l6 3 l-6 3 M80 32 l6 3 l-6 3 M80 47 l6 3 l-6 3"/></svg>
-        </div>
-        <p class="tagline">A pub-sub message broker from raw TCP sockets, no frameworks · 2023</p>
-        <ul>
-          <li>20+ topics, 80+ partitions and persistent offset tracking in Java with multithreading.</li>
-          <li>Handled 250+ concurrent clients at 35,000+ messages/sec with sub-50 ms p95 latency.</li>
-        </ul>
-        <div class="tags"><span>Java</span><span>TCP sockets</span><span>Multithreading</span></div>
-        <div class="demo-row"><button class="try" type="button" aria-expanded="false" aria-controls="demo-kafka"><svg><use href="#i-play"/></svg>Open the throughput playground</button><span class="sim">interactive · simulation</span></div>
-        <div class="demo" id="demo-kafka" data-demo="kafka" hidden></div>
-        <div class="case" hidden>
-          <ul><li>Profiled and debugged bottlenecks along the way.</li></ul>
-          <a class="link" href="https://github.com/sarathsundarh/BD_yetanother_kafka" target="_blank" rel="noreferrer">GitHub <svg><use href="#i-arrow"/></svg></a>
-        </div>
-        <div class="peek" aria-hidden="true"><canvas data-peek="kafka"></canvas><span>live · messages across partitions</span></div>
-      </article>
-
-      <article class="proj" id="p-mend" data-skills="TypeScript Deno Supabase PostgreSQL PostGIS H3 Pricing Swift SwiftUI Hackathon" tabindex="0">
-        <div class="proj-top">
-          <h3>Mend <span class="gold">Finalist · Top 15 · USC Origin Hackathon 2026</span></h3>
+          <h3 id="t-mend">Mend</h3>
           <svg class="doodle" viewBox="0 0 120 70" aria-hidden="true"><path d="M22 20 l12 -7 l12 7 v14 l-12 7 l-12 -7 z M46 20 l12 -7 l12 7 v14 l-12 7 l-12 -7 z M34 41 l12 -7 l12 7 v14 l-12 7 l-12 -7 z M58 41 l12 -7 l12 7 v14 l-12 7 l-12 -7 z M96 18 a8 8 0 1 0 0.1 0 M96 26 v14 M86 56 q10 -8 20 0"/></svg>
         </div>
-        <p class="tagline">One photo becomes a verified street-repair report · 5-person team · Sep 2026</p>
-        <ul>
-          <li>Built Mend's <b>surge pricing</b>: each H3 hexagon (about a city block) inside a city bounty gets a live 1×–5× multiplier that rises where coverage is thin or stale and cools as reports pile up, so the crowd spreads out instead of crowding one corner.</li>
-          <li>Wrote the <b>reward rate card</b> (severity × asset tier × first finder × zone, with a daily cap), itemized in-app receipts, bounty budgets, and pay-per-visit sponsored campaigns with geofenced check-ins and one-time till codes.</li>
-        </ul>
-        <div class="tags"><span>TypeScript</span><span>Deno</span><span>Supabase Edge Functions</span><span>PostgreSQL / PostGIS</span><span>H3</span><span>SwiftUI</span></div>
-        <div class="demo-row"><button class="try" type="button" aria-expanded="false" aria-controls="demo-mend"><svg><use href="#i-play"/></svg>Try the surge map</button><span class="sim">interactive · simulation</span></div>
+        <p class="badges"><span class="gold">Finalist · Top 15 teams · USC Origin Hackathon 2026</span></p>
+        <p class="tagline">Incentives for street-condition reporting · five-person team · Sep 2026</p>
+        <p class="outcome">Built location-based rewards for a five-person hackathon team. Reward multipliers increased in areas with sparse or outdated reports and decreased as coverage improved.</p>
+        <div class="tags"><span>TypeScript</span><span>Deno</span><span>Supabase Edge Functions</span><span>PostgreSQL / PostGIS</span><span>H3</span></div>
+        <div class="actions">
+          <button class="details" type="button" aria-haspopup="dialog">View project details</button>
+          <button class="try" type="button" aria-expanded="false" aria-controls="demo-mend"><svg><use href="#i-play"/></svg>Try the surge map simulation</button>
+        </div>
         <div class="demo" id="demo-mend" data-demo="mend" hidden></div>
         <div class="case" hidden>
-          <ul>
-            <li>One shared pricing module prices both the heat map and the payout, and each report is priced before it's saved, so the number a player sees on the map is the number they're paid, and a report can't cool its own cell.</li>
-            <li>Bounties can carry a points budget and stop heating the map once it's spent, so buyer spend stays predictable. 100 points = $1.</li>
-            <li>Sponsored campaigns: a brand pays per verified store visit. A player files a real report within 300 m of a store, checks in within 75 m, and gets a code that the store redeems once from the dashboard.</li>
-            <li>Rebuilt the work on top of teammates' gift-card redemption, danger-zone and first-finder rules, which pay nothing inside danger zones and 40% for confirmations, keeping those rules unchanged.</li>
-            <li>Covered by 11 Deno unit tests for pricing and campaigns, plus 39 end-to-end checks that run every database migration and the demo seed in PGlite with PostGIS.</li>
-            <li>Team context: the five of us shipped an iOS app (SwiftUI) with on-device damage models, server-side vision verification and a city work-queue dashboard, backed by a 51-person survey and an analysis of 1.77M LA 311 requests.</li>
-          </ul>
-          <a class="link" href="https://devpost.com/software/mend-do4rht" target="_blank" rel="noreferrer">Devpost <svg><use href="#i-arrow"/></svg></a>
-          <a class="link" href="https://github.com/DY0810/origin-hackathon" target="_blank" rel="noreferrer" style="margin-left:14px">GitHub <svg><use href="#i-arrow"/></svg></a>
+          <dl class="ev">
+            <dt>My contribution</dt><dd>The reward calculation, itemized receipts, bounty budgets, and sponsored check-in flows. Each H3 hexagon (about a city block) gets a live 1×–5× multiplier; the rate card is severity × asset tier × first finder × zone, with a daily cap.</dd>
+            <dt>Decision and trade-off</dt><dd>One shared pricing module prices both the heat map and the payout, and each report is priced before it's saved. The number a player sees on the map is the number they're paid, and a report can't cool its own cell. The cost: every pricing change touches both surfaces at once.</dd>
+            <dt>Also built</dt><dd><ul>
+              <li>Bounty points budgets: a bounty stops heating the map once its budget is spent, so spend stays predictable (100 points = $1).</li>
+              <li>Sponsored campaigns: a brand pays per verified store visit. The player files a real report within 300 m, checks in within 75 m, and gets a one-time code the store redeems.</li>
+              <li>Built on top of teammates' gift-card redemption, danger-zone and first-finder rules without changing them.</li>
+            </ul></dd>
+            <dt>Evidence</dt><dd>11 Deno unit tests for pricing and campaigns, plus 39 end-to-end checks that run every database migration and the demo seed in PGlite with PostGIS. Code is on GitHub; the Devpost covers the team's full build.</dd>
+            <dt>Team context</dt><dd>The five of us shipped an iOS app (SwiftUI) with on-device damage models, server-side vision verification and a city work-queue dashboard, backed by a 51-person survey and an analysis of 1.77M LA 311 requests.</dd>
+            <dt>Not done yet</dt><dd>A hackathon build running on seeded demo data. No real payouts or live city usage.</dd>
+          </dl>
+          <p class="links"><a class="link" href="https://devpost.com/software/mend-do4rht" target="_blank" rel="noreferrer">Devpost <svg><use href="#i-arrow"/></svg></a><a class="link" href="https://github.com/DY0810/origin-hackathon" target="_blank" rel="noreferrer">GitHub <svg><use href="#i-arrow"/></svg></a></p>
         </div>
-        <div class="peek" aria-hidden="true"><canvas data-peek="mend"></canvas><span>live · surge heat across city blocks</span></div>
       </article>
+
+      <article class="proj" id="p-kafka" data-skills="Java Kafka Systems Concurrency" aria-labelledby="t-kafka">
+        <div class="proj-top">
+          <h3 id="t-kafka">Yet Another Kafka</h3>
+          <svg class="doodle" viewBox="0 0 120 70" aria-hidden="true"><path d="M6 14 h22 v42 h-22 z M92 14 h22 v42 h-22 z M34 20 h52 M34 35 h52 M34 50 h52 M46 16 h6 v8 h-6 z M62 31 h6 v8 h-6 z M40 46 h6 v8 h-6 z M72 46 h6 v8 h-6 z M80 17 l6 3 l-6 3 M80 32 l6 3 l-6 3 M80 47 l6 3 l-6 3"/></svg>
+        </div>
+        <p class="badges"><span class="chip">Open source</span></p>
+        <p class="tagline">A pub-sub message broker built from raw TCP sockets, no frameworks · 2023</p>
+        <p class="outcome">20+ topics, 80+ partitions and persistent offset tracking in Java; handled 250+ concurrent clients at 35,000+ messages/sec with sub-50 ms p95 latency.</p>
+        <div class="tags"><span>Java</span><span>TCP sockets</span><span>Multithreading</span></div>
+        <div class="actions">
+          <button class="details" type="button" aria-haspopup="dialog">View project details</button>
+          <button class="try" type="button" aria-expanded="false" aria-controls="demo-kafka"><svg><use href="#i-play"/></svg>Open the throughput simulation</button>
+        </div>
+        <div class="demo" id="demo-kafka" data-demo="kafka" hidden></div>
+        <div class="case" hidden>
+          <dl class="ev">
+            <dt>What it is</dt><dd>A Kafka-style broker in Java: topics split into partitions, producers and consumers over raw TCP sockets, and consumer offsets persisted so a client can resume where it stopped. Bottlenecks were profiled and debugged along the way.</dd>
+            <dt>How the numbers were measured</dt><dd>The benchmark conditions (hardware, message size, persistence settings, run length) aren't documented on this site yet. Until they are, read 35,000+ messages/sec and sub-50 ms p95 as results from my own test runs, not a reproducible benchmark.</dd>
+            <dt>Evidence</dt><dd>Source code on GitHub. The throughput playground on the card is a simulation of the idea, not the broker itself.</dd>
+          </dl>
+          <p class="links"><a class="link" href="https://github.com/sarathsundarh/BD_yetanother_kafka" target="_blank" rel="noreferrer">GitHub <svg><use href="#i-arrow"/></svg></a></p>
+        </div>
+      </article>
+    </div>
+
+    <h3 class="sub-h">More work</h3>
+    <div class="projects more">
+      <article class="proj" id="p-reglens" data-skills="Python LangGraph LangChain RAG pgvector PostgreSQL Agents Evaluation" aria-labelledby="t-reglens">
+        <div class="proj-top">
+          <h3 id="t-reglens">RegLens</h3>
+          <svg class="doodle" viewBox="0 0 120 70" aria-hidden="true"><path d="M14 6 h40 l12 12 v46 h-52 z M54 6 v12 h12 M22 28 h30 M22 38 h34 M22 48 h22 M86 44 a16 16 0 1 0 0.1 0 M98 56 l14 12 M80 44 l5 5 l9 -10"/></svg>
+        </div>
+        <p class="badges"><span class="chip">In progress</span></p>
+        <p class="tagline">AI policy review with cited evidence and human approval · 2026 – present</p>
+        <p class="outcome">Checks internal policies against regulatory requirements, retrieves evidence from 25,000+ documents, and flags gaps with citations. Remediation goes through human approval.</p>
+        <div class="tags"><span>Python</span><span>LangGraph</span><span>LangChain</span><span>pgvector</span><span>PostgreSQL</span></div>
+        <div class="actions"><button class="details" type="button" aria-haspopup="dialog">View project details</button></div>
+        <div class="case" hidden>
+          <dl class="ev">
+            <dt>What it does</dt><dd>Four LangGraph agents retrieve evidence, compare policy text against requirements, and flag gaps with citations. Nothing changes without human approval.</dd>
+            <dt>Evaluation so far</dt><dd>A 500+ query evaluation harness measures retrieval and citation quality: 92% recall@5 and 96% citation accuracy.</dd>
+            <dt>Not done yet</dt><dd>Still in progress. The corpus breakdown, how queries were labeled, and baseline comparisons aren't published yet, and there's no public demo. Working toward Palantir Foundry / AIP ontology integration.</dd>
+          </dl>
+        </div>
+      </article>
+
+      <article class="proj" id="p-nft" data-skills="Python PyTorch Stable-Diffusion QLoRA CNNs Research" aria-labelledby="t-nft">
+        <div class="proj-top">
+          <h3 id="t-nft">NFTGenesis</h3>
+          <svg class="doodle" viewBox="0 0 120 70" aria-hidden="true"><path d="M8 6 h70 v58 h-70 z M8 50 l20 -20 l16 14 l12 -10 l22 20 M60 20 a5 5 0 1 0 0.1 0 M90 14 h8 v8 h-8 z M102 14 h8 v8 h-8 z M90 26 h8 v8 h-8 z M102 38 h8 v8 h-8 z M90 50 h8 v8 h-8 z"/></svg>
+        </div>
+        <p class="badges"><span class="chip">IEEE InC4 2024 paper</span></p>
+        <p class="tagline">Generated images with tamper-evident hidden signatures · four-person team · Sep 2024</p>
+        <p class="outcome">Fine-tuned Stable Diffusion with QLoRA (over 90% fewer trainable parameters) and trained encoder/decoder CNNs for signatures with 98% verification accuracy.</p>
+        <div class="tags"><span>PyTorch</span><span>Stable Diffusion</span><span>QLoRA</span><span>CNNs</span></div>
+        <div class="actions">
+          <button class="details" type="button" aria-haspopup="dialog">View project details</button>
+          <button class="try" type="button" aria-expanded="false" aria-controls="demo-nft"><svg><use href="#i-play"/></svg>Decode a signature (simulation)</button>
+        </div>
+        <div class="demo" id="demo-nft" data-demo="nft" hidden></div>
+        <div class="case" hidden>
+          <dl class="ev">
+            <dt>Team and credit</dt><dd>A four-person team project. I authored the IEEE InC4 2024 paper with the team: “NFTGenesis: An NFT Generation and Authentication System with Market Intelligence Using Deep Learning Based Steganography.”</dd>
+            <dt>Evidence</dt><dd>The published paper on IEEE Xplore. The decoder on the card is a simulation for this site.</dd>
+          </dl>
+          <p class="links"><a class="link" href="https://ieeexplore.ieee.org/document/10649392" target="_blank" rel="noreferrer">IEEE paper <svg><use href="#i-arrow"/></svg></a></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="tile t-cta" aria-label="Résumé and email">
+    <p><b>Hiring for Summer 2027?</b> I'm looking for software engineering and applied AI internships.</p>
+    <div class="cta">
+      <a class="btn primary" href="resume.pdf" target="_blank" rel="noopener"><svg><use href="#i-dl"/></svg>Download résumé</a>
+      <a class="btn" href="mailto:harisara@usc.edu"><svg><use href="#i-mail"/></svg>Email me</a>
     </div>
   </section>
 
   <!-- ============ EXPERIENCE ============ -->
-  <section class="tile t-experience row" id="experience" data-section="Experience">
-    <h2 class="sec">Experience <span class="hint">drag the line to travel</span></h2>
+  <section class="tile t-experience" id="experience" data-section="Experience" aria-labelledby="exp-h">
+    <h2 class="sec" id="exp-h">Experience</h2>
+    <div class="tl">
+      <div class="tl-item" id="x-idfc">
+        <h3>Application Engineer</h3>
+        <p class="org">IDFC FIRST Bank · Bangalore, India</p>
+        <p class="when">Jul 2024 – Aug 2026 · previously intern, Jan – Jun 2024</p>
+        <ul>
+          <li data-skills="Go MCP Agents" id="x-mcp">Built a <b>Go MCP server</b> with the engineering team, choosing a shared tool layer over per-agent integrations for typed schemas and centralized auth; cut CRM and asset lookups from minutes to under <span class="count" data-to="5">5</span> seconds.</li>
+          <li data-skills="SQL PostgreSQL" id="x-sql">Tuned <b>SQL queries and indexes</b> over <span class="count" data-to="50" data-suf="M+">50M+</span> records, cutting API response times by <span class="count" data-to="42" data-suf="%">42%</span>.</li>
+          <li data-skills="Go Python Kafka Kong Microservices">Developed <b>Go and Python microservices</b>, routed REST APIs through Kong with auth and rate limiting, and added Kafka retry handling for upstream outages.</li>
+          <li data-skills="Observability" id="x-obs">Set up <b>service observability</b> with monitoring and failure tracing, helping cut incident resolution time by <span class="count" data-to="35" data-suf="%">35%</span>.</li>
+          <li data-skills="Agents Demos">Demoed loan and asset lookup tools to product and business teams, explained limits and failure cases, and was recognized for the demo at a Quarterly Review.</li>
+          <li data-skills="LLM APIs Python">Prototyped LLM-based cheque field extraction with MiniMax M2.5 for compliance-document automation.</li>
+        </ul>
+      </div>
+      <div class="tl-item" id="x-elem">
+        <h3>AI Research Intern</h3>
+        <p class="org">ElementalsAI · Bangalore, India</p>
+        <p class="when">Jun 2023 – Aug 2023</p>
+        <ul>
+          <li data-skills="Python LLM-APIs Hugging-Face scikit-learn">Built and evaluated multimodal LLM applications with Hugging Face, scikit-learn and the OpenAI API; benchmarked foundation models.</li>
+          <li data-skills="Teaching">Explained AI concepts through a 12-module curriculum with 25+ exercises.</li>
+        </ul>
+      </div>
+    </div>
     <div class="journey" id="journey">
       <svg class="j-map" viewBox="0 0 720 210" aria-hidden="true">
         <path class="j-arc" id="jArc" d="M640 150 C 520 20, 220 10, 110 132 L 96 82"/>
@@ -233,30 +269,6 @@
       <div class="j-ticks" aria-hidden="true"><span>2023</span><span>2024</span><span>2026</span><span>now</span></div>
       <div class="j-card" id="jCard" aria-live="polite"></div>
     </div>
-    <div class="tl">
-      <div class="tl-item" id="x-idfc">
-        <h3>Application Engineer</h3>
-        <p class="org">IDFC FIRST Bank · Bangalore, India</p>
-        <p class="when">Jul 2024 – Aug 2026 · previously intern, Jan – Jun 2024</p>
-        <ul>
-          <li data-skills="Go MCP Agents" id="x-mcp">Built a <b>Go MCP server</b> with the engineering team, choosing a shared tool layer over per-agent integrations for typed schemas and centralized auth; cut CRM and asset lookups from minutes to under <span class="count" data-to="5">5</span> seconds.</li>
-          <li data-skills="Agents Demos">Demoed loan and asset lookup tools to product and business teams, explained limits and failure cases, and was recognized for the demo at a Quarterly Review.</li>
-          <li data-skills="LLM APIs Python">Prototyped LLM-based cheque field extraction with MiniMax M2.5 for compliance-document automation.</li>
-          <li data-skills="Go Python Kafka Kong Microservices">Developed Go and Python microservices, routed REST APIs through Kong with auth and rate limiting, and added Kafka retry handling.</li>
-          <li data-skills="SQL PostgreSQL" id="x-sql">Tuned SQL queries and indexes over <span class="count" data-to="50" data-suf="M+">50M+</span> records, cutting API response times by <span class="count" data-to="42" data-suf="%">42%</span>.</li>
-          <li data-skills="Observability" id="x-obs">Set up service observability with monitoring and failure tracing, helping cut incident resolution time by <span class="count" data-to="35" data-suf="%">35%</span>.</li>
-        </ul>
-      </div>
-      <div class="tl-item" id="x-elem">
-        <h3>AI Research Intern</h3>
-        <p class="org">ElementalsAI · Bangalore, India</p>
-        <p class="when">Jun 2023 – Aug 2023</p>
-        <ul>
-          <li data-skills="Python LLM-APIs Hugging-Face scikit-learn">Built and evaluated multimodal LLM applications with Hugging Face, scikit-learn and the OpenAI API; benchmarked foundation models.</li>
-          <li data-skills="Teaching">Explained AI concepts through a 12-module curriculum with 25+ exercises.</li>
-        </ul>
-      </div>
-    </div>
       <div class="impact" aria-label="Impact at IDFC FIRST Bank">
       <div class="imp" style="--c:var(--blue)"><b><span class="count" data-to="5" data-suf="M+">5M+</span></b><span>customers on the banking systems I worked on</span></div>
       <div class="imp" style="--c:var(--mint)"><b>&lt;<span class="count" data-to="5" data-suf="s">5s</span></b><span>CRM and asset lookups, down from minutes</span></div>
@@ -267,39 +279,36 @@
 
   <div class="t-col">
   <!-- ============ EDUCATION ============ -->
-  <section class="tile t-education row" id="education" data-section="Education">
-    <h2 class="sec">Education</h2>
+  <section class="tile t-education" id="education" data-section="Education" aria-labelledby="edu-h">
+    <h2 class="sec" id="edu-h">Education</h2>
     <div class="tl">
       <div class="tl-item"><h3>MS, Computer Science</h3><p class="org">University of Southern California · Los Angeles</p><p class="when">Expected May 2028 · Analysis of Algorithms, Information Retrieval and Web Search Engines</p></div>
       <div class="tl-item"><h3>B.Tech., Computer Science and Engineering</h3><p class="org">PES University · Bangalore</p><p class="when">May 2024 · GPA 3.7/4.0</p></div>
     </div>
   </section>
-  <!-- ============ NOTES ============ -->
-  <section class="tile t-notes row" id="notes" data-section="Notes">
-    <h2 class="sec">Notes</h2>
-    <a class="pub note" href="pages/ai-sarath.html">
-      <span>How I built AI Sarath</span>
-      <small class="muted-s">A curated knowledge base, BM25 retrieval, citations you can check, tools that move the page, and the evals it has to pass. · 6 min read <svg><use href="#i-arrow"/></svg></small>
-    </a>
-  </section>
   <!-- ============ ACHIEVEMENTS ============ -->
-  <section class="tile t-achievements row" id="achievements" data-section="Achievements">
-    <h2 class="sec">Achievements</h2>
-    <div class="awards">
-      <button class="award flip" id="a-calhacks" type="button" aria-pressed="false">
-        <span class="face front"><span class="medal gold">2nd</span><b>Anthropic's Claude for Public Benefit track</b><span class="a-meta">Cal Hacks 13.0 · 2026</span><span class="a-hint">tap for the story ↻</span></span>
-        <span class="face back"><b>Drigil</b><span>Smart-glasses job coaching that the three of us built in 36 hours at the Palace of Fine Arts in San Francisco.</span><span class="a-link" data-href="pages/drigil.html">Read the case study →</span></span>
-      </button>
-      <button class="award flip" type="button" aria-pressed="false">
-        <span class="face front"><span class="medal">Finalist</span><b>USC Origin Hackathon, Top 15 teams</b><span class="a-meta">2026 · Mend</span><span class="a-hint">tap for the story ↻</span></span>
-        <span class="face back"><b>Mend</b><span>One photo becomes a verified street-repair report. I built the surge pricing and rewards engine for our five-person team.</span><span class="a-link" data-jump="#p-mend">See the project →</span></span>
-      </button>
-      <div class="award"><span class="face front"><span class="medal">1st</span><b>SpaceJam</b><span class="a-meta">Hackerspace club hackathon · 2021</span></span></div>
-      <div class="award"><span class="face front"><span class="medal">×7</span><b>Merit scholarships</b><span class="a-meta">academic</span></span></div>
-      <div class="award"><span class="face front"><span class="medal">Lead</span><b>Junior Lead</b><span class="a-meta">PredictThis AI Club</span></span></div>
-      <button class="award next-award" type="button" data-jump="#contact"><span class="face front"><span class="medal">Next</span><b>A Summer 2027 internship</b><span class="a-meta">loading…</span><span class="load" aria-hidden="true"><i></i></span><span class="a-hint">your team? →</span></span></button>
-    </div>
-    <h2 class="sec small">Publication</h2>
+  <section class="tile t-achievements" id="achievements" data-section="Achievements" aria-labelledby="ach-h">
+    <h2 class="sec" id="ach-h">Achievements</h2>
+    <ul class="awards">
+      <li class="award" id="a-calhacks">
+        <span class="medal gold">2nd</span>
+        <div><b>Anthropic's Claude for Public Benefit track</b><span class="a-meta">Cal Hacks 13.0 · 2026 · Drigil</span>
+          <button class="story-btn" type="button" aria-expanded="false" aria-controls="st-calhacks">Read the story</button>
+          <p class="story" id="st-calhacks" hidden>Smart-glasses job coaching that the three of us built in 36 hours at the Palace of Fine Arts in San Francisco. <a href="pages/drigil.html">Case study</a></p>
+        </div>
+      </li>
+      <li class="award" id="a-origin">
+        <span class="medal">Finalist</span>
+        <div><b>USC Origin Hackathon, Top 15 teams</b><span class="a-meta">2026 · Mend</span>
+          <button class="story-btn" type="button" aria-expanded="false" aria-controls="st-origin">Read the story</button>
+          <p class="story" id="st-origin" hidden>Incentives for street-condition reporting. I built the reward calculation, receipts, bounty budgets and sponsored check-ins for our five-person team. <a href="#p-mend">See the project</a></p>
+        </div>
+      </li>
+      <li class="award"><span class="medal">1st</span><div><b>SpaceJam</b><span class="a-meta">Hackerspace club hackathon · 2021</span></div></li>
+      <li class="award"><span class="medal">×7</span><div><b>Merit scholarships</b><span class="a-meta">Academic</span></div></li>
+      <li class="award"><span class="medal">Lead</span><div><b>Junior Lead</b><span class="a-meta">PredictThis AI Club</span></div></li>
+    </ul>
+    <h3 class="sub-h">Publication</h3>
     <a class="pub" href="https://ieeexplore.ieee.org/document/10649392" target="_blank" rel="noreferrer">
       <span>“NFTGenesis: An NFT Generation and Authentication System with Market Intelligence Using Deep Learning Based Steganography”</span>
       <small>IEEE InC4 · 2024 <svg><use href="#i-arrow"/></svg></small>
@@ -307,9 +316,39 @@
   </section>
   </div>
 
+  <!-- ============ ASK ============ -->
+  <section class="tile t-ask ask" id="ask" data-section="Ask AI Sarath" aria-labelledby="ask-h">
+    <div class="ask-side">
+      <h2 class="sec" id="ask-h">Ask about my work</h2>
+      <p class="ask-intro">This AI assistant answers using a curated knowledge base about my experience and projects, with links to its sources. It can make mistakes; use the linked material to verify details.</p>
+      <span class="demo-tag" id="chatMode">checking the live model…</span>
+      <ol class="flow-steps how">
+        <li><b>Retrieve</b><span>BM25 search over 23 hand-written facts</span></li>
+        <li><b>Answer</b><span>Gemini replies using only those facts</span></li>
+        <li><b>Cite</b><span>source ids are checked on the server before they're shown</span></li>
+      </ol>
+      <a class="link" href="pages/ai-sarath.html">How I built it, with eval results <svg><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="ask-main">
+      <div class="chat" id="chat" aria-live="polite">
+        <div class="msg ai"><span class="av" aria-hidden="true"></span><div class="bubble-t">Hi, I'm the AI assistant on Sarath's site. I answer in his voice from a curated knowledge base about his work, and link my sources. If something isn't covered, I'll say so.</div></div>
+      </div>
+      <div class="suggest" id="suggest">
+        <button type="button" data-q="0">What backend systems have you built?</button>
+        <button type="button" data-q="1">What was your contribution to Drigil?</button>
+        <button type="button" data-q="2">What roles are you seeking?</button>
+      </div>
+      <form class="ask-input" id="askForm">
+        <label class="vh" for="askBox">Your question</label>
+        <input id="askBox" placeholder="Ask about my work…" autocomplete="off" maxlength="1000" />
+        <button type="submit" aria-label="Send question"><svg><use href="#i-send"/></svg></button>
+      </form>
+    </div>
+  </section>
+
   <!-- ============ TECH STACK ============ -->
-  <section class="tile t-stack row" id="stack" data-section="Tech Stack">
-    <h2 class="sec">Tech Stack <span class="hint">drag the nodes · hover a skill · click to jump to where I used it</span></h2>
+  <section class="tile t-stack" id="stack" data-section="Tech Stack" aria-labelledby="stack-h">
+    <h2 class="sec" id="stack-h">Tech stack <span class="hint">hover or tap a skill to see where I used it</span></h2>
     <div class="constellation" id="constellation" role="img" aria-label="Skills graph connecting each skill to the projects and roles that used it">
       <canvas id="skillsCanvas"></canvas>
       <div class="c-legend"><span><i class="k-skill"></i>skill</span><span><i class="k-work"></i>project / role</span><button type="button" id="listToggle" aria-expanded="false">List view</button></div>
@@ -322,76 +361,70 @@
     </div>
   </section>
 
-
-
-
+  <!-- ============ NOTES ============ -->
+  <section class="tile t-notes" id="notes" data-section="Notes" aria-labelledby="notes-h">
+    <h2 class="sec" id="notes-h">Notes</h2>
+    <a class="pub note" href="pages/ai-sarath.html">
+      <span>How I built the portfolio assistant</span>
+      <small>Knowledge base, BM25 retrieval, server-checked citations, and the eval run it was tested with <svg><use href="#i-arrow"/></svg></small>
+    </a>
+    <a class="pub note" href="pages/drigil.html">
+      <span>Drigil case study</span>
+      <small>Problem, pipeline, decisions and what we'd do next <svg><use href="#i-arrow"/></svg></small>
+    </a>
+  </section>
 
   <!-- ============ CONTACT ============ -->
-  <section class="tile t-contact row" id="contact" data-section="Contact">
-    <h2 class="sec">Contact</h2>
-    <p class="muted">Hiring for Summer 2027, building something with agents, or just want to say hi?</p>
-    <div class="la-card" aria-live="off">
-      <svg class="loop" viewBox="0 0 320 150" aria-hidden="true"><path class="loop-path" d="M20 120 C 60 20, 150 10, 170 70 S 280 140, 300 40"/><g class="loop-plane"><path d="M-12 -6 L14 0 L-12 6 L-6 0 Z"/></g><circle cx="300" cy="40" r="6" class="loop-end"/></svg>
-      <p class="la-time"><span id="laClock">--:--</span> in Los Angeles</p>
-      <p class="la-sub"><i class="dot"></i> Open to Summer 2027 internships · software engineering and applied AI</p>
+  <section class="tile t-contact" id="contact" data-section="Contact" aria-labelledby="contact-h">
+    <div class="contact-side">
+      <h2 class="sec" id="contact-h">Contact</h2>
+      <p>Hiring for Summer 2027, or building something with agents? Email is the fastest way to reach me.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:harisara@usc.edu"><svg><use href="#i-mail"/></svg>harisara@usc.edu</a>
+        <a class="btn" href="resume.pdf" target="_blank" rel="noopener"><svg><use href="#i-dl"/></svg>Download résumé</a>
+      </div>
+      <p class="la-time muted"><span id="laClock">--:--</span> in Los Angeles</p>
     </div>
-    <form class="contact" id="contactForm">
+    <form class="contact" id="contactForm" novalidate>
       <div class="fields">
-        <input placeholder="Your name (optional)" aria-label="Your name" />
-        <input placeholder="your@email.com" type="email" required aria-label="Your email" />
-        <textarea placeholder="Your message…" required rows="4" aria-label="Message"></textarea>
-        <button type="submit" class="send">Send message</button>
+        <label for="cName">Name <span class="opt">(optional)</span></label>
+        <input id="cName" name="name" autocomplete="name" />
+        <label for="cEmail">Your email</label>
+        <input id="cEmail" name="email" type="email" autocomplete="email" required />
+        <label for="cMsg">Message</label>
+        <textarea id="cMsg" name="message" required rows="4"></textarea>
+        <button type="submit" class="send">Open in my email app</button>
+        <p class="form-note" id="formNote">This opens a pre-filled email to harisara@usc.edu in your email app; nothing is sent from this page.</p>
       </div>
       <svg class="plane" viewBox="0 0 60 40" aria-hidden="true"><path d="M2 20 L58 2 L40 38 L28 24 Z M28 24 L58 2"/></svg>
       <svg class="trail" viewBox="0 0 800 300" preserveAspectRatio="none" aria-hidden="true"><path d="M120 250 C 300 230, 420 120, 560 140 S 760 40, 820 -20"/></svg>
-      <div class="stamp" aria-hidden="true">sent ✓<small>demo · nothing was delivered</small></div>
+      <div class="stamp" aria-hidden="true">opening email ✓<small>check your email app</small></div>
     </form>
   </section>
 
   </div><!-- /bento -->
   </main>
 
-  <!-- ============ FOOTER ============ -->
   <footer>
     <div class="wordmark" aria-hidden="true">Sarath</div>
     <div class="foot">
       <p class="foot-title">Let's build something useful.</p>
       <p class="muted">Open to Summer 2027 internships in software engineering and applied AI.</p>
-      <div class="foot-links">
-        <a href="https://github.com/sarathsundarh" target="_blank" rel="noreferrer" aria-label="GitHub"><svg><use href="#i-gh"/></svg></a>
-        <a href="https://linkedin.com/in/sarathsundarh" target="_blank" rel="noreferrer" aria-label="LinkedIn"><svg><use href="#i-in"/></svg></a>
-        <a href="mailto:harisara@usc.edu" aria-label="Email"><svg><use href="#i-mail"/></svg></a>
-      </div>
+      <nav class="foot-links" aria-label="Elsewhere">
+        <a href="https://github.com/sarathsundarh" target="_blank" rel="noreferrer"><svg><use href="#i-gh"/></svg>GitHub</a>
+        <a href="https://linkedin.com/in/sarathsundarh" target="_blank" rel="noreferrer"><svg><use href="#i-in"/></svg>LinkedIn</a>
+        <a href="mailto:harisara@usc.edu"><svg><use href="#i-mail"/></svg>Email</a>
+        <a href="resume.pdf" target="_blank" rel="noopener"><svg><use href="#i-dl"/></svg>Résumé</a>
+      </nav>
       <div class="foot-meta"><span>Los Angeles, CA</span><span>© 2026 Sarath Sundar Harisaravanan</span></div>
     </div>
   </footer>
 </div>
 
-<!-- right dock -->
-<nav class="dock" aria-label="Sections">
-  <button id="kbtn" aria-label="Open command palette (Ctrl or Command + K)"><svg><use href="#i-search"/></svg><span>Search  ⌘K</span></button>
-  <button id="theme" aria-label="Toggle theme"><svg class="i-light"><use href="#i-moon"/></svg><svg class="i-dark"><use href="#i-sun"/></svg><span>Theme</span></button>
-  <hr />
-  <a href="#about"><svg><use href="#i-user"/></svg><span>About</span></a>
-  <a href="#ask"><svg><use href="#i-chat"/></svg><span>Ask AI Sarath</span></a>
-  <a href="#projects"><svg><use href="#i-folder"/></svg><span>Projects</span></a>
-  <a href="#experience"><svg><use href="#i-brief"/></svg><span>Experience</span></a>
-  <a href="#education"><svg><use href="#i-cap"/></svg><span>Education</span></a>
-  <a href="#stack"><svg><use href="#i-chip"/></svg><span>Tech Stack</span></a>
-  <a href="#achievements"><svg><use href="#i-trophy"/></svg><span>Achievements</span></a>
-  <a href="#notes"><svg><use href="#i-book"/></svg><span>Notes</span></a>
-  <a href="#contact"><svg><use href="#i-mail"/></svg><span>Contact</span></a>
-  <hr />
-  <button class="dock-chat" id="dockChat" type="button" aria-label="Ask AI Sarath"><svg><use href="#i-chat"/></svg><span>Ask AI Sarath</span></button>
-  <button id="dockUp" type="button" aria-label="Back to top"><svg><use href="#i-up"/></svg><span>Back to top</span></button>
-</nav>
-<button class="fab chat-fab" id="chatFab" aria-label="Ask AI Sarath"><svg><use href="#i-chat"/></svg></button>
-<button class="fab up-fab" id="upFab" aria-label="Back to top"><svg><use href="#i-up"/></svg></button>
-
 <!-- case-study overlay -->
 <div class="overlay" id="overlay" hidden>
   <div class="case-panel" role="dialog" aria-modal="true" aria-labelledby="case-title">
-    <button class="close" id="caseClose" aria-label="Close"><svg><use href="#i-x"/></svg></button>
+    <button class="close" id="caseClose" type="button" aria-label="Close project details"><svg><use href="#i-x"/></svg></button>
     <div id="caseBody"></div>
   </div>
 </div>

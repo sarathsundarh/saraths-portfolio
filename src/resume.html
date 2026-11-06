@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Sarath Sundar Harisaravanan · Resume</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet" />
+<style>
+  /* One US-letter page, mirroring the approved LaTeX layout: 9pt body, 0.3in top/bottom, 0.5in sides. */
+  @page { size: letter; margin: 0.3in 0.5in; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Source Serif 4', Georgia, serif; font-size: 8.7pt; line-height: 1.2; color: #111; }
+  a { color: inherit; text-decoration: none; }
+  header { text-align: center; }
+  h1 { font-size: 18pt; font-weight: 700; margin: 0 0 3pt; letter-spacing: .1pt; }
+  .contact { font-size: 8.3pt; }
+  .contact span { white-space: nowrap; } .contact span + span::before { content: '|'; margin: 0 4pt; }
+  .summary { margin: 5pt 0 0; }
+  h2 { font-size: 10.6pt; font-weight: 700; margin: 5.5pt 0 2.5pt; padding-bottom: 1.5pt; border-bottom: .7pt solid #111; }
+  .row { display: flex; justify-content: space-between; gap: 8pt; }
+  .row b { font-weight: 700; }
+  .right { font-weight: 700; font-size: 8.6pt; white-space: nowrap; }
+  .sub { font-size: 8.6pt; font-style: italic; margin: 1pt 0 0; }
+  .item { margin-top: 3pt; }
+  ul { margin: 1.5pt 0 0; padding-left: 13pt; }
+  li { margin: .3pt 0; }
+  .skills p { margin: 1pt 0; }
+  .u { text-decoration: underline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Sarath Sundar Harisaravanan</h1>
+  <div class="contact"><span>Los Angeles, CA</span><span><a href="mailto:harisara@usc.edu">harisara@usc.edu</a></span><span><a href="https://linkedin.com/in/sarathsundarh">linkedin.com/in/sarathsundarh</a></span><span><a href="https://github.com/sarathsundarh">github.com/sarathsundarh</a></span><span><a href="https://saraths-portfolio.vercel.app">saraths-portfolio.vercel.app</a></span></div>
+</header>
+<p class="summary">USC MS Computer Science student with over two years building backend and AI software at IDFC FIRST Bank. Built agent tools with the engineering team and enjoy turning unfamiliar problems into working software. Most recently, built Drigil with a three-person team, earning 2nd place in Anthropic's Claude for Public Benefit track at Cal Hacks 13.0.</p>
+
+<h2>Education</h2>
+<div class="row"><span><b>University of Southern California</b> | <b>Master of Science in Computer Science</b></span><span class="right">Los Angeles, CA | Expected May 2028</span></div>
+<p class="sub">Coursework: Analysis of Algorithms, Information Retrieval and Web Search Engines</p>
+<div class="row item"><span><b>PES University</b> | <b>B.Tech. in Computer Science and Engineering</b></span><span class="right">Bangalore, India | May 2024</span></div>
+<p class="sub">GPA 3.7/4.0 | Coursework: Data Structures and Its Applications, Big Data, Deep Learning, Operating Systems</p>
+
+<h2>Work Experience</h2>
+<div class="row"><span><b>IDFC FIRST Bank</b> | <b>Application Engineer</b></span><span class="right">Bangalore, India | Jul 2024 – Aug 2026</span></div>
+<p class="sub">Previously Intern, Jan 2024 – Jun 2024. Contributions below span both roles.</p>
+<ul>
+  <li>Built a <b>Go MCP server</b> with the engineering team, choosing a shared tool layer over per-agent API integrations for typed schemas and centralized auth at the cost of an extra service; cut CRM and asset-management lookups from minutes to under 5 seconds.</li>
+  <li><b>Demoed loan and asset lookup tools</b> to product and business teams, explaining limits and failure cases; refined tool outputs using their feedback and received recognition for the demo at a Quarterly Review.</li>
+  <li>Prototyped <b>LLM-based cheque field extraction</b> with MiniMax M2.5 to support compliance-document automation in CRM.</li>
+  <li>Developed Go and Python services in a <b>microservices architecture</b>, routing REST APIs through Kong with authentication and rate limiting; added Kafka retry handling to improve resilience during upstream outages.</li>
+  <li>Delivered tested, documented banking features with product and business teams; tuned <b>SQL queries and indexes</b> over 50M+ records, cutting API response times by 42%.</li>
+  <li>Set up <b>service observability</b> through automated monitoring and failure tracing across internal and third-party integrations, helping cut incident resolution time by 35%.</li>
+</ul>
+<div class="row item"><span><b>ElementalsAI</b> | <b>AI Research Intern</b></span><span class="right">Bangalore, India | Jun 2023 – Aug 2023</span></div>
+<ul>
+  <li>Built and evaluated Python <b>multimodal LLM applications</b> using Hugging Face, scikit-learn, and the OpenAI API; benchmarked foundation models across transformer and generative architectures.</li>
+  <li>Explained AI concepts through a <b>12-module curriculum</b>, 25+ exercises, and documented implementation examples.</li>
+</ul>
+
+<h2>Projects</h2>
+<div class="row"><span><b><a class="u" href="https://devpost.com/software/drigil">Drigil</a></b> | Claude, Cartesia, SpacetimeDB, Factory Droid</span><span class="right">Oct 2026</span></div>
+<p class="sub">2nd place, Anthropic's Claude for Public Benefit track, Cal Hacks 13.0</p>
+<ul>
+  <li>Built smart-glasses job coaching for people with intellectual and developmental disabilities in a three-person team over 36 hours; combined demonstration keyframes and word-level transcripts into a <b>structured task specification</b> with Claude.</li>
+  <li>Implemented <b>confidence-gated vision checks</b> and cached coaching audio in a cloned supervisor voice; adapted prompt support as workers gained mastery.</li>
+  <li>Used a <b>sandboxed remediation agent</b> to rewrite repeatedly failed steps; required supervisor review of before-and-after instructions and approval before live replacement.</li>
+</ul>
+<div class="row item"><span><b>RegLens</b> | Python, LangGraph, LangChain, pgvector, PostgreSQL</span><span class="right">2026 – Present</span></div>
+<ul>
+  <li>Built an <b>AI policy-review platform</b> that checks internal policies against regulatory requirements, retrieves evidence from 25,000+ documents, and flags gaps with citations; routed remediation through human approval.</li>
+  <li>Orchestrated four LangGraph agents and built a <b>500+ query evaluation harness</b> to measure retrieval and citation quality, achieving 92% recall@5 and 96% citation accuracy.</li>
+</ul>
+<div class="row item"><span><b><a href="https://ieeexplore.ieee.org/document/10649392">NFTGenesis</a></b> | Python, PyTorch, Stable Diffusion, QLoRA, CNNs</span><span class="right">Sep 2024</span></div>
+<ul>
+  <li>Built an image generation and authentication platform in a four-person team; fine-tuned <b>Stable Diffusion with QLoRA</b>, reducing trainable parameters by over 90%.</li>
+  <li>Trained paired encoder and decoder <b>CNNs</b> for tamper-evident image signatures, achieving 98% verification accuracy; authored the IEEE InC4 2024 paper with the team.</li>
+</ul>
+
+<h2>Skills</h2>
+<div class="skills">
+  <p><b>Programming:</b> Python, SQL, Go, Java, TypeScript, JavaScript</p>
+  <p><b>System Design &amp; Integration:</b> Microservices design, REST APIs, Kong, Kafka, PostgreSQL, relational data modeling</p>
+  <p><b>Agentic AI:</b> MCP, tool integration, LangGraph, LangChain, RAG, pgvector, LLM APIs, human-in-the-loop workflows</p>
+  <p><b>Evaluation &amp; Observability:</b> LLM evaluation, retrieval metrics, citation checks, monitoring, failure tracing, testing</p>
+  <p><b>Product Development:</b> React, Next.js, Git, technical documentation, AI-assisted development</p>
+  <p><b>Research Publication:</b> NFTGenesis, IEEE InC4 2024 | <a class="u" href="https://ieeexplore.ieee.org/document/10649392">IEEE Paper</a></p>
+  <p><b>Achievements &amp; Activities:</b> 2nd place, Anthropic's Claude for Public Benefit track, Cal Hacks 13.0 (2026); Finalist, Top 15 teams, USC Origin Hackathon 2026 (<a class="u" href="https://devpost.com/software/mend-do4rht">Mend</a>); 1st place, SpaceJam (Hackerspace club hackathon) 2021; 7 merit scholarships; Junior Lead, PredictThis AI Club</p>
+</div>
+</body>
+</html>

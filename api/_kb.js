@@ -92,8 +92,8 @@ export const KB = [
     text: `Sarath uses AI-assisted development. After an Anthropic multi-agent workshop he described his approach: a read-only critic agent that reviews changes, shared rules in a CLAUDE.md file, and fewer agents with clearer briefs and deadlines, which he found led to fewer broken handoffs and less rework. No measured speedup is recorded.`,
   },
   {
-    id: 'ai-sarath', title: 'How this chat works', target: '#notes',
-    text: `AI Sarath is this chat. It answers only from a curated knowledge base of Sarath's resume facts, retrieved with BM25, using a Gemini model on a Vercel serverless function. Every answer cites its sources, the page can scroll to and circle what it cites, inputs are length-limited and rate-limited, and it says so when it doesn't know something.`,
+    id: 'ai-sarath', title: 'How this chat works', target: '#ask',
+    text: `The chat on this page is an AI assistant that answers in Sarath's voice from a curated knowledge base of facts about his work, retrieved with BM25, using a Gemini model on a Vercel serverless function. Answers list the facts they used; the server drops any citation that wasn't retrieved, the page can scroll to what it cites, inputs are length- and rate-limited, and it says so when the knowledge base doesn't cover something. It can make mistakes, so the linked sources are there to verify details.`,
   },
 ];
 
