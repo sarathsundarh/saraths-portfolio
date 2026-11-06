@@ -1,10 +1,19 @@
-/* ===== achievements: a plain list; stories open with a disclosure button ===== */
-.awards { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.award { display: flex; gap: 12px; align-items: flex-start; padding: 0; }
-.award > div { min-width: 0; }
-.award b { display: block; font-weight: 600; font-size: 15px; line-height: 1.35; }
-.award .a-meta { display: block; font-size: 13px; color: var(--muted); }
-.medal { flex: none; min-width: 64px; text-align: center; font-family: 'Instrument Serif', serif; font-size: 20px; line-height: 1; padding: 7px 8px; border-radius: 10px; border: 1px solid var(--rule); background: var(--panel); }
-.medal.gold { background: var(--yellow); color: #1B1A2E; border-color: transparent; }
-.story-btn { margin-top: 4px; padding: 2px 0; font: inherit; font-size: 13px; color: var(--accent); background: none; border: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-.story { margin: 6px 0 2px; font-size: 14px; line-height: 1.55; }
+
+/* ===== achievement cards ===== */
+.awards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 640px) { .awards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.award { position: relative; display: block; width: 100%; height: 150px; padding: 0; border: 0; background: none; font: inherit; color: var(--ink); text-align: left; perspective: 900px; }
+.award .face { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 4px; padding: 14px; border: 1px solid var(--rule); border-radius: 14px; background: var(--paper); backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: transform .6s cubic-bezier(.3,1.2,.5,1); overflow: hidden; }
+.award .face b { font-weight: 500; font-size: 13px; line-height: 1.35; }
+.award .a-meta { font-size: 11px; color: var(--muted); }
+.award .a-hint { margin-top: auto; font-size: 10.5px; color: var(--accent); }
+.award .back { transform: rotateY(180deg); background: var(--ink); color: var(--paper); border-color: var(--ink); font-size: 12px; line-height: 1.5; }
+.award .back b { color: #FFE07A; }
+.award .a-link { margin-top: auto; color: #FFE07A; font-size: 11.5px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.award.flip { cursor: pointer; }
+.award.flip:hover .front { border-color: var(--accent); transform: translateY(-2px); }
+.award.flipped .front { transform: rotateY(-180deg); }
+.award.flipped .back { transform: rotateY(0deg); }
+.medal { align-self: flex-start; font-family: 'Instrument Serif', serif; font-size: 22px; line-height: 1; padding: 6px 10px; border-radius: 10px; border: 1px solid var(--rule); background: var(--panel); margin-bottom: 4px; }
+.medal.gold { background: color-mix(in srgb, var(--gold) 30%, var(--paper)); border-color: color-mix(in srgb, var(--gold) 60%, transparent); }
+@media (prefers-reduced-motion: reduce) { .award .face { transition: none; } }
