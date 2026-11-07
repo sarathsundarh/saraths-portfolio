@@ -13,7 +13,7 @@ export const KB = [
   },
   {
     id: 'education', title: 'Education', target: '#education',
-    text: `USC: Master of Science in Computer Science, Los Angeles, expected May 2028. Coursework includes Analysis of Algorithms and Information Retrieval and Web Search Engines. PES University, Bangalore: B.Tech. in Computer Science and Engineering, May 2024, GPA 3.7/4.0. PES coursework included Data Structures and Its Applications, Compiler Design, Operating Systems, Big Data and Deep Learning. There is no USC GPA on record.`,
+    text: `Sarath went to middle school in New Jersey. USC: Master of Science in Computer Science, Los Angeles, expected May 2028. Coursework includes Analysis of Algorithms and Information Retrieval and Web Search Engines. PES University, Bangalore: B.Tech. in Computer Science and Engineering, May 2024, GPA 3.7/4.0. PES coursework included Data Structures and Its Applications, Compiler Design, Operating Systems, Big Data and Deep Learning. There is no USC GPA on record.`,
   },
   {
     id: 'idfc-role', title: 'IDFC FIRST Bank · role', target: '#x-idfc',

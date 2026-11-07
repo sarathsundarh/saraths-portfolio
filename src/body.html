@@ -187,19 +187,19 @@
 
   <!-- ============ EXPERIENCE ============ -->
   <section class="tile t-experience row" id="experience" data-section="Experience">
-    <h2 class="sec">Experience <span class="hint">drag the line to travel</span></h2>
+    <h2 class="sec">Experience <span class="hint">spin the globe · scrub the route</span></h2>
     <div class="journey" id="journey">
-      <svg class="j-map" viewBox="0 0 720 210" aria-hidden="true">
-        <path class="j-arc" id="jArc" d="M640 150 C 520 20, 220 10, 110 132 L 96 82"/>
-        <path class="j-arc-done" id="jArcDone" d="M640 150 C 520 20, 220 10, 110 132 L 96 82"/>
-        <g class="j-city" transform="translate(640 150)"><circle r="7"/><text x="0" y="28" text-anchor="middle">Bangalore</text><text class="j-coord" x="0" y="44" text-anchor="middle">12.97°N 77.59°E</text></g>
-        <g class="j-city" transform="translate(110 132)"><circle r="7"/><text x="0" y="28" text-anchor="middle">Los Angeles</text><text class="j-coord" x="0" y="44" text-anchor="middle">34.05°N 118.24°W</text></g>
-        <g class="j-city" transform="translate(96 82)"><circle r="7"/><text x="16" y="-12">San Francisco</text><text class="j-coord" x="16" y="4">37.77°N 122.42°W</text></g>
-        <g class="j-me" id="jMe"><circle r="13" class="j-me-bg"/><g class="j-glasses"><circle cx="-5" cy="0" r="4"/><circle cx="5" cy="0" r="4"/><path d="M-1 -.5 q1 -1.2 2 0"/></g></g>
-      </svg>
-      <input type="range" id="jRange" min="0" max="6" step="1" value="6" aria-label="Move along Sarath's journey" />
-      <div class="j-ticks" aria-hidden="true"><span>2023</span><span>2024</span><span>2026</span><span>now</span></div>
-      <div class="j-card" id="jCard" aria-live="polite"></div>
+      <div class="j-globe">
+        <canvas id="jGlobe" role="img" aria-label="A globe tracing Sarath's route: New Jersey, then Bangalore, then Los Angeles, with a trip to San Francisco"></canvas>
+        <span class="j-hint" aria-hidden="true">drag to spin</span>
+      </div>
+      <div class="j-side">
+        <div class="j-card ticket" id="jCard" aria-live="polite"></div>
+        <div class="j-scrub">
+          <input type="range" id="jRange" min="0" max="7" step="1" value="7" aria-label="Move along Sarath's journey" />
+          <div class="j-ticks" id="jTicks" aria-hidden="true"></div>
+        </div>
+      </div>
     </div>
     <div class="tl">
       <div class="tl-item" id="x-idfc">
