@@ -69,8 +69,7 @@
   (function blink() { setTimeout(() => { svg.classList.add('blink'); setTimeout(() => svg.classList.remove('blink'), 130); blink(); }, 2600 + Math.random() * 2800); })();
 
   btn.addEventListener('click', () => {
-    $('#ask').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-    setTimeout(() => $('#askBox')?.focus({ preventScroll: true }), reduce ? 0 : 600);
+    window.__chat?.open(btn);
   });
   window.__companion = { mood, confetti, svg };
 })();

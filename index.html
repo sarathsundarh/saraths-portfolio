@@ -995,6 +995,105 @@ footer { margin-top: 26px; }
 }
 .medal.gold { font-size: 22px; padding: 6px 10px; border-radius: 10px; line-height: 1; }
 @media (max-width: 640px) { .proj .tags span { flex: none; white-space: nowrap; } }
+/* ===== Ask AI Sarath as a floating chat ===== */
+.chat-panel {
+  position: fixed; z-index: 70; right: 92px; bottom: 22px;
+  width: min(400px, calc(100vw - 120px)); height: min(620px, calc(100vh - 44px));
+  display: flex; flex-direction: column; padding: 0; overflow: hidden;
+  background: var(--panel); color: var(--ink);
+  border: 1.5px solid var(--ink); border-radius: 20px;
+  box-shadow: 6px 6px 0 var(--blue), 0 24px 60px rgba(20, 18, 40, .18);
+  opacity: 0; translate: 0 16px; scale: .97; transform-origin: bottom right;
+  transition: opacity .22s ease, translate .26s cubic-bezier(.2,.9,.3,1.15), scale .26s cubic-bezier(.2,.9,.3,1.15);
+}
+.chat-panel.is-open { opacity: 1; translate: 0 0; scale: 1; }
+.chat-panel[hidden] { display: none; }
+.chat-panel.dragging { transition: none; user-select: none; }
+
+.chat-head { display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 16px; border-bottom: 1.5px dashed var(--rule); cursor: grab; touch-action: none; }
+.chat-panel.dragging .chat-head { cursor: grabbing; }
+.chat-head .av { width: 34px; height: 34px; }
+.chat-title { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.chat-title h2 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px; line-height: 1; margin: 0; }
+.chat-title h2 em { color: var(--accent); }
+.chat-title .demo-tag { align-self: flex-start; font-size: 10px; padding: 1px 8px; }
+.chat-close { flex: none; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; }
+.chat-close:hover { background: var(--yellow); color: #1B1A2E; }
+.chat-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+.chat-panel .chat { flex: 1 1 auto; min-height: 0; max-height: none; margin: 0; padding: 14px 14px 6px 16px; overflow-y: auto; overscroll-behavior: contain; }
+.chat-panel .msg .bubble-t { max-width: 90%; font-size: 13.5px; }
+.chat-panel .suggest { margin: 0; padding: 8px 16px 2px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; }
+.chat-panel .suggest button { flex: none; }
+.chat-panel .suggest button { font-size: 11.5px; padding: 6px 10px; }
+.chat-panel .ask-input { margin: 0; padding: 10px 12px 6px 16px; }
+.chat-foot { margin: 0; padding: 0 16px 10px; font-size: 10.5px; color: var(--muted); }
+
+/* launcher pill (replaces the round chat button everywhere) */
+.chat-fab { display: none !important; }
+.chat-launch {
+  position: fixed; z-index: 69; right: 22px; bottom: 22px;
+  display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 20px 0 8px;
+  border-radius: 999px; border: 1.5px solid var(--ink); background: var(--blue); color: #fff;
+  font: inherit; font-size: 13.5px; font-weight: 500; cursor: pointer;
+  box-shadow: 4px 4px 0 var(--yellow); transition: translate .15s, box-shadow .15s, opacity .2s;
+}
+.chat-launch:hover { translate: -1px -1px; box-shadow: 5px 5px 0 var(--yellow); }
+.chat-launch .av { width: 36px; height: 36px; background-color: var(--paper); border: 1.5px solid var(--ink); }
+.chat-launch[aria-expanded="true"] { opacity: 0; pointer-events: none; }
+.chat-launch:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* one-time nudge above the launcher */
+.chat-hint {
+  position: fixed; z-index: 68; right: 22px; bottom: 88px; max-width: 250px;
+  display: flex; gap: 8px; align-items: flex-start; padding: 10px 10px 10px 14px;
+  background: var(--paper); border: 1.5px solid var(--ink); border-radius: 14px 14px 4px 14px;
+  box-shadow: 3px 3px 0 var(--blue); font-size: 12.5px; line-height: 1.45;
+  opacity: 0; translate: 0 8px; pointer-events: none; transition: opacity .3s, translate .3s;
+}
+.chat-hint.on { opacity: 1; translate: 0 0; pointer-events: auto; }
+.chat-hint span { cursor: pointer; }
+.chat-hint button { flex: none; border: 0; background: none; color: var(--muted); font-size: 18px; line-height: 1; cursor: pointer; padding: 0 2px; }
+
+/* "back to chat" after an answer moves the page (phones) */
+.chat-back {
+  position: fixed; z-index: 69; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); translate: -50% 12px;
+  height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--ink);
+  background: var(--paper); color: var(--ink); font: inherit; font-size: 12.5px; box-shadow: 3px 3px 0 var(--blue);
+  opacity: 0; pointer-events: none; transition: opacity .25s, translate .25s;
+}
+.chat-back.on { opacity: 1; translate: -50% 0; pointer-events: auto; }
+
+/* the About tile now has the row to itself */
+.t-about { grid-column: 1 / -1; }
+
+/* tablets: no dock, so the panel sits at the right edge; the back-to-top button moves above the launcher */
+@media (max-width: 1100px) {
+  .chat-panel { right: 22px; width: min(420px, calc(100vw - 44px)); }
+  .up-fab { bottom: 88px; }
+  .chat-hint { bottom: 146px; }
+}
+
+/* phones: a bottom sheet and a compact round launcher */
+@media (max-width: 640px) {
+  .chat-panel {
+    left: 0; right: 0; bottom: 0; width: auto; height: min(80vh, calc(100dvh - 48px));
+    border-radius: 20px 20px 0 0; border-bottom: 0; box-shadow: 0 -12px 40px rgba(20, 18, 40, .22);
+    translate: 0 40px; scale: 1; padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .chat-head { cursor: default; position: relative; padding-top: 18px; }
+  .chat-head::before { content: ''; position: absolute; left: 50%; top: 7px; translate: -50% 0; width: 40px; height: 4px; border-radius: 4px; background: var(--rule); }
+  .chat-panel .suggest { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: 0; padding: 8px 16px 4px; }
+  .chat-panel .suggest::-webkit-scrollbar { display: none; }
+  .chat-panel .suggest button { flex: none; }
+  .chat-panel .ask-input input { font-size: 16px; } /* no iOS zoom on focus */
+  .chat-launch { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); height: 52px; width: 52px; padding: 0; justify-content: center; box-shadow: 3px 3px 0 var(--yellow); }
+  .chat-launch .cl-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .chat-launch .av { width: 40px; height: 40px; }
+  .chat-hint { right: 14px; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+  body.chat-open { overflow: hidden; }
+}
+@media (prefers-reduced-motion: reduce) { .chat-panel, .chat-launch, .chat-hint, .chat-back { transition: none; } }
 </style>
 </head>
 <body>
@@ -1220,38 +1319,6 @@ footer { margin-top: 26px; }
   </div>
   </div>
 
-  <!-- ============ ASK AI SARATH ============ -->
-  <section class="tile t-ask row ask" id="ask" data-section="Ask AI Sarath">
-    <div class="ask-head">
-      <div>
-        <h2>Ask <em>AI Sarath</em></h2>
-        <p class="sub">Grounded in my resume · cites its sources · can move this page</p>
-      </div>
-      <span class="demo-tag" id="chatMode">preview · scripted answers</span>
-    </div>
-    <div class="chat" id="chat" aria-live="polite">
-      <div class="msg ai"><span class="av" aria-hidden="true"></span><div class="bubble-t">Hi! I'm an AI version of Sarath, trained only on his resume and projects. Ask me anything. If I don't know, I'll say so.</div></div>
-    </div>
-    <div class="suggest" id="suggest">
-      <button data-q="0">What did you build at IDFC?</button>
-      <button data-q="1">Tell me about Drigil</button>
-      <button data-q="2">Did you win Cal Hacks?</button>
-      <button data-q="3">Are you open to internships?</button>
-    </div>
-    <form class="ask-input" id="askForm">
-      <input id="askBox" placeholder="Ask me anything about Sarath…" autocomplete="off" aria-label="Ask AI Sarath" />
-      <button type="submit" aria-label="Send"><svg><use href="#i-send"/></svg></button>
-    </form>
-    <div class="flow" aria-label="How an answer is made: your question, retrieve facts from my resume, cite the sources, stream the answer">
-      <div class="flow-track" aria-hidden="true"><i class="flow-dot"></i><i class="flow-dot d2"></i><i class="flow-dot d3"></i></div>
-      <ol class="flow-steps">
-        <li style="--k:0"><b>Question</b><span>you ask</span></li>
-        <li style="--k:1"><b>Retrieve</b><span>BM25 over my resume</span></li>
-        <li style="--k:2"><b>Cite</b><span>every claim gets a source</span></li>
-        <li style="--k:3"><b>Answer</b><span>streams + moves the page</span></li>
-      </ol>
-    </div>
-  </section>
 
   <!-- ============ PROJECTS ============ -->
   <section class="tile t-projects row" id="projects" data-section="Projects">
@@ -1522,13 +1589,38 @@ footer { margin-top: 26px; }
   </footer>
 </div>
 
+<!-- floating chat: Ask AI Sarath -->
+<section class="ask chat-panel" id="ask" role="dialog" aria-modal="false" aria-labelledby="askTitle" hidden>
+  <header class="chat-head">
+    <span class="av" aria-hidden="true"></span>
+    <div class="chat-title">
+      <h2 id="askTitle">Ask <em>AI Sarath</em></h2>
+      <span class="demo-tag" id="chatMode">preview · scripted answers</span>
+    </div>
+    <button class="chat-close" type="button" aria-label="Close chat"><svg><use href="#i-x"/></svg></button>
+  </header>
+  <div class="chat" id="chat" aria-live="polite">
+    <div class="msg ai"><span class="av" aria-hidden="true"></span><div class="bubble-t">Hi! I'm an AI version of Sarath, trained only on his resume and projects. Ask me anything. If I don't know, I'll say so.</div></div>
+  </div>
+  <div class="suggest" id="suggest">
+    <button data-q="0">What did you build at IDFC?</button>
+    <button data-q="1">Tell me about Drigil</button>
+    <button data-q="2">Did you win Cal Hacks?</button>
+    <button data-q="3">Are you open to internships?</button>
+  </div>
+  <form class="ask-input" id="askForm">
+    <input id="askBox" placeholder="Ask me anything about Sarath…" autocomplete="off" aria-label="Ask AI Sarath" />
+    <button type="submit" aria-label="Send"><svg><use href="#i-send"/></svg></button>
+  </form>
+  <p class="chat-foot">Grounded in my resume · cites its sources · <a href="pages/ai-sarath.html">how it works</a></p>
+</section>
+
 <!-- right dock -->
 <nav class="dock" aria-label="Sections">
   <button id="kbtn" aria-label="Open command palette (Ctrl or Command + K)"><svg><use href="#i-search"/></svg><span>Search  ⌘K</span></button>
   <button id="theme" aria-label="Toggle theme"><svg class="i-light"><use href="#i-moon"/></svg><svg class="i-dark"><use href="#i-sun"/></svg><span>Theme</span></button>
   <hr />
   <a href="#about"><svg><use href="#i-user"/></svg><span>About</span></a>
-  <a href="#ask"><svg><use href="#i-chat"/></svg><span>Ask AI Sarath</span></a>
   <a href="#projects"><svg><use href="#i-folder"/></svg><span>Projects</span></a>
   <a href="#experience"><svg><use href="#i-brief"/></svg><span>Experience</span></a>
   <a href="#education"><svg><use href="#i-cap"/></svg><span>Education</span></a>
@@ -1696,7 +1788,7 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
   const wait = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? 0 : ms));
 
   /* ---------------- reveal on scroll ---------------- */
-  const revealEls = $$('h2.sec, .proj, .tl-item, .stack, .ach, .pub, .bio, .contact, .ask');
+  const revealEls = $$('h2.sec, .proj, .tl-item, .stack, .ach, .pub, .bio, .contact');
   
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
   revealEls.forEach((el) => io.observe(el));
@@ -1840,6 +1932,7 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
     markerTimer = setTimeout(() => marker.classList.replace('on', 'off'), 4200);
   }
   function goTo(sel) {
+    if (sel === '#ask') return window.__chat?.open(); // the chat floats; nothing to scroll to
     let el = $(sel); if (!el) return;
     const ring = el.classList.contains('proj') ? $('.proj-top h3', el) : el;
     el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
@@ -1966,13 +2059,7 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
     ask(v, idx);
   });
   // "back to chat" pill after the chat moves the page
-  const back = document.createElement('button');
-  back.className = 'fab'; back.style.cssText = 'left:50%;right:auto;translate:-50% 0;bottom:24px;width:auto;height:38px;padding:0 16px;border-radius:999px;font:inherit;font-size:12px;opacity:0;pointer-events:none';
-  back.textContent = '↩ back to chat'; document.body.appendChild(back);
-  let backT;
-  function showBack() { clearTimeout(backT); backT = setTimeout(() => { back.style.opacity = 1; back.style.pointerEvents = 'auto'; }, 900); }
-  back.onclick = () => { $('#ask').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); back.style.opacity = 0; back.style.pointerEvents = 'none'; };
-  new IntersectionObserver(([e]) => { if (e.isIntersecting) { back.style.opacity = 0; back.style.pointerEvents = 'none'; } }).observe($('#ask'));
+  function showBack() { window.__chat?.afterMove(); }
 
   /* ---------------- project case-study morph ---------------- */
   const overlay = $('#overlay'), caseBody = $('#caseBody');
@@ -2071,7 +2158,7 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
     if (e.isIntersecting) links.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
   }), { rootMargin: '-45% 0px -50% 0px' });
   $$('section[id]').forEach((s) => secIO.observe(s));
-  const openChat = () => { $('#ask').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); setTimeout(() => $('#askBox').focus({ preventScroll: true }), 600); };
+  const openChat = (e) => window.__chat?.toggle(e && e.currentTarget);
   $('#chatFab').onclick = openChat;
   if ($('#dockChat')) $('#dockChat').onclick = openChat;
   if ($('#dockUp')) $('#dockUp').onclick = () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
@@ -2141,6 +2228,7 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
   const items = [];
   $$('section[data-section]').forEach((s) => items.push({ t: s.dataset.section, k: 'section', ic: '§', run: () => go('#' + s.id) }));
   $$('.proj').forEach((p) => items.push({ t: $('h3', p).firstChild.textContent.trim(), k: 'project', ic: '◆', run: () => go('#' + p.id, true) }));
+  items.push({ t: 'Open the AI Sarath chat', k: 'action', ic: '✦', run: () => window.__chat?.open() });
   items.push({ t: 'Drigil case study', k: 'page', ic: '↗', run: () => (location.href = 'pages/drigil.html') });
   items.push({ t: 'How I built AI Sarath', k: 'note', ic: '✎', run: () => (location.href = 'pages/ai-sarath.html') });
   $$('#stackList button[data-skill]').forEach((b) => items.push({ t: b.textContent.trim(), k: 'skill', ic: '#', run: () => b.click() }));
@@ -2169,7 +2257,7 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
     input.setAttribute('aria-activedescendant', shown.length ? `pal-${sel}` : '');
   }
   function askAI(q) {
-    $('#ask').scrollIntoView({ behavior: smooth, block: 'start' });
+    window.__chat?.open();
     const box = $('#askBox'); box.value = q;
     setTimeout(() => $('#askForm').requestSubmit(), reduce ? 0 : 500);
   }
@@ -2268,8 +2356,7 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
   (function blink() { setTimeout(() => { svg.classList.add('blink'); setTimeout(() => svg.classList.remove('blink'), 130); blink(); }, 2600 + Math.random() * 2800); })();
 
   btn.addEventListener('click', () => {
-    $('#ask').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-    setTimeout(() => $('#askBox')?.focus({ preventScroll: true }), reduce ? 0 : 600);
+    window.__chat?.open(btn);
   });
   window.__companion = { mood, confetti, svg };
 })();
@@ -2901,6 +2988,91 @@ else{requestAnimationFrame(()=>cls('go'));at(560,()=>{cls('opened');uncls('go');
     });
     ul.after(btn);
   });
+})();
+
+;(() => {
+  // Ask AI Sarath as a floating chat: a launcher pill, a draggable panel on wide screens,
+  // a bottom sheet on phones, and a "back to chat" pill after an answer moves the page.
+  const panel = document.getElementById('ask'); if (!panel) return;
+  const box = document.getElementById('askBox'), head = panel.querySelector('.chat-head');
+  const phone = matchMedia('(max-width: 640px)');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const store = { get(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} } };
+
+  const launch = document.createElement('button');
+  launch.type = 'button'; launch.className = 'chat-launch';
+  launch.innerHTML = '<span class="av" aria-hidden="true"></span><span class="cl-text">Ask AI Sarath</span>';
+  document.body.appendChild(launch);
+  const triggers = [launch, document.getElementById('chatFab'), document.getElementById('dockChat')].filter(Boolean);
+  triggers.forEach((t) => { t.setAttribute('aria-controls', 'ask'); t.setAttribute('aria-expanded', 'false'); });
+
+  const back = document.createElement('button');
+  back.type = 'button'; back.className = 'chat-back'; back.textContent = '↩ back to chat';
+  document.body.appendChild(back);
+
+  // a one-time nudge so visitors know the chat exists
+  const hint = document.createElement('div');
+  hint.className = 'chat-hint'; hint.setAttribute('role', 'status');
+  hint.innerHTML = '<span>Ask me about my work. Answers cite their sources.</span><button type="button" aria-label="Dismiss">×</button>';
+  document.body.appendChild(hint);
+  const dropHint = () => { hint.classList.remove('on'); store.set('chatHint', '1'); };
+  hint.querySelector('button').onclick = dropHint;
+  hint.querySelector('span').onclick = () => open(launch);
+  if (!store.get('chatHint')) setTimeout(() => { if (!isOpen()) hint.classList.add('on'); }, 5000);
+
+  let opener = null, hideT;
+  const isOpen = () => panel.classList.contains('is-open');
+  const setExpanded = (v) => triggers.forEach((t) => t.setAttribute('aria-expanded', String(v)));
+  function open(from) {
+    if (isOpen()) { box.focus({ preventScroll: true }); return; }
+    opener = from || document.activeElement;
+    clearTimeout(hideT); panel.hidden = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('is-open')));
+    document.body.classList.add('chat-open'); setExpanded(true);
+    back.classList.remove('on'); dropHint();
+    setTimeout(() => box.focus({ preventScroll: true }), reduce ? 0 : 180);
+    const chat = document.getElementById('chat'); chat.scrollTop = chat.scrollHeight;
+  }
+  function close(restore = true) {
+    if (!isOpen()) return;
+    panel.classList.remove('is-open'); document.body.classList.remove('chat-open'); setExpanded(false);
+    hideT = setTimeout(() => { if (!isOpen()) panel.hidden = true; }, reduce ? 0 : 260);
+    if (restore) (opener && opener.isConnected && opener.offsetParent !== null ? opener : launch).focus({ preventScroll: true });
+  }
+  const toggle = (from) => (isOpen() ? close() : open(from));
+  launch.addEventListener('click', () => toggle(launch));
+  panel.querySelector('.chat-close').addEventListener('click', () => close());
+  back.addEventListener('click', () => open(launch));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen() && document.getElementById('overlay')?.hidden !== false) close();
+  });
+
+  // when an answer scrolls the page: on phones the sheet covers it, so tuck it away and offer the way back
+  function afterMove() {
+    if (!phone.matches) return;
+    close(false);
+    setTimeout(() => back.classList.add('on'), 500);
+  }
+  window.addEventListener('scroll', () => { if (back.classList.contains('on') && window.scrollY < 40) back.classList.remove('on'); }, { passive: true });
+
+  // drag the panel by its header on wide screens; double-click the header to put it back
+  let drag = null;
+  const clamp = (x, y) => [Math.min(innerWidth - panel.offsetWidth - 8, Math.max(8, x)), Math.min(innerHeight - panel.offsetHeight - 8, Math.max(8, y))];
+  const place = (x, y) => { [x, y] = clamp(x, y); Object.assign(panel.style, { left: x + 'px', top: y + 'px', right: 'auto', bottom: 'auto' }); };
+  const unplace = () => { ['left', 'top', 'right', 'bottom'].forEach((k) => (panel.style[k] = '')); panel.classList.remove('moved'); };
+  head.addEventListener('pointerdown', (e) => {
+    if (phone.matches || e.button !== 0 || e.target.closest('button, a')) return;
+    const r = panel.getBoundingClientRect(); drag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
+    head.setPointerCapture(e.pointerId); panel.classList.add('dragging');
+  });
+  head.addEventListener('pointermove', (e) => { if (drag) { place(e.clientX - drag.dx, e.clientY - drag.dy); panel.classList.add('moved'); } });
+  const endDrag = () => { drag = null; panel.classList.remove('dragging'); };
+  head.addEventListener('pointerup', endDrag); head.addEventListener('pointercancel', endDrag);
+  head.addEventListener('dblclick', (e) => { if (!e.target.closest('button, a')) unplace(); });
+  window.addEventListener('resize', () => { if (panel.classList.contains('moved')) { const r = panel.getBoundingClientRect(); place(r.left, r.top); } });
+  phone.addEventListener('change', unplace);
+
+  window.__chat = { open, close, toggle, afterMove, isOpen };
 })();
 </script>
 </body>

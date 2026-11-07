@@ -22,6 +22,7 @@
   const items = [];
   $$('section[data-section]').forEach((s) => items.push({ t: s.dataset.section, k: 'section', ic: '§', run: () => go('#' + s.id) }));
   $$('.proj').forEach((p) => items.push({ t: $('h3', p).firstChild.textContent.trim(), k: 'project', ic: '◆', run: () => go('#' + p.id, true) }));
+  items.push({ t: 'Open the AI Sarath chat', k: 'action', ic: '✦', run: () => window.__chat?.open() });
   items.push({ t: 'Drigil case study', k: 'page', ic: '↗', run: () => (location.href = 'pages/drigil.html') });
   items.push({ t: 'How I built AI Sarath', k: 'note', ic: '✎', run: () => (location.href = 'pages/ai-sarath.html') });
   $$('#stackList button[data-skill]').forEach((b) => items.push({ t: b.textContent.trim(), k: 'skill', ic: '#', run: () => b.click() }));
@@ -50,7 +51,7 @@
     input.setAttribute('aria-activedescendant', shown.length ? `pal-${sel}` : '');
   }
   function askAI(q) {
-    $('#ask').scrollIntoView({ behavior: smooth, block: 'start' });
+    window.__chat?.open();
     const box = $('#askBox'); box.value = q;
     setTimeout(() => $('#askForm').requestSubmit(), reduce ? 0 : 500);
   }

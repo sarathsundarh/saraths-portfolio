@@ -65,38 +65,6 @@
   </div>
   </div>
 
-  <!-- ============ ASK AI SARATH ============ -->
-  <section class="tile t-ask row ask" id="ask" data-section="Ask AI Sarath">
-    <div class="ask-head">
-      <div>
-        <h2>Ask <em>AI Sarath</em></h2>
-        <p class="sub">Grounded in my resume · cites its sources · can move this page</p>
-      </div>
-      <span class="demo-tag" id="chatMode">preview · scripted answers</span>
-    </div>
-    <div class="chat" id="chat" aria-live="polite">
-      <div class="msg ai"><span class="av" aria-hidden="true"></span><div class="bubble-t">Hi! I'm an AI version of Sarath, trained only on his resume and projects. Ask me anything. If I don't know, I'll say so.</div></div>
-    </div>
-    <div class="suggest" id="suggest">
-      <button data-q="0">What did you build at IDFC?</button>
-      <button data-q="1">Tell me about Drigil</button>
-      <button data-q="2">Did you win Cal Hacks?</button>
-      <button data-q="3">Are you open to internships?</button>
-    </div>
-    <form class="ask-input" id="askForm">
-      <input id="askBox" placeholder="Ask me anything about Sarath…" autocomplete="off" aria-label="Ask AI Sarath" />
-      <button type="submit" aria-label="Send"><svg><use href="#i-send"/></svg></button>
-    </form>
-    <div class="flow" aria-label="How an answer is made: your question, retrieve facts from my resume, cite the sources, stream the answer">
-      <div class="flow-track" aria-hidden="true"><i class="flow-dot"></i><i class="flow-dot d2"></i><i class="flow-dot d3"></i></div>
-      <ol class="flow-steps">
-        <li style="--k:0"><b>Question</b><span>you ask</span></li>
-        <li style="--k:1"><b>Retrieve</b><span>BM25 over my resume</span></li>
-        <li style="--k:2"><b>Cite</b><span>every claim gets a source</span></li>
-        <li style="--k:3"><b>Answer</b><span>streams + moves the page</span></li>
-      </ol>
-    </div>
-  </section>
 
   <!-- ============ PROJECTS ============ -->
   <section class="tile t-projects row" id="projects" data-section="Projects">
@@ -367,13 +335,38 @@
   </footer>
 </div>
 
+<!-- floating chat: Ask AI Sarath -->
+<section class="ask chat-panel" id="ask" role="dialog" aria-modal="false" aria-labelledby="askTitle" hidden>
+  <header class="chat-head">
+    <span class="av" aria-hidden="true"></span>
+    <div class="chat-title">
+      <h2 id="askTitle">Ask <em>AI Sarath</em></h2>
+      <span class="demo-tag" id="chatMode">preview · scripted answers</span>
+    </div>
+    <button class="chat-close" type="button" aria-label="Close chat"><svg><use href="#i-x"/></svg></button>
+  </header>
+  <div class="chat" id="chat" aria-live="polite">
+    <div class="msg ai"><span class="av" aria-hidden="true"></span><div class="bubble-t">Hi! I'm an AI version of Sarath, trained only on his resume and projects. Ask me anything. If I don't know, I'll say so.</div></div>
+  </div>
+  <div class="suggest" id="suggest">
+    <button data-q="0">What did you build at IDFC?</button>
+    <button data-q="1">Tell me about Drigil</button>
+    <button data-q="2">Did you win Cal Hacks?</button>
+    <button data-q="3">Are you open to internships?</button>
+  </div>
+  <form class="ask-input" id="askForm">
+    <input id="askBox" placeholder="Ask me anything about Sarath…" autocomplete="off" aria-label="Ask AI Sarath" />
+    <button type="submit" aria-label="Send"><svg><use href="#i-send"/></svg></button>
+  </form>
+  <p class="chat-foot">Grounded in my resume · cites its sources · <a href="pages/ai-sarath.html">how it works</a></p>
+</section>
+
 <!-- right dock -->
 <nav class="dock" aria-label="Sections">
   <button id="kbtn" aria-label="Open command palette (Ctrl or Command + K)"><svg><use href="#i-search"/></svg><span>Search  ⌘K</span></button>
   <button id="theme" aria-label="Toggle theme"><svg class="i-light"><use href="#i-moon"/></svg><svg class="i-dark"><use href="#i-sun"/></svg><span>Theme</span></button>
   <hr />
   <a href="#about"><svg><use href="#i-user"/></svg><span>About</span></a>
-  <a href="#ask"><svg><use href="#i-chat"/></svg><span>Ask AI Sarath</span></a>
   <a href="#projects"><svg><use href="#i-folder"/></svg><span>Projects</span></a>
   <a href="#experience"><svg><use href="#i-brief"/></svg><span>Experience</span></a>
   <a href="#education"><svg><use href="#i-cap"/></svg><span>Education</span></a>

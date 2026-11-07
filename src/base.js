@@ -6,7 +6,7 @@
   const wait = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? 0 : ms));
 
   /* ---------------- reveal on scroll ---------------- */
-  const revealEls = $$('h2.sec, .proj, .tl-item, .stack, .ach, .pub, .bio, .contact, .ask');
+  const revealEls = $$('h2.sec, .proj, .tl-item, .stack, .ach, .pub, .bio, .contact');
   
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
   revealEls.forEach((el) => io.observe(el));
@@ -150,6 +150,7 @@
     markerTimer = setTimeout(() => marker.classList.replace('on', 'off'), 4200);
   }
   function goTo(sel) {
+    if (sel === '#ask') return window.__chat?.open(); // the chat floats; nothing to scroll to
     let el = $(sel); if (!el) return;
     const ring = el.classList.contains('proj') ? $('.proj-top h3', el) : el;
     el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
@@ -276,13 +277,7 @@
     ask(v, idx);
   });
   // "back to chat" pill after the chat moves the page
-  const back = document.createElement('button');
-  back.className = 'fab'; back.style.cssText = 'left:50%;right:auto;translate:-50% 0;bottom:24px;width:auto;height:38px;padding:0 16px;border-radius:999px;font:inherit;font-size:12px;opacity:0;pointer-events:none';
-  back.textContent = '↩ back to chat'; document.body.appendChild(back);
-  let backT;
-  function showBack() { clearTimeout(backT); backT = setTimeout(() => { back.style.opacity = 1; back.style.pointerEvents = 'auto'; }, 900); }
-  back.onclick = () => { $('#ask').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); back.style.opacity = 0; back.style.pointerEvents = 'none'; };
-  new IntersectionObserver(([e]) => { if (e.isIntersecting) { back.style.opacity = 0; back.style.pointerEvents = 'none'; } }).observe($('#ask'));
+  function showBack() { window.__chat?.afterMove(); }
 
   /* ---------------- project case-study morph ---------------- */
   const overlay = $('#overlay'), caseBody = $('#caseBody');
@@ -381,7 +376,7 @@
     if (e.isIntersecting) links.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
   }), { rootMargin: '-45% 0px -50% 0px' });
   $$('section[id]').forEach((s) => secIO.observe(s));
-  const openChat = () => { $('#ask').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); setTimeout(() => $('#askBox').focus({ preventScroll: true }), 600); };
+  const openChat = (e) => window.__chat?.toggle(e && e.currentTarget);
   $('#chatFab').onclick = openChat;
   if ($('#dockChat')) $('#dockChat').onclick = openChat;
   if ($('#dockUp')) $('#dockUp').onclick = () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });

@@ -1,0 +1,99 @@
+/* ===== Ask AI Sarath as a floating chat ===== */
+.chat-panel {
+  position: fixed; z-index: 70; right: 92px; bottom: 22px;
+  width: min(400px, calc(100vw - 120px)); height: min(620px, calc(100vh - 44px));
+  display: flex; flex-direction: column; padding: 0; overflow: hidden;
+  background: var(--panel); color: var(--ink);
+  border: 1.5px solid var(--ink); border-radius: 20px;
+  box-shadow: 6px 6px 0 var(--blue), 0 24px 60px rgba(20, 18, 40, .18);
+  opacity: 0; translate: 0 16px; scale: .97; transform-origin: bottom right;
+  transition: opacity .22s ease, translate .26s cubic-bezier(.2,.9,.3,1.15), scale .26s cubic-bezier(.2,.9,.3,1.15);
+}
+.chat-panel.is-open { opacity: 1; translate: 0 0; scale: 1; }
+.chat-panel[hidden] { display: none; }
+.chat-panel.dragging { transition: none; user-select: none; }
+
+.chat-head { display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 16px; border-bottom: 1.5px dashed var(--rule); cursor: grab; touch-action: none; }
+.chat-panel.dragging .chat-head { cursor: grabbing; }
+.chat-head .av { width: 34px; height: 34px; }
+.chat-title { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.chat-title h2 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 24px; line-height: 1; margin: 0; }
+.chat-title h2 em { color: var(--accent); }
+.chat-title .demo-tag { align-self: flex-start; font-size: 10px; padding: 1px 8px; }
+.chat-close { flex: none; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; }
+.chat-close:hover { background: var(--yellow); color: #1B1A2E; }
+.chat-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+.chat-panel .chat { flex: 1 1 auto; min-height: 0; max-height: none; margin: 0; padding: 14px 14px 6px 16px; overflow-y: auto; overscroll-behavior: contain; }
+.chat-panel .msg .bubble-t { max-width: 90%; font-size: 13.5px; }
+.chat-panel .suggest { margin: 0; padding: 8px 16px 2px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; }
+.chat-panel .suggest button { flex: none; }
+.chat-panel .suggest button { font-size: 11.5px; padding: 6px 10px; }
+.chat-panel .ask-input { margin: 0; padding: 10px 12px 6px 16px; }
+.chat-foot { margin: 0; padding: 0 16px 10px; font-size: 10.5px; color: var(--muted); }
+
+/* launcher pill (replaces the round chat button everywhere) */
+.chat-fab { display: none !important; }
+.chat-launch {
+  position: fixed; z-index: 69; right: 22px; bottom: 22px;
+  display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 20px 0 8px;
+  border-radius: 999px; border: 1.5px solid var(--ink); background: var(--blue); color: #fff;
+  font: inherit; font-size: 13.5px; font-weight: 500; cursor: pointer;
+  box-shadow: 4px 4px 0 var(--yellow); transition: translate .15s, box-shadow .15s, opacity .2s;
+}
+.chat-launch:hover { translate: -1px -1px; box-shadow: 5px 5px 0 var(--yellow); }
+.chat-launch .av { width: 36px; height: 36px; background-color: var(--paper); border: 1.5px solid var(--ink); }
+.chat-launch[aria-expanded="true"] { opacity: 0; pointer-events: none; }
+.chat-launch:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* one-time nudge above the launcher */
+.chat-hint {
+  position: fixed; z-index: 68; right: 22px; bottom: 88px; max-width: 250px;
+  display: flex; gap: 8px; align-items: flex-start; padding: 10px 10px 10px 14px;
+  background: var(--paper); border: 1.5px solid var(--ink); border-radius: 14px 14px 4px 14px;
+  box-shadow: 3px 3px 0 var(--blue); font-size: 12.5px; line-height: 1.45;
+  opacity: 0; translate: 0 8px; pointer-events: none; transition: opacity .3s, translate .3s;
+}
+.chat-hint.on { opacity: 1; translate: 0 0; pointer-events: auto; }
+.chat-hint span { cursor: pointer; }
+.chat-hint button { flex: none; border: 0; background: none; color: var(--muted); font-size: 18px; line-height: 1; cursor: pointer; padding: 0 2px; }
+
+/* "back to chat" after an answer moves the page (phones) */
+.chat-back {
+  position: fixed; z-index: 69; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); translate: -50% 12px;
+  height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--ink);
+  background: var(--paper); color: var(--ink); font: inherit; font-size: 12.5px; box-shadow: 3px 3px 0 var(--blue);
+  opacity: 0; pointer-events: none; transition: opacity .25s, translate .25s;
+}
+.chat-back.on { opacity: 1; translate: -50% 0; pointer-events: auto; }
+
+/* the About tile now has the row to itself */
+.t-about { grid-column: 1 / -1; }
+
+/* tablets: no dock, so the panel sits at the right edge; the back-to-top button moves above the launcher */
+@media (max-width: 1100px) {
+  .chat-panel { right: 22px; width: min(420px, calc(100vw - 44px)); }
+  .up-fab { bottom: 88px; }
+  .chat-hint { bottom: 146px; }
+}
+
+/* phones: a bottom sheet and a compact round launcher */
+@media (max-width: 640px) {
+  .chat-panel {
+    left: 0; right: 0; bottom: 0; width: auto; height: min(80vh, calc(100dvh - 48px));
+    border-radius: 20px 20px 0 0; border-bottom: 0; box-shadow: 0 -12px 40px rgba(20, 18, 40, .22);
+    translate: 0 40px; scale: 1; padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .chat-head { cursor: default; position: relative; padding-top: 18px; }
+  .chat-head::before { content: ''; position: absolute; left: 50%; top: 7px; translate: -50% 0; width: 40px; height: 4px; border-radius: 4px; background: var(--rule); }
+  .chat-panel .suggest { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: 0; padding: 8px 16px 4px; }
+  .chat-panel .suggest::-webkit-scrollbar { display: none; }
+  .chat-panel .suggest button { flex: none; }
+  .chat-panel .ask-input input { font-size: 16px; } /* no iOS zoom on focus */
+  .chat-launch { right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); height: 52px; width: 52px; padding: 0; justify-content: center; box-shadow: 3px 3px 0 var(--yellow); }
+  .chat-launch .cl-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .chat-launch .av { width: 40px; height: 40px; }
+  .chat-hint { right: 14px; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+  body.chat-open { overflow: hidden; }
+}
+@media (prefers-reduced-motion: reduce) { .chat-panel, .chat-launch, .chat-hint, .chat-back { transition: none; } }
