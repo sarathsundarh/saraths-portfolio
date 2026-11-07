@@ -162,19 +162,24 @@
   /* ---------------- Ask AI Sarath: scripted demo ---------------- */
   const SCRIPT = [
     {
-      a: "At IDFC FIRST Bank I built Go and Python services in a microservices setup, with REST APIs routed through Kong for auth and rate limiting, and Kafka retry handling for upstream outages. With the engineering team I built a Go MCP server that cut CRM and asset lookups from minutes to under 5 seconds, and I tuned SQL queries and indexes over 50M+ records for 42% faster API responses. On my own time I built Yet Another Kafka, a pub-sub broker on raw TCP sockets in Java.",
-      cites: [['IDFC · MCP server', '#x-mcp'], ['IDFC · SQL tuning', '#x-sql'], ['Yet Another Kafka', '#p-kafka']],
+      a: 'At IDFC FIRST Bank I built a Go MCP server with the engineering team: a shared tool layer that lets AI agents query CRM and asset-management systems. It cut those lookups from minutes to under 5 seconds. I also tuned SQL over 50M+ records (42% faster APIs) and set up observability that helped cut incident resolution time by 35%.',
+      cites: [['IDFC · MCP server', '#x-mcp'], ['IDFC · SQL tuning', '#x-sql'], ['IDFC · observability', '#x-obs']],
       tool: ['scroll_to_section', '"experience"', '#x-mcp'],
     },
     {
-      a: "Drigil was a three-person team build at Cal Hacks 13.0, so I describe it as team work: it turns a supervisor's narrated demo into a step-by-step task spec with Claude, checks each step through the camera, and coaches in the supervisor's cloned voice. It placed 2nd in Anthropic's Claude for Public Benefit track. My knowledge base doesn't break down who built which part yet; email harisara@usc.edu for that.",
+      a: "Drigil is smart-glasses job coaching for people with intellectual and developmental disabilities. My three-person team built it in 36 hours at Cal Hacks 13.0. It turns a supervisor's narrated demo into a step-by-step task spec with Claude, checks each step through the camera, and coaches in the supervisor's own cloned voice. It placed 2nd in Anthropic's Claude for Public Benefit track.",
       cites: [['Drigil · project', '#p-drigil'], ['Drigil · Devpost', 'https://devpost.com/software/drigil']],
       tool: ['show_project', '"drigil"', '#p-drigil'],
     },
     {
-      a: "I'm looking for Summer 2027 internships in software engineering and applied AI. Email harisara@usc.edu is the quickest way to reach me, and my résumé is linked at the top of the page.",
-      cites: [['Contact', '#contact']],
-      tool: ['scroll_to_section', '"contact"', '#contact'],
+      a: "Not overall, and I'd rather be precise: my team placed 2nd in Anthropic's Claude for Public Benefit track at Cal Hacks 13.0.",
+      cites: [['Achievements', '#a-calhacks']],
+      tool: ['scroll_to_section', '"achievements"', '#a-calhacks'],
+    },
+    {
+      a: "Yes! I'm looking for Summer 2027 internships in software engineering and applied AI. The quickest way to reach me is the contact form below, or harisara@usc.edu.",
+      cites: [['Contact', '#contactForm']],
+      tool: ['scroll_to_section', '"contact"', '#contactForm'],
     },
   ];
   const FALLBACK = "The live chat isn't available right now, so I can only answer the suggested questions here. For anything else, email harisara@usc.edu and the real Sarath will reply.";
@@ -184,9 +189,9 @@
   const modeTag = document.getElementById('chatMode');
   fetch('/api/chat', { method: 'GET' }).then((r) => (r.ok ? r.json() : null)).then((j) => {
     live = Boolean(j && j.live);
-    if (modeTag) modeTag.textContent = live ? 'Live · Gemini, answering from curated facts' : 'Offline · scripted answers to the suggested questions';
+    if (modeTag) modeTag.textContent = live ? 'live · grounded in my resume' : 'preview · scripted answers';
     if (modeTag) modeTag.classList.toggle('is-live', live);
-  }).catch(() => { if (modeTag) modeTag.textContent = 'Offline · scripted answers to the suggested questions'; });
+  }).catch(() => {});
   async function askLive(text) {
     const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 20000);
     try {
@@ -283,13 +288,17 @@
   const overlay = $('#overlay'), caseBody = $('#caseBody');
   let openCard = null;
   function fillCase(card) {
-    const pick = (sel) => { const el = $(sel, card); return el ? el.outerHTML : ''; };
-    caseBody.innerHTML = `<h3 id="case-title">${$('h3', card).textContent.trim()}</h3>${pick('.badges')}${pick('.tagline')}${pick('.outcome')}${$('.case', card).innerHTML}${pick('.tags')}`;
+    const h3 = $('h3', card).cloneNode(true);
+    const title = h3.firstChild.textContent.trim();
+    const badges = [...h3.children].map((c) => c.outerHTML).join(' ');
+    const bullets = [...$$(':scope > ul li', card), ...$$('.case li', card)].map((li) => `<li>${li.innerHTML}</li>`).join('');
+    caseBody.innerHTML = `${$('.doodle', card).outerHTML}<h3 id="case-title">${title}</h3><div style="display:flex;gap:8px;flex-wrap:wrap">${badges}</div>
+      <p class="tagline">${$('.tagline', card).textContent}</p>${bullets ? `<ul>${bullets}</ul>` : ''}
+      ${$('.tags', card) ? $('.tags', card).outerHTML : ''}${$$('.case .link', card).map((l) => l.outerHTML).join(' ')}`;
   }
   const vt = (fn) => (document.startViewTransition && !reduceMotion ? document.startViewTransition(fn) : (fn(), null));
-  let opener = null;
-  function openCase(card, from) {
-    openCard = card; opener = from || null;
+  function openCase(card) {
+    openCard = card;
     card.style.viewTransitionName = 'case';
     vt(() => {
       card.style.viewTransitionName = '';
@@ -302,17 +311,12 @@
     if (!openCard) return;
     const card = openCard; openCard = null;
     const t = vt(() => { $('.case-panel').style.viewTransitionName = ''; overlay.hidden = true; card.style.viewTransitionName = 'case'; });
-    const done = () => { card.style.viewTransitionName = ''; (opener || $('.details', card))?.focus({ preventScroll: true }); };
+    const done = () => { card.style.viewTransitionName = ''; card.focus({ preventScroll: true }); };
     t ? t.finished.then(done) : done();
   }
-  $$('.proj .details').forEach((b) => b.addEventListener('click', () => openCase(b.closest('.proj'), b)));
-  // keep keyboard focus inside the open panel
-  overlay.addEventListener('keydown', (e) => {
-    if (e.key !== 'Tab') return;
-    const f = $$('a[href], button', $('.case-panel')); if (!f.length) return;
-    const first = f[0], last = f[f.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  $$('.proj').forEach((card) => {
+    card.addEventListener('click', (e) => { if (!e.target.closest('a')) openCase(card); });
+    card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCase(card); } });
   });
   $('#caseClose').onclick = closeCase;
   overlay.addEventListener('click', (e) => { if (e.target === overlay) closeCase(); });
@@ -323,7 +327,7 @@
   const pop = document.createElement('div'); pop.className = 'spot-count'; document.body.appendChild(pop);
   let pinned = null;
   function labelOf(el) {
-    if (el.classList.contains('proj')) return $('h3', el).textContent.trim();
+    if (el.classList.contains('proj')) return $('h3', el).firstChild.textContent.trim();
     const org = $('.org', el.closest('.tl-item'));
     return org ? org.textContent.split('·')[0].trim() : 'Experience';
   }
@@ -364,22 +368,25 @@
   const form = $('#contactForm');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!form.reportValidity() || form.classList.contains('folding')) return;
-    const f = form.elements, name = f.name.value.trim(), from = f.email.value.trim();
-    const href = 'mailto:harisara@usc.edu?subject=' + encodeURIComponent(`Portfolio message from ${name || from}`) +
-      '&body=' + encodeURIComponent(`${f.message.value.trim()}\n\n${name ? name + ' · ' : ''}${from}`);
-    if (!reduceMotion) { form.classList.add('folding'); await wait(550); form.classList.add('flying'); await wait(1100); form.classList.add('sent'); }
-    location.href = href;
-    $('#formNote').textContent = 'Your email app should open with the message ready to send. If nothing opened, email harisara@usc.edu directly.';
-    await wait(2400); form.classList.remove('folding', 'flying', 'sent');
+    if (form.classList.contains('folding')) return;
+    form.classList.add('folding'); await wait(550);
+    form.classList.add('flying'); await wait(1300);
+    form.classList.add('sent'); await wait(2600);
+    form.reset(); form.classList.remove('folding', 'flying', 'sent');
   });
 
-  /* ---------------- header nav: mark the section in view ---------------- */
-  const links = $$('.topnav a[href^="#"]');
+  /* ---------------- dock + fabs ---------------- */
+  const links = $$('.dock a');
   const secIO = new IntersectionObserver((es) => es.forEach((e) => {
-    if (!e.isIntersecting) return;
-    links.forEach((a) => { const on = a.getAttribute('href') === '#' + e.target.id; a.classList.toggle('active', on); if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });
+    if (e.isIntersecting) links.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
   }), { rootMargin: '-45% 0px -50% 0px' });
-  $$('section[id]').forEach((sec) => secIO.observe(sec));
+  $$('section[id]').forEach((s) => secIO.observe(s));
+  const openChat = () => { $('#ask').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); setTimeout(() => $('#askBox').focus({ preventScroll: true }), 600); };
+  $('#chatFab').onclick = openChat;
+  if ($('#dockChat')) $('#dockChat').onclick = openChat;
+  if ($('#dockUp')) $('#dockUp').onclick = () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  const up = $('#upFab');
+  $('#upFab').onclick = () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  window.addEventListener('scroll', () => up.classList.toggle('on', window.scrollY > 700), { passive: true });
   window.__mock = { goTo, ask, circle, swarm, SCRIPT };
 })();

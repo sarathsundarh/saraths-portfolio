@@ -1,18 +1,18 @@
 (() => {
-  // achievement stories: plain disclosure buttons (aria-expanded + a hidden paragraph)
-  document.querySelectorAll('.story-btn').forEach((btn) => {
-    const story = document.getElementById(btn.getAttribute('aria-controls'));
-    if (!story) return;
-    btn.addEventListener('click', () => {
-      const open = btn.getAttribute('aria-expanded') !== 'true';
-      btn.setAttribute('aria-expanded', String(open));
-      btn.textContent = open ? 'Hide the story' : 'Read the story';
-      story.hidden = !open;
+  document.querySelectorAll('.award.flip').forEach((card) => {
+    const back = card.querySelector('.back'), link = card.querySelector('.a-link');
+    back.setAttribute('aria-hidden', 'true');
+    const follow = () => {
+      if (link.dataset.href) location.href = link.dataset.href;
+      else if (link.dataset.jump) window.__mock?.goTo?.(link.dataset.jump);
+    };
+    card.addEventListener('click', (e) => {
+      const flipped = card.classList.contains('flipped');
+      if (flipped && e.target.closest('.a-link')) return follow();
+      card.classList.toggle('flipped', !flipped);
+      card.setAttribute('aria-pressed', String(!flipped));
+      back.setAttribute('aria-hidden', String(flipped));
+      card.querySelector('.front').setAttribute('aria-hidden', String(!flipped));
     });
   });
-  // in-page links inside stories use the chat's marker scroll
-  document.querySelectorAll('.story a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
-    if (!window.__mock?.goTo) return;
-    e.preventDefault(); window.__mock.goTo(a.getAttribute('href'));
-  }));
 })();

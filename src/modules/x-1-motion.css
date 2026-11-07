@@ -13,7 +13,10 @@
 @keyframes drawDown { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes riseIn { from { opacity: .35; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
 
-
+/* cards lean toward the cursor */
+.proj { transform-style: preserve-3d; will-change: transform; }
+.proj.tilting { transition: transform .08s linear, background .25s; }
+.proj:not(.tilting) { transition: transform .5s cubic-bezier(.2,.8,.2,1), background .25s; }
 
 /* count-up numbers */
 .count { font-variant-numeric: tabular-nums; font-weight: 500; color: var(--ink); }

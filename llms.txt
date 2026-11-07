@@ -12,8 +12,7 @@ Facts on this site are written by Sarath and kept consistent across the homepage
 
 - [Homepage](https://saraths-portfolio.vercel.app/): profile, experience, projects with interactive demos, skills, achievements and an AI chat grounded in these facts
 - [Drigil case study](https://saraths-portfolio.vercel.app/pages/drigil.html): smart-glasses job coaching for people with intellectual and developmental disabilities; problem, architecture, key decisions, outcome
-- [How I built the portfolio assistant](https://saraths-portfolio.vercel.app/pages/ai-sarath.html): how the site's chat works (BM25 retrieval, server-checked citations, guardrails) and its eval results
-- [Résumé (PDF)](https://saraths-portfolio.vercel.app/resume.pdf): one-page résumé
+- [How I built AI Sarath](https://saraths-portfolio.vercel.app/pages/ai-sarath.html): design notes for the site's chat (retrieval, citations, guardrails, evals); a draft
 - [All facts (llms-full.txt)](https://saraths-portfolio.vercel.app/llms-full.txt): every fact the AI chat is allowed to use, in plain text
 
 ## Experience

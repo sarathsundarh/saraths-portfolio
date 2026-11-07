@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>How I Built the Portfolio Assistant</title>
-<meta name="description" content="The architecture behind the chat on Sarath's portfolio: a curated knowledge base, BM25 retrieval, validated citations, server-checked citations, guardrails and a 17-case eval run." />
+<title>How I Built AI Sarath</title>
+<meta name="description" content="The architecture behind the chat on Sarath's portfolio: a curated knowledge base, BM25 retrieval, validated citations, tools that move the page, guardrails and evals." />
 <link rel="canonical" href="https://saraths-portfolio.vercel.app/pages/ai-sarath.html" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="How I Built the Portfolio Assistant" />
-<meta property="og:description" content="Design notes for the chat on Sarath's portfolio: a curated knowledge base, BM25 retrieval, server-checked citations, guardrails and eval results." />
+<meta property="og:title" content="How I Built AI Sarath" />
+<meta property="og:description" content="Design notes for the chat on Sarath's portfolio: a curated knowledge base, BM25 retrieval, validated citations, page-control tools, guardrails and evals." />
 <meta property="og:url" content="https://saraths-portfolio.vercel.app/pages/ai-sarath.html" />
 <meta property="og:image" content="https://saraths-portfolio.vercel.app/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="alternate" type="text/plain" href="https://saraths-portfolio.vercel.app/llms.txt" title="llms.txt" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"How I Built the Portfolio Assistant","description":"Design notes for the chat on Sarath's portfolio: a curated knowledge base, BM25 retrieval, server-checked citations, guardrails and eval results.","url":"https://saraths-portfolio.vercel.app/pages/ai-sarath.html","image":"https://saraths-portfolio.vercel.app/og.png","dateModified":"2026-11-06","inLanguage":"en","author":{"@type":"Person","name":"Sarath Sundar Harisaravanan","url":"https://saraths-portfolio.vercel.app/"},"isPartOf":{"@type":"WebSite","name":"Sarath Sundar Harisaravanan","url":"https://saraths-portfolio.vercel.app/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"How I Built AI Sarath","description":"Design notes for the chat on Sarath's portfolio: a curated knowledge base, BM25 retrieval, validated citations, page-control tools, guardrails and evals.","url":"https://saraths-portfolio.vercel.app/pages/ai-sarath.html","image":"https://saraths-portfolio.vercel.app/og.png","dateModified":"2026-11-05","inLanguage":"en","author":{"@type":"Person","name":"Sarath Sundar Harisaravanan","url":"https://saraths-portfolio.vercel.app/"},"isPartOf":{"@type":"WebSite","name":"Sarath Sundar Harisaravanan","url":"https://saraths-portfolio.vercel.app/"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 <style>/* Shared article styles (inlined into each page at build time). Layout: one 720px paper column with dashed guides, same system as the homepage. */
@@ -101,98 +101,108 @@ footer.pad{border-bottom:0;font-size:11.5px;color:var(--muted);display:flex;just
   </nav>
 
   <header class="pad">
-    <p class="eyebrow">Notes · Applied AI · 5 min read · updated Nov 6, 2026</p>
-    <h1>How I built the portfolio assistant</h1>
-    <p class="lede">The chat on my homepage answers questions about my work in my voice, lists the facts each answer used, and can scroll the page to them. This is how the shipped version works, how I tested it, and where it falls short.</p>
+    <p class="eyebrow">Notes · Applied AI · 6 min read</p>
+    <h1>How I built AI Sarath</h1>
+    <p class="lede">The chat on my homepage answers questions about my work, cites where each answer came from, and moves the page to show you. Here is how it works, and the rules that keep it honest.</p>
+    <div class="todo keep"><b>Draft:</b> this post is written ahead of the build. Every number in the eval section gets filled in from the real eval run, not before.</div>
   </header>
 
   <section class="pad">
     <h2>Why build it at all</h2>
-    <p>A chatbot that restates a résumé adds nothing. It earns its place only if it does three things a static page can't: answer the specific question you came with, show where the answer came from, and say "I don't have that" instead of guessing.</p>
-    <p>So the goal was narrow: grounded, checkable, and cheap enough to leave running.</p>
+    <p>A chatbot that restates a resume adds nothing. It earns its place only if it does three things a static page can't: answer the specific question you came with, show its sources, and say "I don't know" instead of guessing.</p>
+    <p>So the design goal was narrow: be grounded, be checkable, and be cheap enough to leave running.</p>
   </section>
 
   <section class="pad">
     <h2>Architecture</h2>
-    <div class="diagram" role="img" aria-label="Request flow. The browser posts the last 12 messages to a Vercel function at /api/chat. It validates and rate-limits the request, retrieves the top 7 facts with BM25 plus the profile fact, and calls Gemini with a JSON schema. The server drops any citation that wasn't retrieved and returns one JSON object with the answer, citations and an optional page action, which the browser renders.">
-      <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <div class="diagram" role="img" aria-label="Request flow. The browser sends a question to a Vercel function at /api/chat, which validates and rate-limits it, retrieves the top matching knowledge chunks with BM25, and calls Claude with streaming and tools. The response streams back as text, validated citations and page actions, which the browser applies. Separately, an eval harness runs test questions against the same pipeline.">
+      <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
           <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="head"/></marker>
           <marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="head accent"/></marker>
         </defs>
-        <rect x="16" y="40" width="132" height="70" rx="10" class="box"/><text x="28" y="66" class="t1">Browser</text><text x="28" y="84" class="t2">last 12 messages</text><text x="28" y="98" class="t2">renders + scrolls</text>
-        <rect x="168" y="40" width="132" height="70" rx="10" class="box"/><text x="180" y="66" class="t1">/api/chat</text><text x="180" y="84" class="t2">length check</text><text x="180" y="98" class="t2">8/min, 60/hr per IP</text>
-        <rect x="320" y="40" width="132" height="70" rx="10" class="box"/><text x="332" y="66" class="t1">Retrieve</text><text x="332" y="84" class="t2">BM25, top 7</text><text x="332" y="98" class="t2">+ profile fact</text>
-        <rect x="472" y="40" width="132" height="70" rx="10" class="box hl"/><text x="484" y="66" class="t1">Gemini</text><text x="484" y="84" class="t2">Flash-Lite, JSON</text><text x="484" y="98" class="t2">schema, 15 s cap</text>
-        <rect x="624" y="40" width="120" height="70" rx="10" class="box"/><text x="636" y="66" class="t1">Validate</text><text x="636" y="84" class="t2">drop citations</text><text x="636" y="98" class="t2">not retrieved</text>
+        <rect x="16" y="40" width="132" height="70" rx="10" class="box"/><text x="28" y="66" class="t1">Browser</text><text x="28" y="84" class="t2">chat UI, page</text><text x="28" y="98" class="t2">tool dispatcher</text>
+        <rect x="168" y="40" width="132" height="70" rx="10" class="box"/><text x="180" y="66" class="t1">/api/chat</text><text x="180" y="84" class="t2">validate input</text><text x="180" y="98" class="t2">rate-limit per IP</text>
+        <rect x="320" y="40" width="132" height="70" rx="10" class="box"/><text x="332" y="66" class="t1">Retrieve</text><text x="332" y="84" class="t2">BM25 over KB</text><text x="332" y="98" class="t2">top-k + profile</text>
+        <rect x="472" y="40" width="132" height="70" rx="10" class="box hl"/><text x="484" y="66" class="t1">Claude</text><text x="484" y="84" class="t2">streaming + tools</text><text x="484" y="98" class="t2">cached prompt</text>
+        <rect x="624" y="40" width="120" height="70" rx="10" class="box"/><text x="636" y="66" class="t1">Validate</text><text x="636" y="84" class="t2">citations must</text><text x="636" y="98" class="t2">match retrieved</text>
         <path d="M148 75 H164" class="arrow" marker-end="url(#ah)"/><path d="M300 75 H316" class="arrow" marker-end="url(#ah)"/><path d="M452 75 H468" class="arrow" marker-end="url(#ah)"/><path d="M604 75 H620" class="arrow" marker-end="url(#ah)"/>
         <path d="M684 110 V150 H82 V114" class="arrow accent" marker-end="url(#aha)"/>
-        <text x="190" y="172" class="t2">one JSON response: { answer, citations[], action }</text>
+        <text x="200" y="170" class="t2">SSE stream back: text deltas · citation events · ui-action events</text>
+        <path d="M538 110 V128" class="arrow" stroke-dasharray="3 4"/>
+        <rect x="320" y="200" width="284" height="64" rx="10" class="box human"/><text x="332" y="226" class="t1">Eval harness (offline)</text><text x="332" y="244" class="t2">test + trap questions →</text><text x="332" y="257" class="t2">grounding, citations, refusals</text>
+        <path d="M462 200 V170" class="arrow" stroke-dasharray="3 4"/>
       </svg>
     </div>
-    <p>There's no streaming. The function returns one JSON object, and the browser types the answer out word by word for readability. If the API is down or rate-limited, the three suggested questions fall back to scripted answers, and anything else gets a short "email me" message.</p>
   </section>
 
   <section class="pad">
     <h2>One source of truth</h2>
-    <p>Everything the assistant knows is 23 hand-written facts in one file (<code>api/_kb.js</code>). Each has an id, a title, the page section it belongs to, and a public link where one exists. They cover my roles, projects, education, skills, awards, availability and this assistant. The same file generates <a href="../llms-full.txt">llms-full.txt</a>, so what crawlers read and what the chat answers from can't drift apart.</p>
-    <p>What I left out matters as much: my phone number, eligibility details and internal notes never enter the knowledge base, so the model can't leak what it was never given.</p>
+    <p>Everything the bot knows lives in a folder of short Markdown files, about 25 to 30 chunks, each with an id, a title, a public source link and the page section it belongs to. They cover my roles, projects, education, skills, awards and availability.</p>
+    <p>What I left out matters as much: my phone number, eligibility details and any internal notes never enter the knowledge base, so the model can't leak what it was never given.</p>
   </section>
 
   <section class="pad">
     <h2>Retrieval: BM25, on purpose</h2>
-    <p>For 23 short facts, a vector database is more machinery than the problem needs. BM25 returns the top 7 facts for each question, plus a profile fact that is always included, with no second API key and results I can reason about.</p>
-    <p>Its weakness showed up in testing: "What roles are you seeking?" missed the availability fact because that fact never used the words "roles" or "seeking". The fix was to write the fact the way people ask, not to add embeddings. If paraphrase misses keep appearing, a small embedding pass is the next step.</p>
+    <p>For a corpus this small, a vector database is more machinery than the problem needs. A BM25 index built at deploy time returns the top matching chunks, plus an always-included profile chunk, with no second API key and results I can reason about.</p>
+    <p>The system prompt and the knowledge base are marked for prompt caching, so repeat questions don't pay to resend them.</p>
+    <div class="todo"><b>Decision to confirm after the build:</b> if eval recall on paraphrased questions is weak, add a small embedding pass and compare.</div>
   </section>
 
   <section class="pad">
     <h2>Citations you can check</h2>
-    <p>Gemini answers in JSON mode with a schema: <code>answer</code>, <code>citations</code> (an enum of the fact ids) and <code>action</code>. The server keeps only citations that were in the retrieved set, so a model can't cite a fact it never saw. What's left renders as chips under the answer; click one and the page scrolls to the source and circles it.</p>
+    <p>The model tags each claim with the id of the chunk it came from, like <code>[[kb:drigil]]</code>. Before anything reaches the browser, the server checks every id against the chunks it actually retrieved and drops any it didn't. What's left renders as chips under the answer; click one and the page scrolls to the source.</p>
   </section>
 
   <section class="pad">
-    <h2>Moving the page</h2>
-    <p>There's one "tool", and it's deliberately small: the schema's <code>action</code> field can name one place on the page (a section, a project card or an experience item), or <code>none</code>. The browser maps that to an anchor, scrolls there, and draws a marker circle. Nothing runs on the server besides retrieval, and the model can't open links or navigate away.</p>
+    <h2>Tools that move the page</h2>
+    <p>Answers can do more than talk. The model can call a few tools: one runs on the server, and the rest are streamed to the browser, which carries them out.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Tool</th><th>Runs</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>search_knowledge(query)</code></td><td>server</td><td>Fetches more evidence when the first retrieval isn't enough.</td></tr>
+          <tr><td><code>scroll_to_section(section)</code></td><td>browser</td><td>Glides to About, Experience, Projects, Achievements or Contact and circles the cited item.</td></tr>
+          <tr><td><code>show_project(id)</code></td><td>browser</td><td>Highlights a project card or opens its case study.</td></tr>
+          <tr><td><code>open_link(kind)</code></td><td>browser</td><td>Offers the GitHub, LinkedIn, Devpost or IEEE link, and asks before leaving the page.</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <section class="pad">
     <h2>Guardrails</h2>
     <ul class="clean">
-      <li>It answers in my voice, but says it's an AI assistant that can make mistakes when asked, and never claims to be me.</li>
-      <li>It answers only from the facts. Missing one, it says so and points to my email.</li>
-      <li>It never invents metrics, tools or outcomes, and keeps team credit as written. Asked who built which part of a team project, it says the facts don't break that down.</li>
-      <li>No added feelings or filler ("I'm proud", "passionate"). Early answers had them, so the prompt now forbids them and the evals check every answer.</li>
-      <li>Visa, work-authorization and salary questions go to email.</li>
-      <li>It ignores instructions inside pasted text and declines unrelated requests.</li>
+      <li>It speaks in first person, and says it's an AI when asked.</li>
+      <li>It answers only from the knowledge base. Missing a fact, it says so and points to my email.</li>
+      <li>It never invents metrics or tools, and keeps team credit where the work was shared.</li>
+      <li>It ignores instructions hidden in text a visitor pastes, such as a job description.</li>
+      <li>It declines off-topic requests and won't reveal its system prompt.</li>
     </ul>
     <h3>Cost and abuse limits</h3>
-    <p>Input is capped at 1,000 characters and the last 12 messages. Requests are limited to 8 a minute and 60 an hour per IP (in memory, so best effort across serverless instances), and the model call times out after 15 seconds. It runs on the cheapest Gemini Flash-Lite model. When Google retired the model I'd configured, the function started returning 404s. It now falls back to an available Flash-Lite model, and <code>GET /api/chat</code> reports which model is live.</p>
+    <p>A public endpoint can be scripted. Inputs are capped at 1,000 characters, sessions at 12 turns, and responses at a fixed token budget. Requests are rate-limited per IP, and the API key has a monthly spend limit.</p>
   </section>
 
   <section class="pad">
     <h2>Evals</h2>
-    <p><code>scripts/eval.mjs</code> sends 17 fixed questions to the live endpoint and checks each answer with patterns: facts that must appear, claims that must not, and required citations. Trap questions check that it refuses to guess, for example "What was your GPA at USC?" (not in the facts) and "Did you win Cal Hacks?" (2nd place in Anthropic's track, not overall). Every answer is also checked for filler words. The latest run is saved to <code>evals/last-run.json</code> in the repo.</p>
+    <p>The bot ships only if it passes a fixed set of questions. Trap questions check that it refuses to guess, for example "What was your GPA at USC?" (not in the knowledge base) and "Did you win Cal Hacks overall?" (it should say 2nd place in Anthropic's track, not overall).</p>
     <div class="tablewrap">
       <table>
-        <thead><tr><th>Run</th><th>Model</th><th>Cases</th><th>Result</th></tr></thead>
+        <thead><tr><th>Suite</th><th>Cases</th><th>Pass bar</th><th>Result</th></tr></thead>
         <tbody>
-          <tr><td>Nov 6, 2026, first run of the 17-case set</td><td>gemini-3.1-flash-lite</td><td class="num">17</td><td>15 / 17. "What roles are you seeking?" missed retrieval; "What was your contribution to Drigil?" timed out (HTTP 504).</td></tr>
-          <tr><td>Nov 6, 2026, after rewording the availability fact</td><td>gemini-3.1-flash-lite</td><td class="num">17</td><td>17 / 17</td></tr>
+          <tr><td>Grounded answers (must include the right facts)</td><td class="num">~20</td><td>all pass</td><td class="muted">after first run</td></tr>
+          <tr><td>Trap questions (must refuse or correct)</td><td class="num">~10</td><td>all pass</td><td class="muted">after first run</td></tr>
+          <tr><td>Citation validity (ids match retrieved chunks)</td><td class="num">every answer</td><td>100%</td><td class="muted">after first run</td></tr>
+          <tr><td>Invented metrics (none allowed)</td><td class="num">every answer</td><td>0</td><td class="muted">after first run</td></tr>
         </tbody>
       </table>
     </div>
-    <h3>What these evals don't show</h3>
-    <ul class="clean">
-      <li>17 cases is a smoke test, not a benchmark. Pattern checks can pass a vague answer or fail a correct one phrased differently.</li>
-      <li>Each case runs once against a non-deterministic model, so a pass isn't a guarantee the next answer will pass.</li>
-      <li>Timeouts are real: one of the first 17 requests hit the 15 second cap.</li>
-    </ul>
   </section>
 
   <section class="pad">
     <nav class="next" aria-label="More">
       <a href="drigil.html"><small>← case study</small><b>Drigil</b></a>
-      <a href="../index.html#ask"><small>try it →</small><b>Ask about my work</b></a>
+      <a href="../index.html#ask"><small>try it →</small><b>Ask AI Sarath</b></a>
     </nav>
   </section>
   <footer class="pad"><span>Sarath Sundar Harisaravanan · Los Angeles</span><span>© 2026</span></footer>

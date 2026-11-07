@@ -49,24 +49,3 @@
     } catch (err) { paused = false; }
   });
 })();
-
-;(() => {
-  // visible pause control: stops the illustration, the drifting background and the chat avatar's idle motion
-  const btn = document.getElementById('heroPause'); if (!btn) return;
-  const hero = document.querySelector('#banner svg'), banner = document.getElementById('banner');
-  const label = btn.querySelector('span'), icon = btn.querySelector('use');
-  let held = false;
-  try { held = localStorage.getItem('motion') === 'off'; } catch (e) {}
-  const apply = () => {
-    try { paused = held; } catch (e) {}
-    hero?.classList.toggle('paused', held);
-    document.documentElement.classList.toggle('motion-off', held);
-    btn.setAttribute('aria-pressed', String(held));
-    label.textContent = held ? 'Play animation' : 'Pause animation';
-    icon.setAttribute('href', held ? '#i-play' : '#i-pause');
-  };
-  btn.addEventListener('click', () => { held = !held; try { localStorage.setItem('motion', held ? 'off' : 'on'); } catch (e) {} apply(); });
-  // the scene's own hover handler resumes on mouseleave; keep it paused if the visitor asked
-  banner?.addEventListener('mouseleave', () => { if (held) { try { paused = true; } catch (e) {} hero?.classList.add('paused'); } });
-  if (held) setTimeout(apply, 0);
-})();

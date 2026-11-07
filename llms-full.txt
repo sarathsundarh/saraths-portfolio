@@ -12,7 +12,7 @@ Source: https://saraths-portfolio.vercel.app/#about
 
 ## Availability and contact
 
-Roles Sarath is seeking: Summer 2027 internships (intern positions) in software engineering and applied AI. He is looking for these internships and is available roughly from mid-May through the end of August 2027. Contact: email harisara@usc.edu, LinkedIn linkedin.com/in/sarathsundarh, GitHub github.com/sarathsundarh. He is based in Los Angeles, California. Questions about work authorization or sponsorship should go to Sarath directly by email.
+Sarath is looking for Summer 2027 internships in software engineering and applied AI, and is available roughly from mid-May through the end of August 2027. Contact: email harisara@usc.edu, LinkedIn linkedin.com/in/sarathsundarh, GitHub github.com/sarathsundarh. He is based in Los Angeles, California. Questions about work authorization or sponsorship should go to Sarath directly by email.
 
 Source: https://saraths-portfolio.vercel.app/#contact
 
@@ -138,6 +138,6 @@ Source: https://saraths-portfolio.vercel.app/#notes
 
 ## How this chat works
 
-The chat on this page is an AI assistant that answers in Sarath's voice from a curated knowledge base of facts about his work, retrieved with BM25, using a Gemini model on a Vercel serverless function. Answers list the facts they used; the server drops any citation that wasn't retrieved, the page can scroll to what it cites, inputs are length- and rate-limited, and it says so when the knowledge base doesn't cover something. It can make mistakes, so the linked sources are there to verify details.
+AI Sarath is this chat. It answers only from a curated knowledge base of Sarath's resume facts, retrieved with BM25, using a Gemini model on a Vercel serverless function. Every answer cites its sources, the page can scroll to and circle what it cites, inputs are length-limited and rate-limited, and it says so when it doesn't know something.
 
-Source: https://saraths-portfolio.vercel.app/#ask
+Source: https://saraths-portfolio.vercel.app/#notes

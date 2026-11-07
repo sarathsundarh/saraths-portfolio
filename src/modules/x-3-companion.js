@@ -30,13 +30,13 @@
 
   const MOODS = {
     about: { cls: [], line: "hey, I'm Sarath" },
-    ask: { cls: ['look-right'], line: 'ask about my work, answers link their sources' },
-    projects: { cls: ['typing'], line: 'each project opens a details panel with the evidence' },
+    ask: { cls: ['look-right'], line: 'ask me anything, I cite my sources' },
+    projects: { cls: ['typing'], line: 'every card has a live demo, try one' },
     experience: { cls: ['look-up'], line: 'two years shipping at IDFC FIRST Bank' },
     education: { cls: ['look-up'], line: 'MS CS at USC, graduating May 2028' },
-    stack: { cls: ['think'], line: 'hover a skill to see where I used it' },
+    stack: { cls: ['think'], line: 'drag the skills around' },
     achievements: { cls: ['look-up'], line: "2nd in Anthropic's track at Cal Hacks!", party: true },
-    notes: { cls: ['typing'], line: 'how I built the assistant, with eval results' },
+    notes: { cls: ['typing'], line: 'how I built the chat above' },
     contact: { cls: ['look-up'], line: "say hi, I'm looking for Summer 2027 internships", hop: true },
   };
   const ALL = ['typing', 'look-right', 'look-up', 'think'];

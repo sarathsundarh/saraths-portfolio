@@ -9,7 +9,7 @@ export const KB = [
   },
   {
     id: 'availability', title: 'Availability and contact', target: '#contact',
-    text: `Roles Sarath is seeking: Summer 2027 internships (intern positions) in software engineering and applied AI. He is looking for these internships and is available roughly from mid-May through the end of August 2027. Contact: email harisara@usc.edu, LinkedIn linkedin.com/in/sarathsundarh, GitHub github.com/sarathsundarh. He is based in Los Angeles, California. Questions about work authorization or sponsorship should go to Sarath directly by email.`,
+    text: `Sarath is looking for Summer 2027 internships in software engineering and applied AI, and is available roughly from mid-May through the end of August 2027. Contact: email harisara@usc.edu, LinkedIn linkedin.com/in/sarathsundarh, GitHub github.com/sarathsundarh. He is based in Los Angeles, California. Questions about work authorization or sponsorship should go to Sarath directly by email.`,
   },
   {
     id: 'education', title: 'Education', target: '#education',
@@ -92,8 +92,8 @@ export const KB = [
     text: `Sarath uses AI-assisted development. After an Anthropic multi-agent workshop he described his approach: a read-only critic agent that reviews changes, shared rules in a CLAUDE.md file, and fewer agents with clearer briefs and deadlines, which he found led to fewer broken handoffs and less rework. No measured speedup is recorded.`,
   },
   {
-    id: 'ai-sarath', title: 'How this chat works', target: '#ask',
-    text: `The chat on this page is an AI assistant that answers in Sarath's voice from a curated knowledge base of facts about his work, retrieved with BM25, using a Gemini model on a Vercel serverless function. Answers list the facts they used; the server drops any citation that wasn't retrieved, the page can scroll to what it cites, inputs are length- and rate-limited, and it says so when the knowledge base doesn't cover something. It can make mistakes, so the linked sources are there to verify details.`,
+    id: 'ai-sarath', title: 'How this chat works', target: '#notes',
+    text: `AI Sarath is this chat. It answers only from a curated knowledge base of Sarath's resume facts, retrieved with BM25, using a Gemini model on a Vercel serverless function. Every answer cites its sources, the page can scroll to and circle what it cites, inputs are length-limited and rate-limited, and it says so when it doesn't know something.`,
   },
 ];
 

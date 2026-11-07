@@ -35,10 +35,10 @@ PERSON = {
     "@context": "https://schema.org",
     "@graph": [
         {"@type": "ProfilePage", "@id": SITE + "/#page", "url": SITE + "/", "name": "Sarath Sundar Harisaravanan",
-         "mainEntity": {"@id": SITE + "/#person"}, "dateModified": "2026-11-06"},
+         "mainEntity": {"@id": SITE + "/#person"}, "dateModified": "2026-11-05"},
         {"@type": "Person", "@id": SITE + "/#person", "name": "Sarath Sundar Harisaravanan", "url": SITE + "/",
          "image": SITE + "/og.png", "email": "mailto:harisara@usc.edu",
-         "jobTitle": "Backend & Applied AI Engineer",
+         "jobTitle": "Software engineer, backend systems and applied AI",
          "description": "USC MS Computer Science student building backend systems and AI agents; two years as an Application Engineer at IDFC FIRST Bank.",
          "address": {"@type": "PostalAddress", "addressLocality": "Los Angeles", "addressRegion": "CA", "addressCountry": "US"},
          "affiliation": {"@type": "CollegeOrUniversity", "name": "University of Southern California"},
@@ -57,7 +57,7 @@ PERSON = {
          "url": "https://ieeexplore.ieee.org/document/10649392", "datePublished": "2024", "author": {"@id": SITE + "/#person"}, "publisher": {"@type": "Organization", "name": "IEEE InC4"}},
         {"@type": "SoftwareSourceCode", "name": "Yet Another Kafka", "codeRepository": "https://github.com/sarathsundarh/BD_yetanother_kafka", "programmingLanguage": "Java", "author": {"@id": SITE + "/#person"}},
         {"@type": "CreativeWork", "name": "Mend", "url": "https://devpost.com/software/mend-do4rht", "dateCreated": "2026-09",
-         "description": "One photo becomes a verified street-repair report; finalist, Top 15 teams, USC Origin Hackathon. Sarath built the reward calculation, itemized receipts, bounty budgets and sponsored check-in flows (five-person team)."},
+         "description": "One photo becomes a verified street-repair report; finalist, Top 15 teams, USC Origin Hackathon. Sarath built the surge pricing and rewards engine (five-person team)."},
     ],
 }
 JSONLD = json.dumps(PERSON, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
@@ -67,10 +67,10 @@ page = f'''<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sarath Sundar Harisaravanan · Backend & Applied AI Engineer</title>
+<title>Sarath Sundar Harisaravanan</title>
 <meta name="description" content="{DESC}" />
 <meta property="og:title" content="Sarath Sundar Harisaravanan" />
-<meta property="og:description" content="Backend & Applied AI Engineer. USC MS CS; 2+ years building backend services and AI tools at IDFC FIRST Bank. Selected work, evidence and résumé." />
+<meta property="og:description" content="Backend systems and AI agents. Ask AI Sarath, try the live project demos, and see the work." />
 <meta property="og:type" content="profile" />
 <meta property="og:url" content="{SITE}/" />
 <meta property="og:image" content="{SITE}/og.png" />
@@ -86,7 +86,7 @@ page = f'''<!doctype html>
 <meta name="theme-color" content="#F6F1E7" />
 <link rel="icon" href="{ICON}" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 <style>{hero_css}
 {css}</style>
 </head>

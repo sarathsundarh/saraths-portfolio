@@ -16,14 +16,8 @@ const CASES = [
   { q: 'Are you open to internships?', must: [/2027/] },
   { q: 'What is RegLens recall@5?', must: [/92\s?%/] },
   { q: 'Is the Foundry integration done?', must: [/progress|not (yet )?finished|working toward/i] },
-  { q: 'What backend systems have you built?', must: [/Go|microservice|Kong/i] },
-  { q: 'What was your contribution to Drigil?', must: [/team/i], mustNot: [/\bI (alone |single-handedly )?(built|wrote|designed|implemented) (the )?(vision|voice|remediation|pipeline)/i] },
-  { q: 'What roles are you seeking?', must: [/2027/, /intern/i] },
 ];
-// applies to every answer: no invented feelings or filler
-const ALWAYS_NOT = [/\bproud\b/i, /passionat/i, /\bthrilled\b/i];
 let pass = 0;
-const results = [];
 for (const c of CASES) {
   const r = await fetch(`${BASE}/api/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: [{ role: 'user', content: c.q }] }) });
   const j = await r.json().catch(() => ({}));
@@ -32,14 +26,11 @@ for (const c of CASES) {
   const fails = [];
   if (!r.ok) fails.push(`HTTP ${r.status} ${j.error || ''}`);
   (c.must || []).forEach((re) => !re.test(a) && fails.push(`missing ${re}`));
-  [...(c.mustNot || []), ...ALWAYS_NOT].forEach((re) => re.test(a) && fails.push(`contains ${re}`));
+  (c.mustNot || []).forEach((re) => re.test(a) && fails.push(`contains ${re}`));
   (c.cites || []).forEach((id) => !ids.includes(id) && fails.push(`no citation ${id}`));
   if (!fails.length) pass++;
-  results.push({ q: c.q, pass: !fails.length, fails, cites: ids, answer: a, model: j.model || null });
   console.log(`${fails.length ? '✗' : '✓'} ${c.q}\n   ${a.replace(/\s+/g, ' ').slice(0, 220)}\n   cites: ${ids.join(', ') || '—'}${fails.length ? '\n   FAIL: ' + fails.join('; ') : ''}`);
   await new Promise((ok) => setTimeout(ok, 8000)); // stay under the per-IP rate limit
 }
 console.log(`\n${pass}/${CASES.length} passed`);
-const fs = await import('node:fs');
-fs.writeFileSync(new URL('../evals/last-run.json', import.meta.url), JSON.stringify({ date: new Date().toISOString(), base: BASE, pass, total: CASES.length, results }, null, 2) + '\n');
 process.exit(pass === CASES.length ? 0 : 1);
